@@ -20,7 +20,7 @@ func draw_alien(canvas, puzzle, pos, color):
 			points_arc.push_back(pos + Vector2(cos(angle_point), sin(angle_point) + d) * innerRadius)
 		points_arc.push_back(pos + Vector2(circleRadius, d * innerRadius))
 	canvas.add_polygon(points_arc, color)
-	
+
 func draw_anger(canvas, puzzle, pos, color):
 	var anger_size = 0.4 * (1 - puzzle.line_width)
 	var anger_position = 0.25 * (1 - puzzle.line_width)

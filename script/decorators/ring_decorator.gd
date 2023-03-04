@@ -15,4 +15,4 @@ func draw_foreground(canvas: Visualizer.PuzzleCanvas, owner, owner_type: int, pu
 		angle_point = -2 * i * PI / nb_points
 		points_arc.push_back(Vector2(cos(angle_point), sin(angle_point)) * innerRadius)
 	canvas.add_polygon(points_arc, color)
-	
+

@@ -10,30 +10,33 @@ class DecoratorResponse:
 	var state_before_elimination: int
 	var clone_source_decorator
 	var index: int
-	
+
 	const NORMAL = 0
 	const ERROR = 1
 	const ELIMINATED = 2
 	const CONVERTED = 3
 	const NO_ELIMINATION_CHANGES = -1
-	
+
 class Region:
-	
+
 	var facet_indices: Array
 	var vertice_indices: Array
 	var decorator_indices: Array
 	var decorator_dict: Dictionary
 	var is_near_solution_line: bool
 	var index
-	
+
 	func _to_string():
 		return '[%d] Facets: %s, Decorators: %s\n' % [index, str(facet_indices), str(decorator_dict)]
-	
+
 	func has_any(rule):
 		return rule in decorator_dict and len(decorator_dict[rule]) != 0
 
+const DiscreteSolutionState = preload("discrete_solution_state.gd")
+const SolutionLine = preload("solution_line.gd")
+
 class Validator:
-	
+
 	var elimination_happended: bool
 	var solution_validity: int # 0: unknown, 1: correct, -1: wrong
 	var decorator_responses: Array
@@ -42,10 +45,10 @@ class Validator:
 	var region_of_facet: Array
 	var vertex_region: Array # -1: unknown; -2, -3, ...: covered by solution; 0, 1, ...: in regions
 	var puzzle: Graph.Puzzle
-	var solution: Solution.DiscreteSolutionState
+	var solution: DiscreteSolutionState
 	var has_boxes: bool
 	var has_lasers: bool
-	
+
 	func alter_rule(decorator_index, region, new_rule):
 		var old_rule = decorator_responses[decorator_index].rule
 		if (!old_rule.begins_with('!')):
@@ -69,14 +72,14 @@ class Validator:
 		response.index = len(decorator_responses)
 		decorator_responses.append(response)
 		return response
-		
+
 	func push_vertex_decorator_response(v, response):
 		if not (v in decorator_responses_of_vertex):
 			decorator_responses_of_vertex[v] = [response]
 		else:
 			decorator_responses_of_vertex[v].append(response)
-	
-	func validate(input_puzzle: Graph.Puzzle, input_solution: Solution.SolutionLine):
+
+	func validate(input_puzzle: Graph.Puzzle, input_solution: SolutionLine):
 		puzzle = input_puzzle
 		solution = input_solution.state_stack[-1]
 		decorator_responses = []
@@ -138,11 +141,11 @@ class Validator:
 				new_region.index = len(regions)
 				regions.append(new_region)
 				vertex_region[v1] = new_region.index
-				while (!stack.empty()):
+				while (!stack.is_empty()):
 					var v2 = stack.pop_back()
 					if (ghost_manager != null):
 						# ghost lines have different region cutting method
-						if (puzzle.vertices[v2].linked_edge_tuple == null and 
+						if (puzzle.vertices[v2].linked_edge_tuple == null and
 							puzzle.vertices[v2].linked_facet == null):
 							continue
 					for v3 in puzzle.vertice_region_neighbors[v2]:
@@ -168,5 +171,5 @@ class Validator:
 				regions[vertex_region[i]].vertice_indices.append(i)
 		# print(regions)
 		return BasicJudgers.judge_all(self, true)
-	
-	
+
+

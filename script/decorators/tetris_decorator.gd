@@ -16,7 +16,7 @@ func angle_equal_zero(angle, eps=1e-3):
 	return abs(angle - (2 * d * PI)) < eps
 
 func calculate_covering(puzzle):
-	var rotatable = true 
+	var rotatable = true
 	# test if the tetris is skewed
 	# in the level editor we usually use 15 degrees or -15 degrees of angle
 	# to represent that a tetris is skewed
@@ -39,14 +39,14 @@ func calculate_covering(puzzle):
 			var ok = true
 			var facet_center = puzzle.facets[i].center
 			# align the facet center with the shape center
-			var relative_pos = facet_center - transform.xform(shape_centers[0])
+			var relative_pos = facet_center - transform * shape_centers[0]
 			transform[2] += relative_pos
 			# check if all centers aligned
 			var alignment = []
 			for k in range(len(shape_centers)):
 				var shape_center = shape_centers[k]
 				var edge_count = len(shapes[k])
-				var transformed_center = transform.xform(shape_center)
+				var transformed_center = transform * shape_center
 				var found_alignment = false
 				for j in range(len(puzzle.facets)):
 					if (len(puzzle.facets[j].vertices) == edge_count and
@@ -64,7 +64,7 @@ func calculate_covering(puzzle):
 					covering_dict[alignment] = true
 					covering.append(alignment)
 	# print('Covering of %d:' % len(shapes), covering)
-			
+
 func __shrink_corner(p0, p1, p2, depth):
 	var e1 = (p0 - p1).normalized()
 	var e2 = (p2 - p1).normalized()
@@ -88,10 +88,10 @@ func draw_foreground(canvas: Visualizer.PuzzleCanvas, owner, owner_type: int, pu
 	if (is_hollow):
 		for shape in shapes:
 			var hollow_shape = __shrink_shape(shape, margin_size, scale)
-			if(!hollow_shape.empty()):
+			if(!hollow_shape.is_empty()):
 				hollow_shape.append(hollow_shape[0])
 			var inner_shape = __shrink_shape(shape, border_size, scale)
-			if (!inner_shape.empty()):
+			if (!inner_shape.is_empty()):
 				inner_shape.append(inner_shape[0])
 			inner_shape.invert()
 			canvas.add_polygon(hollow_shape + inner_shape, color)
@@ -102,12 +102,12 @@ func draw_foreground(canvas: Visualizer.PuzzleCanvas, owner, owner_type: int, pu
 		var plus_size = 0.08 * (1 - puzzle.line_width)
 		var plus_position = 0.35 * (1 - puzzle.line_width)
 		canvas.add_line(
-			Vector2(-plus_size + plus_position, -plus_position).rotated(-angle), 
-			Vector2(plus_size + plus_position, -plus_position).rotated(-angle), 
+			Vector2(-plus_size + plus_position, -plus_position).rotated(-angle),
+			Vector2(plus_size + plus_position, -plus_position).rotated(-angle),
 			plus_size * 0.65, color)
 		canvas.add_line(
-			Vector2(plus_position, -plus_size - plus_position).rotated(-angle), 
-			Vector2(plus_position, plus_size - plus_position).rotated(-angle), 
+			Vector2(plus_position, -plus_size - plus_position).rotated(-angle),
+			Vector2(plus_position, plus_size - plus_position).rotated(-angle),
 			plus_size * 0.65, color)
 	if (is_weak):
 		var circleRadius = 0.08 * (1 - puzzle.line_width)
@@ -123,4 +123,4 @@ func draw_foreground(canvas: Visualizer.PuzzleCanvas, owner, owner_type: int, pu
 			var angle_point = -2 * i * PI / nb_points
 			points_arc.push_back(Vector2(cos(angle_point), sin(angle_point)) * innerRadius + rel_pos)
 		canvas.add_polygon(points_arc, color)
-		
+

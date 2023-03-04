@@ -13,4 +13,4 @@ func draw_foreground(canvas: Visualizer.PuzzleCanvas, owner, owner_type: int, pu
 		points_arc.push_back(Vector2(cos(t), -sin(t)) * r * radius - Vector2(0, 1.5 * radius))
 
 	canvas.add_polygon(points_arc, color)
-	
+

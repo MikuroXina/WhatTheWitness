@@ -38,4 +38,4 @@ func draw_house(canvas, puzzle, pos, color, occupied):
 
 func draw_foreground(canvas: Visualizer.PuzzleCanvas, owner, owner_type: int, puzzle: Graph.Puzzle):
 	draw_house(canvas, puzzle, Vector2.ZERO, color, false)
-		
+

@@ -16,7 +16,7 @@ func draw_below_solution(canvas, owner, owner_type, puzzle, solution):
 	if (solution == null or !solution.started or len(solution.state_stack[-1].event_properties) <= id):
 		snake_points = init_snake_points
 	else:
-		snake_points = solution.state_stack[-1].event_properties[id] 
+		snake_points = solution.state_stack[-1].event_properties[id]
 	for v in snake_points:
 		__draw_snake_point(canvas, puzzle, puzzle.vertices[v])
 
@@ -27,7 +27,7 @@ func property_to_string(snake_points):
 	var snake_result = []
 	for snake_v in snake_points:
 		snake_result.append(str(snake_v))
-	return PoolStringArray(snake_result).join(',')
+	return ','.join(PackedStringArray(snake_result))
 
 func string_to_property(string):
 	if (string != ''):

@@ -2,25 +2,31 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-class CSPHelper : Node {
+partial class CSPHelper : Node
+{
 
     public const int BINOMIAL_LIMIT = 100000000;
     const int MAX_SIZE = 1000;
     static int[,] binomial;
-    static CSPHelper() {
-        binomial = new int[MAX_SIZE, MAX_SIZE]; 
-        for (int k = 0; k < MAX_SIZE; ++k) {
-            for (int l = 0; l <= k; ++l) {
+    static CSPHelper()
+    {
+        binomial = new int[MAX_SIZE, MAX_SIZE];
+        for (int k = 0; k < MAX_SIZE; ++k)
+        {
+            for (int l = 0; l <= k; ++l)
+            {
                 if (l == 0 || l == k)
                     binomial[k, l] = 1;
-                else {
+                else
+                {
                     int result = binomial[k - 1, l] + binomial[k - 1, l - 1];
                     binomial[k, l] = Math.Min(result, BINOMIAL_LIMIT + k);
                 }
             }
         }
     }
-    public static int GetBinomial(int i, int j) {
+    public static int GetBinomial(int i, int j)
+    {
         if (j > i || j < 0)
             return 0;
         if (j == 0 || j == i)
@@ -30,13 +36,15 @@ class CSPHelper : Node {
         return BINOMIAL_LIMIT + i;
     }
 }
-class CSPClause : Node {
+partial class CSPClause : Node
+{
     public int sum;
     public Dictionary<int, int> variables = new Dictionary<int, int>();
     public int positiveCount;
     public int negativeCount;
     public Dictionary<int, (int, int)> assignedVariables = new Dictionary<int, (int, int)>();
-    public int GetWeight() {
+    public int GetWeight()
+    {
         if (variables.Count == 0 && sum == 0)
             return -1;
         int maxEq = Math.Min(positiveCount, negativeCount + sum);
@@ -53,7 +61,8 @@ class CSPClause : Node {
         else
             return lhsResult * rhsResult * (maxEq - minEq + 1);
     }
-    public void Unlink(int x, int value) {
+    public void Unlink(int x, int value)
+    {
         int coef = variables[x];
         if (coef == 1)
             positiveCount -= 1;
@@ -63,7 +72,8 @@ class CSPClause : Node {
         variables.Remove(x);
         assignedVariables[x] = (coef, value);
     }
-    public void Relink(int x) {
+    public void Relink(int x)
+    {
         (int coef, int value) = assignedVariables[x];
         if (coef == 1)
             positiveCount += 1;
@@ -75,23 +85,28 @@ class CSPClause : Node {
         assignedVariables.Remove(x);
     }
 }
-class CSPVariable : Node {
+partial class CSPVariable : Node
+{
     public List<int> clauses = new List<int>();
     public int value;
 }
-public class CSPSolver : Node {
+public partial class CSPSolver : Node
+{
     List<CSPClause> clauses = new List<CSPClause>();
     Dictionary<int, int> weightDict = new Dictionary<int, int>();
     List<CSPVariable> variables = new List<CSPVariable>();
-    public void Clear() {
+    public void Clear()
+    {
         clauses.Clear();
         weightDict.Clear();
         variables.Clear();
     }
-    public void AddClause(Dictionary<int, int> variableCoefMap, int sum) {
+    public void AddClause(Dictionary<int, int> variableCoefMap, int sum)
+    {
         CSPClause clause = new CSPClause();
         clause.sum = sum;
-        foreach (KeyValuePair<int, int> kv in variableCoefMap) {
+        foreach (KeyValuePair<int, int> kv in variableCoefMap)
+        {
             int variable = kv.Key;
             int coef = kv.Value;
             clause.variables[variable] = coef;
@@ -105,14 +120,16 @@ public class CSPSolver : Node {
         clauses.Add(clause);
         if (weight != -1) // -1 means already satisfied (empty clause 0 = 0)
             weightDict[clauseId] = weight;
-        foreach (KeyValuePair<int, int> kv in variableCoefMap) {
+        foreach (KeyValuePair<int, int> kv in variableCoefMap)
+        {
             int variable = kv.Key;
             while (variable >= variables.Count)
                 variables.Add(new CSPVariable());
             variables[variable].clauses.Add(clauseId);
         }
     }
-    int UpdateWeight(int clauseId) {
+    int UpdateWeight(int clauseId)
+    {
         var weight = clauses[clauseId].GetWeight();
         if (weight == -1)
             weightDict.Remove(clauseId);
@@ -120,42 +137,51 @@ public class CSPSolver : Node {
             weightDict[clauseId] = weight;
         return weight;
     }
-    void PrintSolution() {
+    void PrintSolution()
+    {
         for (int i = 0; i < variables.Count; ++i)
             GD.Print($"v{i}: {variables[i].value}");
     }
-    bool Satisfiable() {
+    bool Satisfiable()
+    {
         if (weightDict.Count == 0)
             return true;
         int min_weight = -1;
         int min_id = -1;
-        foreach (KeyValuePair<int, int> kv in weightDict) {
+        foreach (KeyValuePair<int, int> kv in weightDict)
+        {
             int id = kv.Key;
             int weight = kv.Value;
-            if (min_weight > weight || min_id == -1) {
+            if (min_weight > weight || min_id == -1)
+            {
                 min_id = id;
                 min_weight = weight;
             }
         }
         if (min_weight == 0)
             return false;
-        foreach (KeyValuePair<int, int> kv in clauses[min_id].variables) {
+        foreach (KeyValuePair<int, int> kv in clauses[min_id].variables)
+        {
             int variable = kv.Key;
-            for (int assignment = 0; assignment <= 1; ++assignment) {
+            for (int assignment = 0; assignment <= 1; ++assignment)
+            {
                 bool ok = true;
                 variables[variable].value = assignment;
                 foreach (int affected_clause in variables[variable].clauses)
                     clauses[affected_clause].Unlink(variable, assignment);
-                foreach (int affected_clause in variables[variable].clauses) {
+                foreach (int affected_clause in variables[variable].clauses)
+                {
                     int new_weight = UpdateWeight(affected_clause);
-                    if (new_weight == 0) {
+                    if (new_weight == 0)
+                    {
                         ok = false;
                         break;
                     }
                 }
                 if (ok)
                     ok = Satisfiable();
-                foreach (int affected_clause in variables[variable].clauses) {
+                foreach (int affected_clause in variables[variable].clauses)
+                {
                     clauses[affected_clause].Relink(variable);
                     UpdateWeight(affected_clause);
                 }

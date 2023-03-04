@@ -18,7 +18,7 @@ func draw_foreground(canvas: Visualizer.PuzzleCanvas, owner, owner_type: int, pu
 	points_arc.push_back(Vector2(dir * cos(angle_point), sin(angle_point)) * (arrowSize + circleRadius))
 	points_arc.push_back(Vector2(dir * cos(angle_point + PI / 6), sin(angle_point + PI / 6)) * (innerRadius + circleRadius) / 2)
 	points_arc.push_back(Vector2(dir * cos(angle_point), sin(angle_point)) * (innerRadius - arrowSize))
-	
+
 	for i in range(nb_points - 6, -1, -1):
 		angle_point = 2 * i * PI / nb_points
 		points_arc.push_back(Vector2(dir * cos(angle_point), sin(angle_point)) * innerRadius)

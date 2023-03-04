@@ -14,7 +14,7 @@ func draw_foreground(canvas: Visualizer.PuzzleCanvas, owner, owner_type: int, pu
 	for i in range(levels):
 		numbersPerlevel.push_back(left if left <= 3 else 2 if left == 4 else 3)
 		left -= numbersPerlevel[i]
-		
+
 	var totalHeight = height * levels + distance * (levels - 1)
 	var currentHeight = totalHeight / 2
 	for level in range(levels):
@@ -26,10 +26,10 @@ func draw_foreground(canvas: Visualizer.PuzzleCanvas, owner, owner_type: int, pu
 			canvas.add_polygon([
 				p1 ,
 				p2 ,
-				p3 
+				p3
 			], color)
 			p1 += Vector2(length + distance, 0)
 			p2 += Vector2(length + distance, 0)
 			p3 += Vector2(length + distance, 0)
 		currentHeight -= height + distance;
-	
+

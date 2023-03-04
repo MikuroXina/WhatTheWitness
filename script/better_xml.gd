@@ -18,13 +18,12 @@ func parse_xml_file(file):
 		var node_type = parser.get_node_type()
 		if (node_type == XMLParser.NODE_ELEMENT):
 			return read_node(parser, node_name)
-		else:
-			assert(false)
-		
+		assert(false, "unexpected xml node found: %d" % node_type)
+
 func read_node(parser, node_name):
 	var result = {'_arr': []}
 	for i in range(parser.get_attribute_count()):
-		result[parser.get_attribute_name(i)] = parser.get_attribute_value(i) 
+		result[parser.get_attribute_name(i)] = parser.get_attribute_value(i)
 	if (!parser.is_empty()):
 		while true:
 			var error = parser.read()
@@ -50,9 +49,9 @@ func read_node(parser, node_name):
 			elif (sub_node_type == XMLParser.NODE_COMMENT):
 				continue
 			else:
-				assert(false)
-	if (result['_arr'].empty() and result.has('_text')):
+				assert(false, "unexpected xml node found: %d" % sub_node_type)
+	if (result['_arr'].is_empty() and result.has('_text')):
 		return result['_text']
 	else:
 		return result
-	
+

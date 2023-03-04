@@ -38,7 +38,7 @@ func draw_above_solution(canvas, owner, owner_type, puzzle, solution):
 
 func init_property(puzzle, solution_state, start_vertex):
 	return init_vertex
-	
+
 func property_to_string(property):
 	return str(property)
 
@@ -50,5 +50,5 @@ func get_location(puzzle, solution, id):
 	if (solution == null or !solution.started or len(solution.state_stack[-1].event_properties) <= id):
 		v = init_vertex
 	else:
-		v = solution.state_stack[-1].event_properties[id] 
+		v = solution.state_stack[-1].event_properties[id]
 	return puzzle.vertices[v].pos

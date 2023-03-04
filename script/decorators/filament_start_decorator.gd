@@ -16,10 +16,10 @@ func draw_above_solution(canvas: Visualizer.PuzzleCanvas, owner, owner_type, puz
 				filament_solution.path_points[i][0],
 				end_pos,
 				puzzle.line_width / 4,
-				Color.white)
-			canvas.add_circle(end_pos, puzzle.line_width / 8, Color.white)
-		canvas.add_circle(filament_solution.start_pos, circle_radius, Color.black)
-		
+				Color.WHITE)
+			canvas.add_circle(end_pos, puzzle.line_width / 8, Color.WHITE)
+		canvas.add_circle(filament_solution.start_pos, circle_radius, Color.BLACK)
+
 func add_pillar(pos):
 	for i in range(8):
 		var angle = i * PI / 4
@@ -46,7 +46,7 @@ func property_to_string(filament_solution):
 		for pos in filament_solution.path_points:
 			point_result.append(vector_to_string(pos[0]))
 		point_result.append(vector_to_string(filament_solution.end_pos))
-	return PoolStringArray(point_result).join(',')
+	return ','.join(PackedStringArray(point_result))
 
 func string_to_property(string):
 	filament_solution = Filament.FilamentSolution.new()

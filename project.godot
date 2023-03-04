@@ -6,55 +6,55 @@
 ;   [section] ; section goes between []
 ;   param=value ; assign values to parameters
 
-config_version=4
-
-_global_script_classes=[  ]
-_global_script_class_icons={
-}
+config_version=5
 
 [application]
 
 config/name="Custom Witness Puzzles"
 run/main_scene="res://menu_main.tscn"
+config/features=PackedStringArray("4.0", "C#")
 config/icon="res://icon.png"
 
 [autoload]
 
-Gameplay="*res://script/gameplay.gd"
-Graph="*res://script/graph.gd"
 Solution="*res://script/solution.gd"
-Validation="*res://script/validation.gd"
 Visualizer="*res://script/visualizer.gd"
-BasicJudgers="*res://script/judgers/basic_judgers.gd"
 TetrisJudger="*res://script/judgers/tetris_judger.gd"
 MenuData="*res://script/menu_data.gd"
 SaveData="*res://script/save_data.gd"
 Filament="*res://script/filament.gd"
 Credits="*res://script/credits.gd"
 Solver="*res://script/solver.gd"
+Gameplay="*res://script/gameplay.gd"
+Graph="*res://script/graph.gd"
 LaserJudger="*res://script/judgers/laser_judger.gd"
 CSPSolver="*res://script/judgers/CSPSolver.cs"
+Validation="*res://script/validation.gd"
+BasicJudgers="*res://script/judgers/basic_judgers.gd"
 
 [debug]
 
-settings/fps/force_fps=60
 settings/stdout/print_fps=true
+settings/fps/force_fps=60
 
 [display]
 
 window/stretch/mode="2d"
-window/stretch/aspect="keep"
+
+[dotnet]
+
+project/assembly_name="Custom Witness Puzzles"
 
 [network]
 
-limits/debugger_stdout/max_chars_per_second=20480
+limits/debugger/max_chars_per_second=20480
 
 [rendering]
 
+textures/vram_compression/import_etc2_astc=false
+environment/defaults/default_clear_color=Color(0.0823529, 0.0823529, 0.0823529, 1)
+environment/defaults/default_environment="res://default_env.tres"
 2d/snapping/use_gpu_pixel_snap=true
 vram_compression/import_etc=true
-vram_compression/import_etc2=false
-environment/default_clear_color=Color( 0.0823529, 0.0823529, 0.0823529, 1 )
 quality/depth/hdr=false
-environment/default_environment="res://default_env.tres"
 quality/2d/use_pixel_snap=true

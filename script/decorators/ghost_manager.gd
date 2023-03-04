@@ -20,7 +20,7 @@ func draw_below_solution(canvas, owner, owner_type, puzzle, solution):
 		var vertices_way = state.vertices[way]
 		var color = puzzle.solution_colors[way]
 		if (solution.validity == -1):
-			color = Color.black
+			color = Color.BLACK
 		elif (solution.validity == 0): # drawing illumination
 			color = Color(1 - (1 - color.r) * 0.6, 1 - (1 - color.g) * 0.6, 1 - (1 - color.b) * 0.6, color.a)
 		var delta_shift = Vector2.ZERO
@@ -75,7 +75,7 @@ func draw_below_solution(canvas, owner, owner_type, puzzle, solution):
 				canvas.add_circle(second_indicator_pos, puzzle.line_width / 3.4, line_color)
 				canvas.add_circle(second_indicator_pos, puzzle.line_width / 3.8, color)
 
-				
+
 func is_solution_point_ghosted(vertex_ghost_property, way, id):
 	if (len(vertex_ghost_property) <= way):
 		return false
@@ -91,7 +91,7 @@ func is_solution_point_ghosted(vertex_ghost_property, way, id):
 				return (id - phase) % 6 != 5
 			else: # normal line, not ghosted
 				return false
-				
+
 func init_property(puzzle, solution_state, start_vertex):
 	solution_state.solution_stage.clear()
 	for way in range(puzzle.n_ways):
@@ -107,8 +107,8 @@ func property_to_string(vertex_ghost_property):
 		var way_result = []
 		for v in way_property:
 			way_result.append(str(v))
-		ghost_result.append(PoolStringArray(way_result).join(','))
-	return PoolStringArray(ghost_result).join('/')
+		ghost_result.','.join(append(PackedStringArray(way_result)))
+	return '/'.join(PackedStringArray(ghost_result))
 
 func string_to_property(string):
 	var ghost_result = string.split('/')
@@ -125,4 +125,4 @@ func post_load_state(puzzle, solution_state):
 	solution_state.solution_stage.clear()
 	for way in range(puzzle.n_ways):
 		solution_state.solution_stage.append(Solution.SOLUTION_STAGE_GHOST)
-	
+

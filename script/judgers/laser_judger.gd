@@ -10,12 +10,12 @@ func laser_pass_point(validator: Validation.Validator, pos: Vector2, color: Colo
 			for k in range(len(lasers)):
 				var laser = lasers[k]
 				for j in range(len(laser) - 1):
-					if (Geometry.segment_intersects_circle(laser[j], laser[j + 1], pos, TARGET_SIZE) >= 0):
+					if (Geometry2D.segment_intersects_circle(laser[j], laser[j + 1], pos, TARGET_SIZE) >= 0):
 						passed_laser_colors.append(puzzle.decorators[i].laser_colors[k])
 						break
 		if (len(passed_laser_colors) == 0):
 			return false
-		if (color == Color.black):
+		if (color == Color.BLACK):
 			return true # black matches everything
 		var color_comp = [0, 0, 0]
 		for laser_color in passed_laser_colors:

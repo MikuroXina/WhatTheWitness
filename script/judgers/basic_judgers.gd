@@ -37,7 +37,7 @@ func judge_all(validator: Validation.Validator, require_errors: bool):
 		if (v < len(validator.puzzle.vertices) and validator.puzzle.vertices[v].decorator.rule == 'all-error'):
 			# require all errors
 			for global_judger in global_judgers:
-				var judger_ok = call(global_judger, validator, true)
+				call(global_judger, validator, true)
 			var ok = true
 			var any_error = false
 			var collected_responses = []
@@ -69,7 +69,7 @@ func judge_all(validator: Validation.Validator, require_errors: bool):
 						response.state = Validation.DecoratorResponse.ELIMINATED
 					validator.elimination_happended = true
 			return any_error and ok
-	
+
 	var ok = true
 	for global_judger in global_judgers:
 		var judger_ok = call(global_judger, validator, require_errors)
@@ -79,12 +79,12 @@ func judge_all(validator: Validation.Validator, require_errors: bool):
 	return ok
 
 func __match_color(solution_color, point_color):
-	if (point_color == Color.black): # black point matches every color
+	if (point_color == Color.BLACK): # black point matches every color
 		return true
-	return point_color == solution_color 
+	return point_color == solution_color
 
 
-func preprocess_filament(validator: Validation.Validator, require_errors: bool):
+func preprocess_filament(validator: Validation.Validator, _require_errors: bool):
 	for v in validator.decorator_responses_of_vertex:
 		for response in validator.decorator_responses_of_vertex[v]:
 			if (response.rule == 'filament-pillar'):
@@ -123,7 +123,7 @@ func judge_covered_points(validator: Validation.Validator, require_errors: bool)
 									break
 						var way_id = -validator.vertex_region[v] - 2
 						var color = response.color
-						if (!__match_color(validator.puzzle.solution_colors[way_id], color)): 
+						if (!__match_color(validator.puzzle.solution_colors[way_id], color)):
 							ok = false
 				elif (validator.vertex_region[v] == -1): # points that do not belong to any region, neither covered
 					ok = false
@@ -146,7 +146,7 @@ func judge_covered_cosmic_aliens(validator: Validation.Validator, require_errors
 				else:
 					return false
 	return all_ok
-	
+
 func judge_rings(validator: Validation.Validator, require_errors: bool):
 	var clonable_decorators = []
 	var paste_positions = []
@@ -191,7 +191,7 @@ func judge_rings(validator: Validation.Validator, require_errors: bool):
 		return judge_all_regions(validator, require_errors)
 	else:
 		return false
-	
+
 func judge_all_regions(validator: Validation.Validator, require_errors: bool):
 	var ok = true
 	for region in validator.regions:
@@ -200,12 +200,12 @@ func judge_all_regions(validator: Validation.Validator, require_errors: bool):
 		var judger_ok = judge_region(validator, region, require_errors)
 		ok = judger_ok and ok
 	return ok
-	
-	
+
+
 func judge_region(validator: Validation.Validator, region: Validation.Region, require_errors: bool):
 	if (region.has_any('eliminator')):
 		return judge_region_elimination(validator, region, require_errors)
-	
+
 	var ok = true
 	for region_judger in region_judgers:
 		var region_judger_ok = call(region_judger, validator, region, require_errors)
@@ -213,7 +213,7 @@ func judge_region(validator: Validation.Validator, region: Validation.Region, re
 		if (!ok and !require_errors):
 			return false
 	return ok
-	
+
 func judge_region_squares(validator: Validation.Validator, region: Validation.Region, require_errors: bool):
 	if (!region.has_any('square')):
 		return true
@@ -277,7 +277,7 @@ func judge_region_points(validator: Validation.Validator, region: Validation.Reg
 			else:
 				return false
 	return all_ok
-	
+
 func judge_region_self_intersections(validator: Validation.Validator, region: Validation.Region, require_errors: bool):
 	if (!region.has_any('self-intersection')):
 		return true
@@ -286,7 +286,7 @@ func judge_region_self_intersections(validator: Validation.Validator, region: Va
 			var response = validator.decorator_responses[decorator_id]
 			response.state = Validation.DecoratorResponse.ERROR
 	return false
-	
+
 func judge_region_ghosts(validator: Validation.Validator, region: Validation.Region, require_errors: bool):
 	if (!region.has_any('ghost')):
 		return true
@@ -295,7 +295,7 @@ func judge_region_ghosts(validator: Validation.Validator, region: Validation.Reg
 			var response = validator.decorator_responses[decorator_id]
 			response.state = Validation.DecoratorResponse.ERROR
 	return false
-	
+
 func judge_region_big_points(validator: Validation.Validator, region: Validation.Region, require_errors: bool):
 	if (!region.has_any('big-point')):
 		return true
@@ -304,7 +304,7 @@ func judge_region_big_points(validator: Validation.Validator, region: Validation
 			var response = validator.decorator_responses[decorator_id]
 			response.state = Validation.DecoratorResponse.ERROR
 	return false
-	
+
 func judge_region_stars(validator: Validation.Validator, region: Validation.Region, require_errors: bool):
 	if (!region.has_any('star')):
 		return true
@@ -369,7 +369,7 @@ func judge_region_lands(validator: Validation.Validator, region: Validation.Regi
 						color_ok = true
 		if (!color_ok):
 			if (require_errors):
-				for decorator_id in region.decorator_dict['land']: 
+				for decorator_id in region.decorator_dict['land']:
 					var response = validator.decorator_responses[decorator_id]
 					if (response.color == color):
 						response.state = Validation.DecoratorResponse.ERROR
@@ -377,7 +377,7 @@ func judge_region_lands(validator: Validation.Validator, region: Validation.Regi
 			else:
 				return false
 	return ok
-	
+
 func judge_region_artless_numbers(validator: Validation.Validator, region: Validation.Region, require_errors: bool):
 	if (!region.has_any('artless-number')):
 		return true
@@ -397,7 +397,7 @@ func judge_region_artless_numbers(validator: Validation.Validator, region: Valid
 			else:
 				return false
 	return ok
-	
+
 func judge_region_triangles(validator: Validation.Validator, region: Validation.Region, require_errors: bool):
 	if (!region.has_any('triangle')):
 		return true
@@ -423,7 +423,7 @@ func judge_region_triangles(validator: Validation.Validator, region: Validation.
 			else:
 				return false
 	return all_ok
-	
+
 func judge_region_water(validator: Validation.Validator, region: Validation.Region, require_errors: bool):
 	if (!region.has_any('water')):
 		return true
@@ -436,7 +436,6 @@ func judge_region_water(validator: Validation.Validator, region: Validation.Regi
 			ok = false
 		else:
 			var count = 0
-			var neighbor_facet_vertex_ids = {}
 			for edge_tuple in facet.edge_tuples:
 				for f in validator.puzzle.edge_shared_facets[edge_tuple]:
 					var v = validator.puzzle.facets[f].center_vertex_index
@@ -452,7 +451,7 @@ func judge_region_water(validator: Validation.Validator, region: Validation.Regi
 			else:
 				return false
 	return all_ok
-	
+
 func judge_region_minesweeper(validator: Validation.Validator, region: Validation.Region, require_errors: bool):
 	if (!region.has_any('minesweeper')):
 		return true
@@ -520,7 +519,7 @@ func judge_region_circle_arrows(validator: Validation.Validator, region: Validat
 						if (v1 >= len(validator.puzzle.vertices) or v2 >= len(validator.puzzle.vertices)):
 							continue
 						var cross = TetrisJudger.det(
-							validator.puzzle.vertices[v2].pos - center, 
+							validator.puzzle.vertices[v2].pos - center,
 							validator.puzzle.vertices[v1].pos - center)
 						if ((cross > 0 and is_clockwise) or (cross < 0 and !is_clockwise)):
 							ok = false
@@ -532,7 +531,7 @@ func judge_region_circle_arrows(validator: Validation.Validator, region: Validat
 			else:
 				return false
 	return all_ok
-	
+
 func judge_region_myopia(validator: Validation.Validator, region: Validation.Region, require_errors: bool):
 	if (!region.has_any('myopia')):
 		return true
@@ -558,7 +557,7 @@ func judge_region_myopia(validator: Validation.Validator, region: Validation.Reg
 				global_min_dist = min(global_min_dist, min_dist)
 		for k in range(len(response.decorator.directions)):
 			# We test the not condition to handle issues with infinite
-			if ((response.decorator.directions[k][2] and !(global_min_dist + 1e-3 > dist_list[k])) or 
+			if ((response.decorator.directions[k][2] and !(global_min_dist + 1e-3 > dist_list[k])) or
 				(!response.decorator.directions[k][2] and !(global_min_dist + 1e-3 < dist_list[k]))):
 				if (require_errors):
 					response.state = Validation.DecoratorResponse.ERROR
@@ -567,8 +566,8 @@ func judge_region_myopia(validator: Validation.Validator, region: Validation.Reg
 					return false
 				break
 	return ok
-	
-	
+
+
 func judge_region_arrows(validator: Validation.Validator, region: Validation.Region, require_errors: bool):
 	if (!region.has_any('arrow')):
 		return true
@@ -586,7 +585,7 @@ func judge_region_arrows(validator: Validation.Validator, region: Validation.Reg
 			var vertex_dir = validator.puzzle.vertices[i].pos - origin
 			if (abs(vertex_dir.dot(direction) - vertex_dir.length()) < 1e-3):
 				count += 1
-				
+
 		if (count != response.decorator.count):
 			if (require_errors):
 				response.state = Validation.DecoratorResponse.ERROR
@@ -594,7 +593,7 @@ func judge_region_arrows(validator: Validation.Validator, region: Validation.Reg
 			else:
 				return false
 	return ok
-	
+
 func judge_region_collapse(validator: Validation.Validator, region: Validation.Region, require_errors: bool):
 	if (!region.has_any('collapse')):
 		return true
@@ -609,12 +608,12 @@ func judge_region_collapse(validator: Validation.Validator, region: Validation.R
 				return false
 	return ok
 
-	
+
 func judge_region_tetris(validator: Validation.Validator, region: Validation.Region, require_errors: bool):
 	if (!region.has_any('tetris')):
 		return true
 	return TetrisJudger.judge_region_tetris_implementation(validator, region, require_errors)
-	
+
 func judge_region_rings(validator: Validation.Validator, region: Validation.Region, require_errors: bool):
 	if (!region.has_any('ring') and !region.has_any('circle')):
 		return true
@@ -628,8 +627,8 @@ func judge_region_rings(validator: Validation.Validator, region: Validation.Regi
 				var response = validator.decorator_responses[decorator_id]
 				response.state = Validation.DecoratorResponse.ERROR
 	return false
-	
-func judge_region_eliminators(validator: Validation.Validator, region: Validation.Region, require_errors: bool): 
+
+func judge_region_eliminators(validator: Validation.Validator, region: Validation.Region, require_errors: bool):
 	# only for uneliminated eliminators
 	if (!region.has_any('eliminator')):
 		return true
@@ -639,7 +638,7 @@ func judge_region_eliminators(validator: Validation.Validator, region: Validatio
 			response.state = Validation.DecoratorResponse.ERROR
 	return false
 
-func judge_region_filament(validator: Validation.Validator, region: Validation.Region, require_errors: bool): 
+func judge_region_filament(validator: Validation.Validator, region: Validation.Region, require_errors: bool):
 	if (!region.has_any('filament-pillar')):
 		return true
 	var all_ok = true
@@ -653,7 +652,7 @@ func judge_region_filament(validator: Validation.Validator, region: Validation.R
 				return false
 	return all_ok
 
-func judge_region_cosmic_aliens(validator: Validation.Validator, region: Validation.Region, require_errors: bool): 
+func judge_region_cosmic_aliens(validator: Validation.Validator, region: Validation.Region, require_errors: bool):
 	var all_ok = true
 	if (region.has_any('cosmic-alien')):
 		for decorator_id in region.decorator_dict['cosmic-alien']:
@@ -673,8 +672,8 @@ func judge_region_cosmic_aliens(validator: Validation.Validator, region: Validat
 				else:
 					return false
 	return all_ok
-	
-func judge_region_graph_counter(validator: Validation.Validator, region: Validation.Region, require_errors: bool): 
+
+func judge_region_graph_counter(validator: Validation.Validator, region: Validation.Region, require_errors: bool):
 	if (!region.has_any('graph-counter')):
 		return true
 	var graph_counter
@@ -740,7 +739,7 @@ func __judge_region_elimination_case(validator: Validation.Validator, region: Va
 	for i in range(len(eliminator_list)):
 		for id in [eliminator_list[i], error_list[eliminator_targets[i]]]:
 			validator.alter_rule(id, region, '!eliminated_' + validator.decorator_responses[id].rule)
-			
+
 	var ok = true
 	for region_judger in region_judgers:
 		var region_judger_ok = call(region_judger, validator, region, require_errors)
@@ -755,8 +754,8 @@ func __judge_region_elimination_case(validator: Validation.Validator, region: Va
 			for id in [eliminator_list[i], error_list[eliminator_targets[i]]]:
 				validator.decorator_responses[id].state = Validation.DecoratorResponse.ELIMINATED
 	return ok
-		
-	
+
+
 func judge_region_elimination(validator: Validation.Validator, region: Validation.Region, require_errors: bool):
 	var ok = true
 	for region_judger in region_judgers:
@@ -774,7 +773,7 @@ func judge_region_elimination(validator: Validation.Validator, region: Validatio
 			eliminator_list.append(decorator_id)
 		response.state_before_elimination = response.state
 		response.state = Validation.DecoratorResponse.NORMAL
-	if (len(error_list) == 0 and len(eliminator_list) == 1): 
+	if (len(error_list) == 0 and len(eliminator_list) == 1):
 		# special case: only one eliminator exists and there is no error
 		# the eliminator cannot erase itself
 		if (require_errors):
@@ -796,7 +795,7 @@ func judge_region_elimination(validator: Validation.Validator, region: Validatio
 	for i in range(len(eliminator_list)):
 		eliminator_targets.append(i)
 		random_eliminator_targets.append(i)
-	var diff = len(error_list) - len(eliminator_list) 
+	var diff = len(error_list) - len(eliminator_list)
 	while true:
 		if (__judge_region_elimination_case(validator, region, false, error_list, eliminator_list, eliminator_targets)):
 			if (require_errors):
@@ -821,4 +820,4 @@ func judge_region_elimination(validator: Validation.Validator, region: Validatio
 						return __judge_region_elimination_case(validator, region, require_errors, error_list, eliminator_list, eliminator_targets)
 					else:
 						return false
-	
+

@@ -3,7 +3,7 @@ extends Node
 
 func det(v1, v2):
 	return v1.x * v2.y - v2.x * v1.y
-	
+
 func calc_triangle_area(v1, v2, v3):
 	return det(v2 - v1, v3 - v1) / 2
 
@@ -18,7 +18,7 @@ func calc_area_vertices(vertex_array: Array):
 	for i in range(3, len(vertex_array)):
 		result += calc_triangle_area(vertex_array[0], vertex_array[i - 1], vertex_array[i])
 	return abs(result)
-	
+
 func judge_region_tetris_implementation(validator, region: Validation.Region, require_errors: bool):
 	var cell_count = 0
 	var area_sum = 0.0
@@ -79,7 +79,7 @@ func judge_region_tetris_implementation(validator, region: Validation.Region, re
 				for decorator_id in region.decorator_dict['tetris']:
 					var response = validator.decorator_responses[decorator_id]
 					if (response.decorator.is_weak):
-						response.state = Validation.DecoratorResponse.ERROR	
+						response.state = Validation.DecoratorResponse.ERROR
 	return ok
 
 func judge_csp(validator, region: Validation.Region, fill: bool, weak: bool):
@@ -106,7 +106,7 @@ func judge_csp(validator, region: Validation.Region, fill: bool, weak: bool):
 					shape_clause[0][n_id] = -1
 					n_id += 1
 			clauses.append(shape_clause)
-			
+
 	var solver = CSPSolver
 	solver.Clear()
 	for clause in clauses:
@@ -124,7 +124,7 @@ func solver_test():
 	print(solver.Satisfiable())
 	solver.PrintSolution()
 	# solution: [1, 1, 0]
-	
+
 	solver = CSPSolver
 	solver.Clear()
 	solver.AddClause({2: 1, 4: 1}, 1)

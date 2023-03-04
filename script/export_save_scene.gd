@@ -1,5 +1,5 @@
 extends Node2D
-onready var save_text = $TextEdit
+@onready var save_text = $TextEdit
 func _ready():
 	var save_game = File.new()
 	if not save_game.file_exists(SaveData.SAVE_PATH):
@@ -12,4 +12,4 @@ func _ready():
 
 
 func _on_back_button_pressed():
-	get_tree().change_scene("res://setting_scene.tscn")
+	get_tree().change_scene_to_file("res://setting_scene.tscn")

@@ -7,7 +7,7 @@ const ALLOW_CUSTOM_LEVELS = true
 var playing_custom_puzzle: bool
 var puzzle_path: String
 var puzzle: Graph.Puzzle
-var solution: Solution.SolutionLine
+var solution: SolutionLine
 var canvas: Visualizer.PuzzleCanvas
 var validator: Validation.Validator
 var validation_elasped_time: float
@@ -21,13 +21,13 @@ func get_absolute_puzzle_path():
 
 func load_custom_level(level_path):
 	if (ALLOW_CUSTOM_LEVELS):
-		get_tree().change_scene("res://main.tscn")
+		get_tree().change_scene_to_file("res://main.tscn")
 		puzzle_path = level_path
 		playing_custom_puzzle = true
 		update_mouse_speed()
-		
 
-func drag_custom_levels(files, screen):
+
+func drag_custom_levels(files):
 	if (len(files) > 0):
 		var file = files[0]
 		if (file.to_lower().ends_with('.wit')):

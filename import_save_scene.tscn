@@ -1,19 +1,19 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://font/LibreBaskerville-Regular.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://font/LibreBaskerville-Regular.ttf" type="FontFile" id=1]
 [ext_resource path="res://script/import_save_scene.gd" type="Script" id=2]
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="FontFile" id=1]
 font_data = ExtResource( 1 )
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="FontFile" id=2]
 size = 20
 font_data = ExtResource( 1 )
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="FontFile" id=3]
 font_data = ExtResource( 1 )
 
-[sub_resource type="DynamicFont" id=4]
+[sub_resource type="FontFile" id=4]
 size = 14
 font_data = ExtResource( 1 )
 
@@ -21,10 +21,10 @@ font_data = ExtResource( 1 )
 script = ExtResource( 2 )
 
 [node name="TextEdit" type="TextEdit" parent="."]
-margin_left = 34.0
-margin_top = 34.0
-margin_right = 993.0
-margin_bottom = 514.0
+offset_left = 34.0
+offset_top = 34.0
+offset_right = 993.0
+offset_bottom = 514.0
 custom_fonts/font = SubResource( 1 )
 text = "Loading..."
 wrap_enabled = true
@@ -33,18 +33,18 @@ __meta__ = {
 }
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
-margin_left = 36.0
-margin_top = 528.0
-margin_right = 662.0
-margin_bottom = 561.0
+offset_left = 36.0
+offset_top = 528.0
+offset_right = 662.0
+offset_bottom = 561.0
 custom_fonts/normal_font = SubResource( 2 )
 text = "Paste your save here to restore your progress."
 
 [node name="BackButton" type="Button" parent="."]
-margin_left = 871.156
-margin_top = 540.23
-margin_right = 992.156
-margin_bottom = 583.23
+offset_left = 871.156
+offset_top = 540.23
+offset_right = 992.156
+offset_bottom = 583.23
 custom_fonts/font = SubResource( 3 )
 text = "Back"
 __meta__ = {
@@ -52,10 +52,10 @@ __meta__ = {
 }
 
 [node name="ImportButton" type="Button" parent="."]
-margin_left = 709.339
-margin_top = 540.23
-margin_right = 830.339
-margin_bottom = 583.23
+offset_left = 709.339
+offset_top = 540.23
+offset_right = 830.339
+offset_bottom = 583.23
 custom_fonts/font = SubResource( 3 )
 text = "Import"
 __meta__ = {
@@ -63,10 +63,10 @@ __meta__ = {
 }
 
 [node name="MergeCheckBox" type="CheckBox" parent="."]
-margin_left = 39.0
-margin_top = 564.0
-margin_right = 539.0
-margin_bottom = 591.0
+offset_left = 39.0
+offset_top = 564.0
+offset_right = 539.0
+offset_bottom = 591.0
 custom_fonts/font = SubResource( 4 )
 pressed = true
 text = "Merge into current progress (if unchecked, your current progress will be replaced)"

@@ -9,7 +9,7 @@ var valid: bool = false
 
 func draw_foreground(canvas: Visualizer.PuzzleCanvas, owner, owner_type: int, puzzle: Graph.Puzzle):
 	canvas.add_circle(Vector2.ZERO, circleRadius, color)
-		
+
 func calculate_validity():
 	var filament_solution = filament_start_decorator.filament_solution
 	if (filament_solution == null):

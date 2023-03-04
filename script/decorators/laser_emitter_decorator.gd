@@ -20,10 +20,10 @@ func draw_shape(canvas, puzzle, color):
 		Vector2(0, 0.11),
 	]
 	canvas.add_polygon(points_arc, color)
-	
+
 func draw_foreground(canvas: Visualizer.PuzzleCanvas, owner, owner_type: int, puzzle: Graph.Puzzle):
 	draw_shape(canvas, puzzle, color)
-	
+
 func draw_above_solution(canvas, owner, owner_type, puzzle, solution):
-	draw_shape(canvas, puzzle, color) 
- 
+	draw_shape(canvas, puzzle, color)
+

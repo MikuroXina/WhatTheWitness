@@ -22,7 +22,7 @@ func draw_additive_layer(canvas: Visualizer.PuzzleCanvas, owner, owner_type, puz
 	if (solution == null or !solution.started or len(solution.state_stack[-1].event_properties) <= id):
 		lasers = init_lasers
 	else:
-		lasers = solution.state_stack[-1].event_properties[id] 
+		lasers = solution.state_stack[-1].event_properties[id]
 	for k in range(len(lasers)):
 		if (k >= n_laser):
 			continue
@@ -59,10 +59,10 @@ func laser_reflection(laser, puzzle, solution_state):
 				var pos2 = puzzle.vertices[way_vertices[i + 1]].pos
 				var edge_dir = (pos2 - pos1).normalized()
 				# cut corners
-				pos1 += edge_dir * CORNER_SIZE 
+				pos1 += edge_dir * CORNER_SIZE
 				pos2 -= edge_dir * CORNER_SIZE
 				if (i + 2 < len(way_vertices)): # line collision
-					var intersect = Geometry.segment_intersects_segment_2d(pos1, pos2, laser_pos, laser_end) 
+					var intersect = Geometry.segment_intersects_segment(pos1, pos2, laser_pos, laser_end)
 					if (intersect != null):
 						var collision_dist = intersect.distance_to(laser_pos)
 						if (collision_dist >= 0 and collision_dist < nearest_collision_dist):
@@ -70,7 +70,7 @@ func laser_reflection(laser, puzzle, solution_state):
 							nearest_collision_pos = intersect
 							nearest_collision_normal = edge_dir
 				if (last_cut_pos != null): # corners collision
-					var corner_intersect = Geometry.segment_intersects_segment_2d(pos1, last_cut_pos, laser_pos, laser_end) 
+					var corner_intersect = Geometry.segment_intersects_segment(pos1, last_cut_pos, laser_pos, laser_end)
 					if (corner_intersect != null):
 						# print('collision!', pos1, last_cut_pos)
 						var collision_dist = corner_intersect.distance_to(laser_pos)
@@ -87,21 +87,21 @@ func laser_reflection(laser, puzzle, solution_state):
 			nearest_collision_dist = dist
 			nearest_collision_pos = laser_pos + laser_dir * dist
 			collision_is_reflection = false
-			
+
 	if (max(max_x, max_y) < INF_FAR):
 		for border_id in range(4):
 			var x1 = [min_x, min_x, max_x, min_x][border_id]
 			var x2 = [min_x, max_x, max_x, max_x][border_id]
 			var y1 = [min_y, min_y, min_y, max_y][border_id]
 			var y2 = [max_y, min_y, max_y, max_y][border_id]
-			var intersect = Geometry.segment_intersects_segment_2d(laser_pos, laser_end, Vector2(x1, y1), Vector2(x2, y2))
+			var intersect = Geometry.segment_intersects_segment(laser_pos, laser_end, Vector2(x1, y1), Vector2(x2, y2))
 			if (intersect != null):
 				var dist = intersect.distance_to(laser_pos)
 				if (dist > 0 and dist < nearest_collision_dist + 1e-2):
 					nearest_collision_dist = dist
 					nearest_collision_pos = intersect
 					collision_is_reflection = false
-			
+
 	if (nearest_collision_pos != null):
 		# print('adopts', nearest_collision_dist, nearest_collision_normal)
 		laser[-1] = nearest_collision_pos
@@ -153,9 +153,9 @@ func property_to_string(lasers):
 			var laser_result = []
 			for pos in laser:
 				laser_result.append(vector_to_string(pos))
-			lasers_result.append(PoolStringArray(laser_result).join(','))
-	return PoolStringArray(lasers_result).join(';')
-			
+			lasers_result.','.join(append(PackedStringArray(laser_result)))
+	return ';'.join(PackedStringArray(lasers_result))
+
 func string_to_property(string):
 	var lasers = []
 	var lasers_result = string.split(';')

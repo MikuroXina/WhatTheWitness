@@ -1,12 +1,12 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://font/LibreBaskerville-Regular.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://font/LibreBaskerville-Regular.ttf" type="FontFile" id=1]
 [ext_resource path="res://script/custom_level_scene.gd" type="Script" id=2]
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="FontFile" id=1]
 font_data = ExtResource( 1 )
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="FontFile" id=2]
 size = 20
 font_data = ExtResource( 1 )
 
@@ -14,10 +14,10 @@ font_data = ExtResource( 1 )
 script = ExtResource( 2 )
 
 [node name="BackButton" type="Button" parent="."]
-margin_left = 871.156
-margin_top = 540.23
-margin_right = 992.156
-margin_bottom = 583.23
+offset_left = 871.156
+offset_top = 540.23
+offset_right = 992.156
+offset_bottom = 583.23
 custom_fonts/font = SubResource( 1 )
 text = "Back"
 __meta__ = {
@@ -25,10 +25,10 @@ __meta__ = {
 }
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
-margin_left = 27.2202
-margin_top = 507.091
-margin_right = 764.22
-margin_bottom = 598.091
+offset_left = 27.2202
+offset_top = 507.091
+offset_right = 764.22
+offset_bottom = 598.091
 custom_fonts/normal_font = SubResource( 2 )
 text = "To load a custom puzzle (*.wit) file, do one of the following:
 (1) Directly open *.wit file with the game's executable, or
@@ -38,23 +38,23 @@ __meta__ = {
 }
 
 [node name="TextureRect" type="ColorRect" parent="."]
-margin_left = 112.0
-margin_top = 108.0
-margin_right = 918.0
-margin_bottom = 437.0
+offset_left = 112.0
+offset_top = 108.0
+offset_right = 918.0
+offset_bottom = 437.0
 color = Color( 1, 1, 1, 0.258824 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="TextureRect"]
-margin_left = 42.0
-margin_top = 147.0
-margin_right = 770.0
-margin_bottom = 256.0
+offset_left = 42.0
+offset_top = 147.0
+offset_right = 770.0
+offset_bottom = 256.0
 custom_fonts/normal_font = SubResource( 2 )
 bbcode_enabled = true
-bbcode_text = "[center]Drag *.wit files here![/center]"
+text = "[center]Drag *.wit files here![/center]"
 text = "Drag *.wit files here!"
 __meta__ = {
 "_edit_use_anchors_": false

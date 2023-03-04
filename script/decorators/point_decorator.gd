@@ -9,6 +9,6 @@ func draw_foreground(canvas: Visualizer.PuzzleCanvas, owner, owner_type: int, pu
 		var angle = PI / 3 * i
 		points.append(Vector2(cos(angle) * radius, sin(angle) * radius))
 	canvas.add_polygon(points, color)
-	
+
 func draw_below_solution(canvas, owner, owner_type, puzzle, solution):
 	return draw_foreground(canvas, owner, owner_type, puzzle)

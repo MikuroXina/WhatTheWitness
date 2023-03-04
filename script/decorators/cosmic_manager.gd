@@ -9,16 +9,16 @@ var vertex_detectors = {}
 func add_alien(v):
 	alien_vertices.append(v)
 	is_angry[v] = false
-	
+
 func add_house(v):
 	house_vertices.append(v)
-	
+
 func draw_above_solution(canvas, owner, owner_type, puzzle, solution):
 	var id = owner
 	if (solution == null or !solution.started or len(solution.state_stack[-1].event_properties) <= id):
 		return
 	var states = solution.state_stack[-1].event_properties[id]
-	
+
 	for alien_v in alien_vertices:
 		if not (alien_v in states):
 			continue
@@ -27,7 +27,7 @@ func draw_above_solution(canvas, owner, owner_type, puzzle, solution):
 			puzzle.vertices[alien_v].decorator.draw_alien(canvas, puzzle, puzzle.vertices[alien_v].pos,
 				Color(background_color.r, background_color.g, background_color.b, 0.7))
 		if (is_angry[alien_v]):
-			puzzle.vertices[alien_v].decorator.draw_anger(canvas, puzzle, puzzle.vertices[alien_v].pos, Color.black)
+			puzzle.vertices[alien_v].decorator.draw_anger(canvas, puzzle, puzzle.vertices[alien_v].pos, Color.BLACK)
 	for house_v in house_vertices:
 		if not (house_v in states):
 			continue
@@ -36,7 +36,7 @@ func draw_above_solution(canvas, owner, owner_type, puzzle, solution):
 			var alien_color = puzzle.vertices[alien_v].decorator.color
 			puzzle.vertices[house_v].decorator.draw_house(canvas, puzzle, puzzle.vertices[house_v].pos,
 				alien_color, true)
-	
+
 	for way in range(puzzle.n_ways):
 		if not (-way - 1 in states):
 			continue
@@ -51,7 +51,7 @@ func draw_above_solution(canvas, owner, owner_type, puzzle, solution):
 				puzzle.line_width * 0.3,
 				alien_color
 			)
-	
+
 func prepare_validation(validator, states):
 	var puzzle = validator.puzzle
 	for alien_v in alien_vertices:
@@ -72,7 +72,7 @@ func prepare_validation(validator, states):
 			response.color = alien_color
 		response.decorator.satisfied = (states[house_v] != -1)
 		validator.push_vertex_decorator_response(house_v, response)
-	
+
 	for way in range(puzzle.n_ways):
 		if not (-way - 1 in states):
 			continue
@@ -101,11 +101,11 @@ func init_property(puzzle, solution_state, start_vertex):
 		if (facet != null):
 			for edge_tuple in facet.edge_tuples:
 				vertex_detectors[house_v].append(puzzle.edge_detector_node[edge_tuple])
-	
+
 	for way in range(puzzle.n_ways):
 		states[-way - 1] = -1
 	return states
-	
+
 func transist(puzzle: Graph.Puzzle, vertices, old_state):
 	var new_state = {}
 	for key in old_state:
@@ -121,7 +121,7 @@ func transist(puzzle: Graph.Puzzle, vertices, old_state):
 					var alien_v = way_state
 					var house_color = puzzle.vertices[house_v].decorator.color
 					var alien_color = puzzle.vertices[alien_v].decorator.color
-					if (house_color == Color.black or house_color == alien_color):
+					if (house_color == Color.BLACK or house_color == alien_color):
 						new_state[alien_v] = house_v
 						new_state[house_v] = alien_v
 						way_state = -1
@@ -147,7 +147,7 @@ func property_to_string(states):
 	var result = []
 	for v in states:
 		result.append('%d:%d' % [v, states[v]])
-	return PoolStringArray(result).join(',')
+	return ','.join(PackedStringArray(result))
 
 func string_to_property(string):
 	if (string != ''):

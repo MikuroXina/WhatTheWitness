@@ -22,8 +22,8 @@ func get_full_credit(puzzle_name: String):
 	else:
 		var pos = puzzle_name.find('-')
 		var author_abbr = puzzle_name.substr(0, pos)
-		var name = puzzle_name.substr(pos + 1)
+		var title = puzzle_name.substr(pos + 1)
 		if (author_abbr in FULL_AUTHORS):
-			return name + ' ' + FULL_AUTHORS[author_abbr]
-		return name + ' by ' + author_abbr
+			return title + ' ' + FULL_AUTHORS[author_abbr]
+		return title + ' by ' + author_abbr
 

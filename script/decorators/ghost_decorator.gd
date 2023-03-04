@@ -17,9 +17,9 @@ func draw_shape(canvas, puzzle, color):
 		var y = -radius + j % 2 * tail_height
 		points_arc.push_back(Vector2(x, y) * multiplier)
 	canvas.add_polygon(points_arc, color)
-	
+
 func draw_foreground(canvas: Visualizer.PuzzleCanvas, owner, owner_type: int, puzzle: Graph.Puzzle):
 	draw_shape(canvas, puzzle, color)
-	
+
 func draw_above_solution(canvas, owner, owner_type, puzzle, solution):
-	draw_shape(canvas, puzzle, color) 
+	draw_shape(canvas, puzzle, color)

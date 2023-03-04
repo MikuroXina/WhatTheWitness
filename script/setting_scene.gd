@@ -1,7 +1,7 @@
 extends Node2D
-onready var clear_save_button = $MarginContainer/VBoxContainer/ClearProgressButton
-onready var mouse_speed_text = $MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer/MouseSpeedText
-onready var mouse_speed_slider = $MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer/MouseSpeedSlider
+@onready var clear_save_button = $MarginContainer/VBoxContainer/ClearProgressButton
+@onready var mouse_speed_text = $MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer/MouseSpeedText
+@onready var mouse_speed_slider = $MarginContainer/VBoxContainer/HBoxContainer2/VBoxContainer/MouseSpeedSlider
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
@@ -12,19 +12,19 @@ func _ready():
 	var setting = SaveData.get_setting()
 	if ('mouse_speed' in setting):
 		mouse_speed_slider.value = setting['mouse_speed']
-		
+
 
 
 func _on_BackButton_pressed():
-	get_tree().change_scene("res://menu_main.tscn")
+	get_tree().change_scene_to_file("res://menu_main.tscn")
 
 
 func _on_ImportSaveButton_pressed():
-	get_tree().change_scene("res://import_save_scene.tscn")
+	get_tree().change_scene_to_file("res://import_save_scene.tscn")
 
 
 func _on_ExportSaveButton_pressed():
-	get_tree().change_scene("res://export_save_scene.tscn")
+	get_tree().change_scene_to_file("res://export_save_scene.tscn")
 
 
 func _on_ClearProgressButton_pressed():
@@ -41,7 +41,7 @@ func _on_ClearProgressButton_pressed():
 
 func _on_MouseSpeedSlider_value_changed(value):
 	var new_speed = exp(mouse_speed_slider.value)
-	mouse_speed_text.bbcode_text = '[center]%.2f[/center]' % new_speed
+	mouse_speed_text.text = '[center]%.2f[/center]' % new_speed
 	var setting = SaveData.get_setting()
 	setting['mouse_speed'] = mouse_speed_slider.value
 	SaveData.save_setting(setting)
