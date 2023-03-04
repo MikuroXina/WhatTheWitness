@@ -8,7 +8,7 @@
 [ext_resource type="Script" path="res://script/viewport_init.gd" id="7"]
 [ext_resource type="Script" path="res://script/puzzle_foreground_renderer.gd" id="8"]
 
-[sub_resource type="ViewportTexture" id="1"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_8ooaq"]
 viewport_path = NodePath("MarginContainer/PuzzleRegion/PuzzleForeground/SubViewport")
 
 [sub_resource type="CanvasItemMaterial" id="2"]
@@ -38,7 +38,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_right = -4.99994
 offset_bottom = -2.0
-texture = SubResource("1")
+texture = SubResource("ViewportTexture_8ooaq")
 expand_mode = 1
 
 [node name="SubViewport" type="SubViewport" parent="MarginContainer/PuzzleRegion/PuzzleForeground"]
