@@ -3,18 +3,14 @@ extends Node2D
 @onready var view = $View
 @onready var level_area_limit = $View/LevelAreaLimit
 @onready var line_map = $View/LinesMap
+@onready var view_position_start = view.position
 
 const window_size = Vector2(1024, 600)
 const view_origin = -window_size / 2
 
 var drag_start = null
-var view_position_start = null
 var view_delta = Vector2(0, 0)
 var view_scale = 1.0
-
-func _ready():
-	view_position_start = view.position
-
 
 func update_view():
 	const extra_margin = Vector2(100, 100)
@@ -43,9 +39,6 @@ func _input(event):
 				else:
 					view_delta = Vector2(0, 0)
 					drag_start = null
-					view_position_start = null
-					return
 	elif (event is InputEventMouseMotion and drag_start != null):
 		view_delta = (event.position - drag_start) / view_scale
-
-	update_view()
+		update_view()
