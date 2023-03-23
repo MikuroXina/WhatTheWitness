@@ -93,7 +93,7 @@ func draw_foreground(canvas: Visualizer.PuzzleCanvas, owner, owner_type: int, pu
 			var inner_shape = __shrink_shape(shape, border_size, scale)
 			if (!inner_shape.is_empty()):
 				inner_shape.append(inner_shape[0])
-			inner_shape.invert()
+			inner_shape.reverse()
 			canvas.add_polygon(hollow_shape + inner_shape, color)
 	else:
 		for shape in shapes:
