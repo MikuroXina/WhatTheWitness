@@ -34,7 +34,7 @@ class PuzzleCanvas:
 			canvas_size.x * canvas_margin / (max_x - min_x + puzzle_border),
 			canvas_size.y * canvas_margin / (max_y - min_y + puzzle_border)
 		)
-		view_origin = canvas_size / 2 - Vector2((max_x + min_x) / 2, (max_y + min_y) / 2) * view_scale
+		view_origin = Vector2(canvas_size) / 2 - Vector2((max_x + min_x) / 2, (max_y + min_y) / 2) * view_scale
 
 	func add_circle(pos, radius, color):
 		# drawing_target.draw_circle(pos * view_scale, radius * view_scale - 0.5, color if override_color == null else override_color)
