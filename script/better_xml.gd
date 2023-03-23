@@ -16,9 +16,8 @@ func parse_xml_file(file):
 		if (node_name.begins_with('?xml')):
 			continue
 		var node_type = parser.get_node_type()
-		if (node_type == XMLParser.NODE_ELEMENT):
-			return read_node(parser, node_name)
-		assert(false, "unexpected xml node found: %d" % node_type)
+		assert(node_type == XMLParser.NODE_ELEMENT, "unexpected xml node found: %d" % node_type)
+		return read_node(parser, node_name)
 
 func read_node(parser, node_name):
 	var result = {'_arr': []}
@@ -46,10 +45,10 @@ func read_node(parser, node_name):
 				var text = parser.get_node_data().strip_edges(true, true)
 				if (text != ''):
 					result['_text'] = text
-			elif (sub_node_type == XMLParser.NODE_COMMENT):
-				continue
 			else:
-				assert(false, "unexpected xml node found: %d" % sub_node_type)
+				assert(sub_node_type == XMLParser.NODE_COMMENT, "unexpected xml node found: %d" % sub_node_type)
+				continue
+
 	if (result['_arr'].is_empty() and result.has('_text')):
 		return result['_text']
 	else:
