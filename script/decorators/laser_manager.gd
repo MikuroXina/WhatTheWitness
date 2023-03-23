@@ -62,7 +62,7 @@ func laser_reflection(laser, puzzle, solution_state):
 				pos1 += edge_dir * CORNER_SIZE
 				pos2 -= edge_dir * CORNER_SIZE
 				if (i + 2 < len(way_vertices)): # line collision
-					var intersect = Geometry.segment_intersects_segment(pos1, pos2, laser_pos, laser_end)
+					var intersect = Geometry2D.segment_intersects_segment(pos1, pos2, laser_pos, laser_end)
 					if (intersect != null):
 						var collision_dist = intersect.distance_to(laser_pos)
 						if (collision_dist >= 0 and collision_dist < nearest_collision_dist):
@@ -70,7 +70,7 @@ func laser_reflection(laser, puzzle, solution_state):
 							nearest_collision_pos = intersect
 							nearest_collision_normal = edge_dir
 				if (last_cut_pos != null): # corners collision
-					var corner_intersect = Geometry.segment_intersects_segment(pos1, last_cut_pos, laser_pos, laser_end)
+					var corner_intersect = Geometry2D.segment_intersects_segment(pos1, last_cut_pos, laser_pos, laser_end)
 					if (corner_intersect != null):
 						# print('collision!', pos1, last_cut_pos)
 						var collision_dist = corner_intersect.distance_to(laser_pos)
@@ -82,7 +82,7 @@ func laser_reflection(laser, puzzle, solution_state):
 							nearest_collision_pos = actual_corner + (corner_intersect - actual_corner).reflect(Vector2(-nearest_collision_normal.y, nearest_collision_normal.x))
 				last_cut_pos = pos2
 	for obs_pos in obstacle_positions:
-		var dist = Geometry.segment_intersects_circle(laser_pos, laser_end, obs_pos, LASER_EMITTER_OBS_RADIUS) * INF_FAR
+		var dist = Geometry2D.segment_intersects_circle(laser_pos, laser_end, obs_pos, LASER_EMITTER_OBS_RADIUS) * INF_FAR
 		if (dist > 0 and dist < nearest_collision_dist + 1e-2):
 			nearest_collision_dist = dist
 			nearest_collision_pos = laser_pos + laser_dir * dist
@@ -94,7 +94,7 @@ func laser_reflection(laser, puzzle, solution_state):
 			var x2 = [min_x, max_x, max_x, max_x][border_id]
 			var y1 = [min_y, min_y, min_y, max_y][border_id]
 			var y2 = [max_y, min_y, max_y, max_y][border_id]
-			var intersect = Geometry.segment_intersects_segment(laser_pos, laser_end, Vector2(x1, y1), Vector2(x2, y2))
+			var intersect = Geometry2D.segment_intersects_segment(laser_pos, laser_end, Vector2(x1, y1), Vector2(x2, y2))
 			if (intersect != null):
 				var dist = intersect.distance_to(laser_pos)
 				if (dist > 0 and dist < nearest_collision_dist + 1e-2):
@@ -153,7 +153,7 @@ func property_to_string(lasers):
 			var laser_result = []
 			for pos in laser:
 				laser_result.append(vector_to_string(pos))
-			lasers_result.','.join(append(PackedStringArray(laser_result)))
+			lasers_result.append(','.join(PackedStringArray(laser_result)))
 	return ';'.join(PackedStringArray(lasers_result))
 
 func string_to_property(string):
