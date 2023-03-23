@@ -18,4 +18,4 @@ https://alith.itch.io/what-the-witness
 
 # Build Environment
 
-Godot 4.0.0 with Mono (https://godotengine.org/)
+Godot 4.0.1 with Mono (https://godotengine.org/)
