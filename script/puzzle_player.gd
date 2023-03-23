@@ -41,7 +41,7 @@ func load_puzzle(puzzle_path):
 		hide_left_arrow_button()
 		hide_right_arrow_button()
 	Gameplay.canvas = Visualizer.PuzzleCanvas.new()
-	Gameplay.canvas.puzzle = Gameplay.puzzle
+	Gameplay.canvas.current_puzzle = Gameplay.puzzle
 	Gameplay.canvas.normalize_view(viewport.size, 0.95, 0.8)
 	var back_color = Gameplay.puzzle.background_color
 	var front_color = Gameplay.puzzle.line_color
