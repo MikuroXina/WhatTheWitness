@@ -68,13 +68,13 @@ func _ready():
 	var pos_points = {}
 	for placeholder in placeholders:
 		if (placeholder.text.begins_with('$')):
-			var cell_pos = placeholder.get_position() / 96
-			var int_cell_pos = [int(round(cell_pos.x)), int(round(cell_pos.y)) - 1]
+			var cell_pos = Vector2i((placeholder.get_position() / 96).round())
+			var int_cell_pos = [cell_pos.x, cell_pos.y - 1]
 			pos_points[int_cell_pos] = int(placeholder.text.substr(1))
 			placeholder.get_parent().remove_child(placeholder)
 		elif (placeholder.text.begins_with('#')):
-			var cell_pos = placeholder.get_position() / 96
-			var int_cell_pos = [int(round(cell_pos.x)), int(round(cell_pos.y))]
+			var cell_pos = Vector2i((placeholder.get_position() / 96).round())
+			var int_cell_pos = [cell_pos.x, cell_pos.y]
 			var prefix = placeholder.text.substr(1)
 			var child_pos = placeholder.get_position()
 			for puzzle_file in files:
