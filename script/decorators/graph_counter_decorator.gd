@@ -32,7 +32,6 @@ func draw_symbol(canvas: Visualizer.PuzzleCanvas, puzzle: Graph.Puzzle, pos: Vec
 		return
 	var line_length = (1 - puzzle.line_width) * 0.35 * size
 	var width = puzzle.line_width * 0.7 * size
-	var nb_points = 8
 	if (symbol & (1 << MASK_BROKEN)):
 		for dir in range(N_DIRS):
 			if (symbol & (1 << dir)):
@@ -42,7 +41,7 @@ func draw_symbol(canvas: Visualizer.PuzzleCanvas, puzzle: Graph.Puzzle, pos: Vec
 			if (symbol & (1 << dir)):
 				canvas.add_line(pos, line_length * dir_to_vec(dir) + pos, width, color)
 		canvas.add_circle(pos, width / 2, color)
-func draw_foreground(canvas: Visualizer.PuzzleCanvas, owner, owner_type: int, puzzle: Graph.Puzzle):
+func draw_foreground(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
 	for i in range(len(matrix)):
 		var pos_y = (i - (len(matrix) - 1) / 2.0) * step_y
 		for j in range(len(matrix[i])):

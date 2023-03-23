@@ -4,7 +4,7 @@ var rule = 'circle-arrow'
 
 var is_clockwise
 
-func draw_foreground(canvas: Visualizer.PuzzleCanvas, owner, owner_type: int, puzzle: Graph.Puzzle):
+func draw_foreground(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
 	var circleRadius = 0.32 * (1 - puzzle.line_width)
 	var innerRadius = 0.25 * (1 - puzzle.line_width)
 	var arrowSize = 0.1 * (1 - puzzle.line_width)

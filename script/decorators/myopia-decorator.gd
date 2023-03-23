@@ -4,7 +4,7 @@ var rule = 'myopia'
 
 var directions = [] # each array element is [direction_vertex_id, direction_vector, is_nearest]
 
-func draw_foreground(canvas: Visualizer.PuzzleCanvas, owner, owner_type: int, puzzle: Graph.Puzzle):
+func draw_foreground(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
 	var arrow_length = 0.25 * (1 - puzzle.line_width)
 	var arrow_head_width = 0.05 * (1 - puzzle.line_width)
 	var arrow_head_length = 0.09 * (1 - puzzle.line_width)

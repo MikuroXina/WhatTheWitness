@@ -16,10 +16,10 @@ const curve_points_template = [
 
 ]
 
-func draw_foreground(canvas: Visualizer.PuzzleCanvas, owner, owner_type: int, puzzle: Graph.Puzzle):
+func draw_foreground(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type: int, _puzzle: Graph.Puzzle):
 	canvas.add_polygon(curve_points_template, color)
 
-func draw_above_solution(canvas, owner, owner_type, puzzle, solution):
+func draw_above_solution(canvas, _owner, _owner_type, _puzzle, solution):
 	if (solution == null or solution.validity == 0):
 		canvas.add_polygon(curve_points_template, color)
 

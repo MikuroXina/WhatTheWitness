@@ -11,9 +11,9 @@ var is_multi: bool
 var is_weak: bool
 const ROTATION_ANGLES = [0, PI / 3, 2 * PI / 3, PI / 2, PI, 3 * PI / 2, 4 * PI / 3, 5 * PI / 3]
 
-func angle_equal_zero(angle, eps=1e-3):
-	var d = round(angle / (2 * PI))
-	return abs(angle - (2 * d * PI)) < eps
+func angle_equal_zero(to_compare, eps=1e-3):
+	var d = round(to_compare / (2 * PI))
+	return abs(to_compare - (2 * d * PI)) < eps
 
 func calculate_covering(puzzle):
 	var rotatable = true
@@ -33,8 +33,8 @@ func calculate_covering(puzzle):
 		shape_centers.append(center / len(shape))
 	covering = []
 	var covering_dict = {}
-	for angle in test_angles:
-		var transform = Transform2D().rotated(angle)
+	for rotate_to in test_angles:
+		var transform = Transform2D().rotated(rotate_to)
 		for i in range(len(puzzle.facets)):
 			var ok = true
 			var facet_center = puzzle.facets[i].center
@@ -83,7 +83,7 @@ func __shrink_shape(shape, depth, scale):
 		result.append(__shrink_corner(p0, p1, p2, depth) * scale)
 	return result
 
-func draw_foreground(canvas: Visualizer.PuzzleCanvas, owner, owner_type: int, puzzle: Graph.Puzzle):
+func draw_foreground(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
 	var scale = 0.2 * (1 - puzzle.line_width)
 	if (is_hollow):
 		for shape in shapes:

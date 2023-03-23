@@ -16,8 +16,7 @@ var min_y = -INF
 var max_x = INF
 var max_y = INF
 
-func draw_additive_layer(canvas: Visualizer.PuzzleCanvas, owner, owner_type, puzzle, solution):
-	var id = owner
+func draw_additive_layer(canvas: Visualizer.PuzzleCanvas, id, _owner_type, puzzle, solution):
 	var lasers
 	if (solution == null or !solution.started or len(solution.state_stack[-1].event_properties) <= id):
 		lasers = init_lasers
@@ -26,8 +25,7 @@ func draw_additive_layer(canvas: Visualizer.PuzzleCanvas, owner, owner_type, puz
 	for k in range(len(lasers)):
 		if (k >= n_laser):
 			continue
-		var color = laser_colors[k]
-		var transparent_color = Color(color.r, color.g, color.b, 0.5)
+		var transparent_color = Color(laser_colors[k], 0.5)
 		var laser = lasers[k]
 		for i in range(len(laser) - 1):
 			var start_pos = laser[i]
@@ -119,13 +117,12 @@ func update_lasers(lasers, puzzle, solution_state):
 		while(laser_reflection(lasers[i], puzzle, solution_state)):
 			pass
 	# print(lasers)
-func add_laser_emitter(puzzle, pos, color, angle):
-	var id = n_laser
+func add_laser_emitter(puzzle, pos, laser_color, laser_angle):
 	n_laser += 1
-	laser_colors.append(color)
+	laser_colors.append(laser_color)
 	init_lasers.append([
-		pos + Vector2(-sin(angle), cos(angle)) * LASER_EMITTER_RADIUS,
-		pos + Vector2(-sin(angle), cos(angle)) * INF_FAR
+		pos + Vector2.from_angle(-laser_angle) * LASER_EMITTER_RADIUS,
+		pos + Vector2.from_angle(-laser_angle) * INF_FAR
 	])
 	obstacle_positions.append(pos)
 	# inital reflection / blocking
@@ -133,7 +130,7 @@ func add_laser_emitter(puzzle, pos, color, angle):
 		while(laser_reflection(init_lasers[i], puzzle, null)):
 			pass
 
-func init_property(puzzle, solution_state, start_vertex):
+func init_property(_puzzle, _solution_state, _start_vertex):
 	return init_lasers
 
 func vector_to_string(vec):

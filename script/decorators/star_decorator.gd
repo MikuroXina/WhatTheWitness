@@ -2,7 +2,7 @@ extends "../decorator.gd"
 
 var rule = 'star'
 
-func draw_foreground(canvas: Visualizer.PuzzleCanvas, owner, owner_type: int, puzzle: Graph.Puzzle):
+func draw_foreground(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
 	var distance = [0.2743 * (1 - puzzle.line_width), 0.21 * (1 - puzzle.line_width)]
 	var points_arc = []
 	var angle_point

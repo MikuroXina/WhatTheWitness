@@ -4,7 +4,7 @@ var rule = 'triangle'
 
 var count
 
-func draw_foreground(canvas: Visualizer.PuzzleCanvas, owner, owner_type: int, puzzle: Graph.Puzzle):
+func draw_foreground(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
 	var length = 0.2 * (1 - puzzle.line_width)
 	var distance = 0.05 * (1 - puzzle.line_width)
 	var height = 0.175 * (1 - puzzle.line_width)

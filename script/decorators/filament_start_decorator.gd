@@ -7,7 +7,7 @@ var nails: Array
 var filament_solution = null
 var circle_radius = 0.08
 
-func draw_above_solution(canvas: Visualizer.PuzzleCanvas, owner, owner_type, puzzle, solution):
+func draw_above_solution(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type, puzzle, _solution):
 	if (filament_solution != null):
 		var filament_solution_length = len(filament_solution.path_points)
 		for i in range(filament_solution_length):
@@ -22,10 +22,9 @@ func draw_above_solution(canvas: Visualizer.PuzzleCanvas, owner, owner_type, puz
 
 func add_pillar(pos):
 	for i in range(8):
-		var angle = i * PI / 4
-		nails.append(pos + Vector2(cos(angle), sin(angle)) * circle_radius)
+		nails.append(pos + Vector2.from_angle(i * PI / 4) * circle_radius)
 
-func init_property(puzzle, solution_state, start_vertex):
+func init_property(_puzzle, _solution_state, start_vertex):
 	filament_solution = Filament.FilamentSolution.new()
 	filament_solution.try_start_solution_at(start_vertex.pos, circle_radius)
 	return filament_solution
@@ -40,12 +39,12 @@ func string_to_vector(string):
 	else:
 		return Vector2.ZERO
 
-func property_to_string(filament_solution):
+func property_to_string(property):
 	var point_result = []
-	if (filament_solution != null):
-		for pos in filament_solution.path_points:
+	if (property != null):
+		for pos in property.path_points:
 			point_result.append(vector_to_string(pos[0]))
-		point_result.append(vector_to_string(filament_solution.end_pos))
+		point_result.append(vector_to_string(property.end_pos))
 	return ','.join(PackedStringArray(point_result))
 
 func string_to_property(string):

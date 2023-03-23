@@ -15,11 +15,9 @@ func collide_test(target_pos, solution_length):
 
 func get_position(solution_length):
 	var length = round(solution_length)
-	var angle = length * PI / 2
-	var position = center + Vector2(cos(angle), sin(angle)) * radius
-	return position
+	return center + Vector2.from_angle(length * PI / 2) * radius
 
-func draw_above_solution(canvas, owner, owner_type, puzzle, solution):
+func draw_above_solution(canvas, _owner, _owner_type, _puzzle, solution):
 	var length = round(solution.get_total_length())
 	target_angle = length * PI / 2
 	render_angle = render_angle * 0.9 + target_angle * 0.1

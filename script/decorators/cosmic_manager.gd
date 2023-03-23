@@ -13,8 +13,7 @@ func add_alien(v):
 func add_house(v):
 	house_vertices.append(v)
 
-func draw_above_solution(canvas, owner, owner_type, puzzle, solution):
-	var id = owner
+func draw_above_solution(canvas, id, _owner_type, puzzle, solution):
 	if (solution == null or !solution.started or len(solution.state_stack[-1].event_properties) <= id):
 		return
 	var states = solution.state_stack[-1].event_properties[id]
@@ -42,7 +41,6 @@ func draw_above_solution(canvas, owner, owner_type, puzzle, solution):
 			continue
 		var way_state = states[-way - 1]
 		if (way_state != -1):
-			var way_vertices = solution.state_stack[-1].vertices[way]
 			var alien_v = way_state
 			var alien_color = puzzle.vertices[alien_v].decorator.color
 			if (alien_color == null):
@@ -80,11 +78,10 @@ func prepare_validation(validator, states):
 		if (way_state != -1):
 			var way_end_v = validator.solution.vertices[way][-1]
 			var alien_v = way_state
-			var alien_color = puzzle.vertices[alien_v].decorator.color
 			var response = validator.add_decorator(puzzle.vertices[alien_v].decorator, puzzle.vertices[way_end_v].pos, way_end_v)
 			validator.push_vertex_decorator_response(way_end_v, response)
 
-func init_property(puzzle, solution_state, start_vertex):
+func init_property(puzzle, _solution_state, _start_vertex):
 	var states = {}
 	for alien_v in alien_vertices:
 		states[alien_v] = -1

@@ -2,7 +2,7 @@ extends "../decorator.gd"
 
 var rule = 'ring'
 
-func draw_foreground(canvas: Visualizer.PuzzleCanvas, owner, owner_type: int, puzzle: Graph.Puzzle):
+func draw_foreground(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
 	var circleRadius = 0.35 * (1 - puzzle.line_width)
 	var innerRadius = 0.25 * (1 - puzzle.line_width)
 	var nb_points = 32

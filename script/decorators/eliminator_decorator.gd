@@ -16,7 +16,7 @@ const curve_points_template = [
 
 ]
 
-func draw_foreground(canvas: Visualizer.PuzzleCanvas, owner, owner_type: int, puzzle: Graph.Puzzle):
+func draw_foreground(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
 	var curve_points = []
 	for v in curve_points_template:
 		curve_points.append(v * (1 - puzzle.line_width))

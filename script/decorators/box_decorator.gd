@@ -7,8 +7,7 @@ var location_stack = []
 var box_radius = 0.28
 var inner_decorator = null
 
-func draw_above_solution(canvas, owner, owner_type, puzzle, solution):
-	var id = owner
+func draw_above_solution(canvas, id, owner_type, puzzle, solution):
 	var target_location = get_location(puzzle, solution, id)
 	if (render_location == null):
 		render_location = target_location
@@ -36,7 +35,7 @@ func draw_above_solution(canvas, owner, owner_type, puzzle, solution):
 		Vector2(inner_radius, inner_radius) + render_location,
 	], color)
 
-func init_property(puzzle, solution_state, start_vertex):
+func init_property(_puzzle, _solution_state, _start_vertex):
 	return init_vertex
 
 func property_to_string(property):

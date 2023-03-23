@@ -2,9 +2,9 @@ extends "../decorator.gd"
 
 var rule = 'heart'
 
-func draw_foreground(canvas: Visualizer.PuzzleCanvas, owner, owner_type: int, puzzle: Graph.Puzzle):
+func draw_foreground(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
 	var radius = 0.1 * (1 - puzzle.line_width)
-	var nb_points = 32
+	const nb_points = 32
 	var points_arc = []
 	for i in range(nb_points + 1):
 		var t = 2 * i * PI / nb_points
