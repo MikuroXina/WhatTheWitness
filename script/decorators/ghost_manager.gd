@@ -4,8 +4,7 @@ var rule = 'ghost-manager'
 const GHOST_COLOR_INTERP_START = 0.2
 
 
-func draw_below_solution(canvas, owner, owner_type, puzzle, solution):
-	var id = owner
+func draw_below_solution(canvas, id, _owner_type, puzzle, solution):
 	if (solution == null or !solution.started or len(solution.state_stack[-1].event_properties) <= id):
 		return
 	var state = solution.state_stack[-1]
@@ -18,14 +17,19 @@ func draw_below_solution(canvas, owner, owner_type, puzzle, solution):
 		if (len(state.solution_stage) <= way or state.solution_stage[way] != Solution.SOLUTION_STAGE_GHOST):
 			continue
 		var vertices_way = state.vertices[way]
-		var color = puzzle.solution_colors[way]
+		var solution_color = puzzle.solution_colors[way]
 		if (solution.validity == -1):
-			color = Color.BLACK
+			solution_color = Color.BLACK
 		elif (solution.validity == 0): # drawing illumination
-			color = Color(1 - (1 - color.r) * 0.6, 1 - (1 - color.g) * 0.6, 1 - (1 - color.b) * 0.6, color.a)
-		var delta_shift = Vector2.ZERO
+			solution_color = Color(
+				1 - (1 - solution_color.r) * 0.6,
+				1 - (1 - solution_color.g) * 0.6,
+				1 - (1 - solution_color.b) * 0.6,
+				solution_color.a,
+			)
+
 		var last_pos = puzzle.vertices[vertices_way[0]].pos
-		canvas.add_circle(last_pos, puzzle.start_size, color)
+		canvas.add_circle(last_pos, puzzle.start_size, solution_color)
 		var last_point_ghosted = false
 		var line_color = puzzle.line_color
 		var percentage
@@ -47,8 +51,8 @@ func draw_below_solution(canvas, owner, owner_type, puzzle, solution):
 				if (percentage < 1 - GHOST_COLOR_INTERP_START):
 					var t = max(0, (percentage - GHOST_COLOR_INTERP_START) / (1 - 2 * GHOST_COLOR_INTERP_START))
 					a = a * t + prev_a * (1 - t)
-				var point_color = Color(color.r, color.g, color.b, a)
-				var prev_point_color = Color(color.r, color.g, color.b, prev_a)
+				var point_color = Color(solution_color, a)
+				var prev_point_color = Color(solution_color, prev_a)
 
 				var t1 = min(percentage, GHOST_COLOR_INTERP_START) / percentage
 				var t2 = min(percentage, 1 - GHOST_COLOR_INTERP_START) / percentage
@@ -61,7 +65,7 @@ func draw_below_solution(canvas, owner, owner_type, puzzle, solution):
 			last_point_ghosted = point_ghosted
 		if (solution.validity == 0): # drawing indicators for invisible line
 			canvas.add_circle(last_pos, puzzle.line_width / 2.7, line_color)
-			canvas.add_circle(last_pos, puzzle.line_width / 3.1, color)
+			canvas.add_circle(last_pos, puzzle.line_width / 3.1, solution_color)
 			if (len(vertices_way) >= 3):
 				var last_v_pos = puzzle.vertices[vertices_way[-1]].pos
 				var second_last_v_pos = puzzle.vertices[vertices_way[-2]].pos
@@ -73,7 +77,7 @@ func draw_below_solution(canvas, owner, owner_type, puzzle, solution):
 				second_percentage = clamp(second_percentage, 0.0, 1.0)
 				var second_indicator_pos = second_percentage * second_last_v_pos + (1 - second_percentage) * third_last_v_pos
 				canvas.add_circle(second_indicator_pos, puzzle.line_width / 3.4, line_color)
-				canvas.add_circle(second_indicator_pos, puzzle.line_width / 3.8, color)
+				canvas.add_circle(second_indicator_pos, puzzle.line_width / 3.8, solution_color)
 
 
 func is_solution_point_ghosted(vertex_ghost_property, way, id):
@@ -92,7 +96,7 @@ func is_solution_point_ghosted(vertex_ghost_property, way, id):
 			else: # normal line, not ghosted
 				return false
 
-func init_property(puzzle, solution_state, start_vertex):
+func init_property(puzzle, solution_state, _start_vertex):
 	solution_state.solution_stage.clear()
 	for way in range(puzzle.n_ways):
 		solution_state.solution_stage.append(Solution.SOLUTION_STAGE_GHOST)
@@ -107,7 +111,7 @@ func property_to_string(vertex_ghost_property):
 		var way_result = []
 		for v in way_property:
 			way_result.append(str(v))
-		ghost_result.','.join(append(PackedStringArray(way_result)))
+		ghost_result.append(','.join(PackedStringArray(way_result)))
 	return '/'.join(PackedStringArray(ghost_result))
 
 func string_to_property(string):
