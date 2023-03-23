@@ -11,7 +11,7 @@ var solution: SolutionLine
 var canvas: Visualizer.PuzzleCanvas
 var validator: Validation.Validator
 var validation_elasped_time: float
-var background_texture = null
+var background_texture: Texture2D = null
 var loaded_from_command_line: bool
 var mouse_speed = 1.0
 
