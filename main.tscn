@@ -29,11 +29,16 @@ offset_bottom = 604.245
 layout_mode = 2
 color = Color(1, 1, 1, 0)
 
-[node name="SubViewport" type="SubViewport" parent="MarginContainer/PuzzleRegion"]
+[node name="PuzzleForeground" type="TextureRect" parent="MarginContainer/PuzzleRegion"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="SubViewport" type="SubViewport" parent="MarginContainer/PuzzleRegion/PuzzleForeground"]
 transparent_bg = true
 script = ExtResource("7")
 
-[node name="MixLayer" type="Control" parent="MarginContainer/PuzzleRegion/SubViewport"]
+[node name="MixLayer" type="Control" parent="MarginContainer/PuzzleRegion/PuzzleForeground/SubViewport"]
 custom_minimum_size = Vector2(1440, 1200)
 layout_mode = 3
 anchors_preset = 0
@@ -41,7 +46,7 @@ offset_right = 1440.0
 offset_bottom = 1200.0
 script = ExtResource("8")
 
-[node name="AddLayer" type="Control" parent="MarginContainer/PuzzleRegion/SubViewport"]
+[node name="AddLayer" type="Control" parent="MarginContainer/PuzzleRegion/PuzzleForeground/SubViewport"]
 material = SubResource("2")
 custom_minimum_size = Vector2(1440, 1200)
 layout_mode = 3
