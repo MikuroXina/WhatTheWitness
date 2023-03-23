@@ -16,10 +16,10 @@ func update_view():
 	const extra_margin = Vector2(100, 100)
 	var limit_pos = level_area_limit.global_position
 	var limit_size = level_area_limit.size
-	var min = limit_pos - extra_margin
-	var max = limit_pos + limit_size + extra_margin
+	var min_pos = limit_pos - extra_margin
+	var max_pos = limit_pos + limit_size + extra_margin
 
-	view.position = (view_position_start + view_delta).clamp(min, max)
+	view.position = (view_position_start + view_delta).clamp(min_pos, max_pos)
 	view.scale = Vector2(view_scale, view_scale)
 
 func _input(event):
