@@ -163,7 +163,7 @@ func __get_raw_element_center(puzzle, raw_element, element_type, id):
 		return center / len(raw_element['Nodes']['_arr'])
 
 
-func __match_decorator(raw_decorator, xsi_type):
+func __match_decorator(raw_decorator, xsi_type) -> Dictionary:
 	if (raw_decorator['xsi:type'] == xsi_type):
 		raw_decorator['__consumed'] = true
 		return raw_decorator
@@ -172,7 +172,7 @@ func __match_decorator(raw_decorator, xsi_type):
 		if (first != null):
 			return first
 		return __match_decorator(raw_decorator['Second'], xsi_type)
-	return null
+	return Dictionary()
 
 func __find_decorator(raw_element, xsi_type) -> Dictionary:
 	if ('Decorator' in raw_element):
@@ -202,7 +202,7 @@ func __add_decorator(puzzle, raw_element, v):
 	var has_circle_text = false
 	var boxed_decorator = false
 	var end_decorator = __find_decorator(raw_element, "EndDecorator")
-	if (end_decorator != null):
+	if (end_decorator.size() != 0):
 		var end_length = float(end_decorator['Length'])
 		var end_angle = deg_to_rad(float(end_decorator['Angle']))
 		var p_end = puzzle.vertices[v].pos + Vector2(cos(end_angle), sin(end_angle)) * end_length
@@ -635,7 +635,7 @@ func add_element(puzzle, raw_element, element_type, id=-1):
 		var raw_decorator = raw_element['Decorator']
 		__check_decorator_consumed(raw_decorator, element_type)
 
-func load_from_xml(file, preview_only=false):
+func load_from_xml(file, preview_only=false) -> Puzzle:
 	if ('<' in file and '>' in file):
 		var pos1 = file.find('<')
 		var pos2 = file.find('>')
