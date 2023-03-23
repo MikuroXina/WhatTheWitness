@@ -8,7 +8,7 @@ func _ready():
 
 func update_all():
 	for child in drawing_controls:
-		child.update()
+		child.queue_redraw()
 
 func draw_background():
 	var cvitem = Control.new()
