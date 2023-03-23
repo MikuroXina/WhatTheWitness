@@ -11,12 +11,21 @@ func update_all():
 		child.queue_redraw()
 
 func draw_background():
+	var vport = SubViewport.new()
+	vport.size = self.size
+	self.add_child(vport)
 	var cvitem = Control.new()
-	self.add_child(cvitem)
-	cvitem.custom_minimum_size = self.size
-	cvitem.set_script(load("res://script/puzzle_background_renderer.gd"))
+	vport.add_child(cvitem)
+	cvitem.custom_minimum_size = vport.size
+	cvitem.set_script(preload("res://script/puzzle_background_renderer.gd"))
 
 	await RenderingServer.frame_post_draw
 
-	Gameplay.background_texture = self
+	var vport_img = vport.get_texture().get_image()
+	vport_img.flip_y()
+	remove_child(vport)
+	vport.queue_free()
+	var image_texture = ImageTexture.create_from_image(vport_img)
+	Gameplay.background_texture = image_texture
+	self.texture = image_texture
 	update_all()
