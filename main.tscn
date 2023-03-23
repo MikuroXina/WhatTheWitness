@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bkkfu678a08ls"]
+[gd_scene load_steps=9 format=3 uid="uid://bkkfu678a08ls"]
 
 [ext_resource type="Script" path="res://script/puzzle_player.gd" id="1"]
 [ext_resource type="Script" path="res://script/puzzle_additive_layer_renderer.gd" id="2"]
@@ -7,9 +7,6 @@
 [ext_resource type="Texture2D" uid="uid://8mamdlw062gp" path="res://img/cross.png" id="6"]
 [ext_resource type="Script" path="res://script/viewport_init.gd" id="7"]
 [ext_resource type="Script" path="res://script/puzzle_foreground_renderer.gd" id="8"]
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_8ooaq"]
-viewport_path = NodePath("MarginContainer/PuzzleRegion/PuzzleForeground/SubViewport")
 
 [sub_resource type="CanvasItemMaterial" id="2"]
 blend_mode = 1
@@ -32,35 +29,33 @@ offset_bottom = 604.245
 layout_mode = 2
 color = Color(1, 1, 1, 0)
 
-[node name="PuzzleForeground" type="TextureRect" parent="MarginContainer/PuzzleRegion"]
+[node name="Viewport" type="TextureRect" parent="MarginContainer/PuzzleRegion"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_right = -4.99994
 offset_bottom = -2.0
-texture = SubResource("ViewportTexture_8ooaq")
-expand_mode = 1
-
-[node name="SubViewport" type="SubViewport" parent="MarginContainer/PuzzleRegion/PuzzleForeground"]
-transparent_bg = true
-size = Vector2i(1440, 1200)
 script = ExtResource("7")
 
-[node name="MixLayer" type="Control" parent="MarginContainer/PuzzleRegion/PuzzleForeground/SubViewport"]
+[node name="MixLayer" type="Control" parent="MarginContainer/PuzzleRegion/Viewport"]
 custom_minimum_size = Vector2(1440, 1200)
 layout_mode = 3
 anchors_preset = 0
-offset_right = 1440.0
-offset_bottom = 600.0
+offset_left = 2.24487
+offset_top = -2.24493
+offset_right = 1442.24
+offset_bottom = 1197.76
 script = ExtResource("8")
 
-[node name="AddLayer" type="Control" parent="MarginContainer/PuzzleRegion/PuzzleForeground/SubViewport"]
+[node name="AddLayer" type="Control" parent="MarginContainer/PuzzleRegion/Viewport"]
 material = SubResource("2")
 custom_minimum_size = Vector2(1440, 1200)
 layout_mode = 3
 anchors_preset = 0
-offset_right = 1440.0
-offset_bottom = 600.0
+offset_left = 2.24487
+offset_top = -2.24493
+offset_right = 1442.24
+offset_bottom = 1197.76
 script = ExtResource("2")
 
 [node name="RightArrowButton" type="TextureButton" parent="."]
