@@ -1,6 +1,7 @@
 extends Node
 
 const UPSAMPLING_FACTOR = 2
+const Puzzle = Graph.Puzzle
 
 @onready var initial_viewport_size = get_viewport().size
 @onready var initial_window_size = get_window().size
@@ -12,7 +13,7 @@ class PuzzleCanvas:
 	var view_scale = 100.0
 	var view_origin = Vector2(200, 300)
 
-	var current_puzzle
+	var current_puzzle: Puzzle
 	var override_color = null
 	var canvas_size = null
 
@@ -83,7 +84,7 @@ class PuzzleCanvas:
 				if (vertex.is_puzzle_start):
 					add_circle(vertex.pos, current_puzzle.start_size, current_puzzle.line_color)
 		for edge in current_puzzle.edges:
-			add_line(current_puzzle.start.pos, edge.end.pos, current_puzzle.line_width, current_puzzle.line_color)
+			add_line(edge.start.pos, edge.end.pos, current_puzzle.line_width, current_puzzle.line_color)
 		for vertex in current_puzzle.vertices:
 			if (vertex.decorator != null):
 				drawing_target.draw_set_transform(view_origin + vertex.pos * view_scale, vertex.decorator.angle, Vector2(1.0, 1.0))
