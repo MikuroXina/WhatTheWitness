@@ -21,7 +21,7 @@ class Vertex:
 	var pos: Vector2
 	var index: int
 	var hidden: bool
-	var decorator = load("res://script/decorators/no_decorator.gd").new()
+	var decorator = preload("res://script/decorators/no_decorator.gd").new()
 	var is_attractor: bool
 	var linked_facet
 	var linked_edge_tuple
@@ -218,13 +218,13 @@ func __add_decorator(puzzle, raw_element, v):
 	var text_decorator = __find_decorator(raw_element, "TextDecorator")
 	if (text_decorator):
 		if (text_decorator['Text'] == 'Obs'):
-			var decorator = load('res://script/decorators/obstacle_decorator.gd').new()
+			var decorator = preload('res://script/decorators/obstacle_decorator.gd').new()
 			decorator.center = puzzle.vertices[v].pos
 			decorator.size = 0.5
 			decorator.radius = 1.0
 			puzzle.decorators.append(decorator)
 		elif (text_decorator['Text'].to_lower().begins_with('m:')):
-			var decorator = load('res://script/decorators/myopia-decorator.gd').new()
+			var decorator = preload('res://script/decorators/myopia-decorator.gd').new()
 			decorator.color = color(text_decorator['Color'])
 			decorator.directions = []
 			var text = text_decorator['Text'].substr(2)
@@ -251,20 +251,20 @@ func __add_decorator(puzzle, raw_element, v):
 		elif (text_decorator['Text'] == '[ ]'):
 			boxed_decorator = true
 		elif (text_decorator['Text'][0] == '['):
-			var decorator = load('res://script/decorators/artless_number_decorator.gd').new()
+			var decorator = preload('res://script/decorators/artless_number_decorator.gd').new()
 			decorator.color = color(text_decorator['Color'])
 			decorator.count = int(text_decorator['Text'].substr(1, len(text_decorator['Text']) - 2))
 			puzzle.vertices[v].decorator = decorator
 		elif (text_decorator['Text'] == '\u623F'):
-			var decorator = load('res://script/decorators/land_decorator.gd').new()
+			var decorator = preload('res://script/decorators/land_decorator.gd').new()
 			decorator.color = color(text_decorator['Color'])
 			puzzle.vertices[v].decorator = decorator
 		elif (text_decorator['Text'] == 'X'):
-			var decorator = load('res://script/decorators/all_error_decorator.gd').new()
+			var decorator = preload('res://script/decorators/all_error_decorator.gd').new()
 			decorator.color = color(text_decorator['Color'])
 			puzzle.vertices[v].decorator = decorator
 		elif (text_decorator['Text'] == 'F'):
-			var decorator = load('res://script/decorators/filament_decorator.gd').new()
+			var decorator = preload('res://script/decorators/filament_decorator.gd').new()
 			decorator.color = color(text_decorator['Color'])
 			decorator.center = puzzle.vertices[v].pos
 			puzzle.vertices[v].decorator = decorator
@@ -274,7 +274,7 @@ func __add_decorator(puzzle, raw_element, v):
 					filament_start_decorator = global_decorator
 					break
 			if (filament_start_decorator == null):
-				filament_start_decorator = load('res://script/decorators/filament_start_decorator.gd').new()
+				filament_start_decorator = preload('res://script/decorators/filament_start_decorator.gd').new()
 				puzzle.decorators.append(filament_start_decorator)
 			filament_start_decorator.add_pillar(puzzle.vertices[v].pos)
 			decorator.filament_start_decorator = filament_start_decorator
@@ -308,29 +308,29 @@ func __add_decorator(puzzle, raw_element, v):
 					snake_manager = global_decorator
 					break
 			if (snake_manager == null):
-				snake_manager = load('res://script/decorators/snake_manager.gd').new()
+				snake_manager = preload('res://script/decorators/snake_manager.gd').new()
 				puzzle.decorators.append(snake_manager)
 			snake_manager.init_snake_points.append(v)
 		elif (text_decorator['Text'].to_lower() == '\u2B59'): # collapse
-			var decorator = load('res://script/decorators/collapse_decorator.gd').new()
+			var decorator = preload('res://script/decorators/collapse_decorator.gd').new()
 			decorator.color = color(text_decorator['Color'])
 			puzzle.vertices[v].decorator = decorator
 		elif (text_decorator['Text'].to_lower() == '\u2B6E'): # clockwise arrow
-			var decorator = load('res://script/decorators/circle_arrow_decorator.gd').new()
+			var decorator = preload('res://script/decorators/circle_arrow_decorator.gd').new()
 			decorator.color = color(text_decorator['Color'])
 			decorator.is_clockwise = true
 			puzzle.vertices[v].decorator = decorator
 		elif (text_decorator['Text'].to_lower() == '\u2B6F'): # counterclockwise arrow
-			var decorator = load('res://script/decorators/circle_arrow_decorator.gd').new()
+			var decorator = preload('res://script/decorators/circle_arrow_decorator.gd').new()
 			decorator.color = color(text_decorator['Color'])
 			decorator.is_clockwise = false
 			puzzle.vertices[v].decorator = decorator
 		elif (text_decorator['Text'].to_lower() == '\u6709\u9650'): # limited water
-			var decorator = load('res://script/decorators/limited_water_decorator.gd').new()
+			var decorator = preload('res://script/decorators/limited_water_decorator.gd').new()
 			decorator.color = color(text_decorator['Color'])
 			puzzle.vertices[v].decorator = decorator
 		elif (text_decorator['Text'].to_lower() == '\u6C34'): # water
-			var decorator = load('res://script/decorators/water_decorator.gd').new()
+			var decorator = preload('res://script/decorators/water_decorator.gd').new()
 			decorator.color = Color.TRANSPARENT
 			puzzle.vertices[v].decorator = decorator
 
@@ -341,9 +341,9 @@ func __add_decorator(puzzle, raw_element, v):
 					ghost_manager = global_decorator
 					break
 			if (ghost_manager == null):
-				ghost_manager = load('res://script/decorators/ghost_manager.gd').new()
+				ghost_manager = preload('res://script/decorators/ghost_manager.gd').new()
 				puzzle.decorators.append(ghost_manager)
-			var decorator = load('res://script/decorators/ghost_decorator.gd').new()
+			var decorator = preload('res://script/decorators/ghost_decorator.gd').new()
 			decorator.color = color(text_decorator['Color'])
 			decorator.pattern = 0 if float(text_decorator['Angle']) == 0.0 else 1
 			puzzle.vertices[v].decorator = decorator
@@ -354,7 +354,7 @@ func __add_decorator(puzzle, raw_element, v):
 					laser_manager = global_decorator
 					break
 			if (laser_manager == null):
-				laser_manager = load('res://script/decorators/laser_manager.gd').new()
+				laser_manager = preload('res://script/decorators/laser_manager.gd').new()
 				puzzle.decorators.append(laser_manager)
 			if (text_decorator['Text'].to_lower() == 'laser_region_min'):
 				laser_manager.min_x = puzzle.vertices[v].pos.x
@@ -363,7 +363,7 @@ func __add_decorator(puzzle, raw_element, v):
 				laser_manager.max_x = puzzle.vertices[v].pos.x
 				laser_manager.max_y = puzzle.vertices[v].pos.y
 			else:
-				var decorator = load('res://script/decorators/laser_emitter_decorator.gd').new()
+				var decorator = preload('res://script/decorators/laser_emitter_decorator.gd').new()
 				decorator.color = color(text_decorator['Color'])
 				puzzle.vertices[v].decorator = decorator
 				decorator.angle = deg_to_rad(float(text_decorator['Angle']))
@@ -375,20 +375,20 @@ func __add_decorator(puzzle, raw_element, v):
 					cosmic_manager = global_decorator
 					break
 			if (cosmic_manager == null):
-				cosmic_manager = load('res://script/decorators/cosmic_manager.gd').new()
+				cosmic_manager = preload('res://script/decorators/cosmic_manager.gd').new()
 				puzzle.decorators.append(cosmic_manager)
 			if (text_decorator['Text'].to_lower() == '\uC6C3'):
-				var decorator = load('res://script/decorators/cosmic_alien_decorator.gd').new()
+				var decorator = preload('res://script/decorators/cosmic_alien_decorator.gd').new()
 				decorator.color = color(text_decorator['Color'])
 				puzzle.vertices[v].decorator = decorator
 				cosmic_manager.add_alien(v)
 			else:
-				var decorator = load('res://script/decorators/cosmic_house_decorator.gd').new()
+				var decorator = preload('res://script/decorators/cosmic_house_decorator.gd').new()
 				decorator.color = color(text_decorator['Color'])
 				puzzle.vertices[v].decorator = decorator
 				cosmic_manager.add_house(v)
 		elif (text_decorator['Text'].to_lower().begins_with('s:')):
-			var decorator = load('res://script/decorators/graph_counter_decorator.gd').new()
+			var decorator = preload('res://script/decorators/graph_counter_decorator.gd').new()
 			decorator.step_x = 1.0 - puzzle.line_width
 			decorator.step_y = 1.0 - puzzle.line_width
 			decorator.size = 1.0
@@ -402,7 +402,7 @@ func __add_decorator(puzzle, raw_element, v):
 		elif (text_decorator['Text'] == 'o'):
 			has_circle_text = true
 		elif (text_decorator['Text'][0] in GRAPH_COUNTER_TEXTS):
-			var decorator = load('res://script/decorators/graph_counter_decorator.gd').new()
+			var decorator = preload('res://script/decorators/graph_counter_decorator.gd').new()
 			var text_matrix = text_decorator['Text'].replace('\r', '').split('\n')
 			var n_rows = len(text_matrix)
 			var n_cols = 0
@@ -425,7 +425,7 @@ func __add_decorator(puzzle, raw_element, v):
 			puzzle.vertices[v].decorator = decorator
 
 		elif (text_decorator['Text'].to_lower() in '01234567'):
-			var decorator = load('res://script/decorators/minesweeper_decorator.gd').new()
+			var decorator = preload('res://script/decorators/minesweeper_decorator.gd').new()
 			decorator.color = color(text_decorator['Color'])
 			decorator.count = '01234567'.find(text_decorator['Text'].to_lower())
 			puzzle.vertices[v].decorator = decorator
@@ -433,45 +433,45 @@ func __add_decorator(puzzle, raw_element, v):
 			print('Unknown text decorator %s' % text_decorator['Text'])
 	var triangle_decorator = __find_decorator(raw_element, "TriangleDecorator")
 	if (triangle_decorator):
-		var decorator = load('res://script/decorators/triangle_decorator.gd').new()
+		var decorator = preload('res://script/decorators/triangle_decorator.gd').new()
 		decorator.color = color(triangle_decorator['Color'])
 		decorator.count = int(triangle_decorator['Count'])
 		puzzle.vertices[v].decorator = decorator
 	var arrow_decorator = __find_decorator(raw_element, "ArrowDecorator")
 	if (arrow_decorator):
-		var decorator = load('res://script/decorators/arrow_decorator.gd').new()
+		var decorator = preload('res://script/decorators/arrow_decorator.gd').new()
 		decorator.color = color(arrow_decorator['Color'])
 		decorator.count = int(arrow_decorator['Count'])
 		decorator.angle = deg_to_rad(float(arrow_decorator['Angle']))
 		puzzle.vertices[v].decorator = decorator
 	var star_decorator = __find_decorator(raw_element, "StarDecorator")
 	if (star_decorator):
-		var decorator = load('res://script/decorators/star_decorator.gd').new()
+		var decorator = preload('res://script/decorators/star_decorator.gd').new()
 		decorator.color = color(star_decorator['Color'])
 		puzzle.vertices[v].decorator = decorator
 	var square_decorator = __find_decorator(raw_element, "SquareDecorator")
 	if (square_decorator):
-		var decorator = load('res://script/decorators/square_decorator.gd').new()
+		var decorator = preload('res://script/decorators/square_decorator.gd').new()
 		decorator.color = color(square_decorator['Color'])
 		puzzle.vertices[v].decorator = decorator
 	var circle_decorator = __find_decorator(raw_element, "CircleDecorator")
 	if (circle_decorator):
-		var decorator = load('res://script/decorators/circle_decorator.gd').new()
+		var decorator = preload('res://script/decorators/circle_decorator.gd').new()
 		decorator.color = color(circle_decorator['Color'])
 		puzzle.vertices[v].decorator = decorator
 	var ring_decorator = __find_decorator(raw_element, "RingDecorator")
 	if (ring_decorator):
-		var decorator = load('res://script/decorators/ring_decorator.gd').new()
+		var decorator = preload('res://script/decorators/ring_decorator.gd').new()
 		decorator.color = color(ring_decorator['Color'])
 		puzzle.vertices[v].decorator = decorator
 	var eliminator_decorator = __find_decorator(raw_element, "EliminatorDecorator")
 	if (eliminator_decorator):
 		if (puzzle.vertices[v].is_puzzle_start):
-			var decorator = load('res://script/decorators/all_error_decorator.gd').new()
+			var decorator = preload('res://script/decorators/all_error_decorator.gd').new()
 			decorator.color = color(text_decorator['Color'])
 			puzzle.vertices[v].decorator = decorator
 		else:
-			var decorator = load('res://script/decorators/eliminator_decorator.gd').new()
+			var decorator = preload('res://script/decorators/eliminator_decorator.gd').new()
 			decorator.color = color(eliminator_decorator['Color'])
 			puzzle.vertices[v].decorator = decorator
 	var tetris_decorator = __find_decorator(raw_element, "TetrisDecorator")
@@ -487,26 +487,26 @@ func __add_decorator(puzzle, raw_element, v):
 		decorator.is_weak = has_circle_text
 		puzzle.vertices[v].decorator = decorator
 	if (boxed_decorator):
-		var decorator = load('res://script/decorators/box_decorator.gd').new()
+		var decorator = preload('res://script/decorators/box_decorator.gd').new()
 		decorator.color = Color.BLACK
 		decorator.init_vertex = v
 		decorator.inner_decorator = puzzle.vertices[v].decorator
 		if (decorator.inner_decorator.rule == 'none'):
-			decorator.inner_decorator = load('res://script/decorators/heart_decorator.gd').new()
+			decorator.inner_decorator = preload('res://script/decorators/heart_decorator.gd').new()
 			decorator.inner_decorator.color = Color.PINK
 		puzzle.decorators.append(decorator)
-		puzzle.vertices[v].decorator = load("res://script/decorators/no_decorator.gd").new()
+		puzzle.vertices[v].decorator = preload("res://script/decorators/no_decorator.gd").new()
 	var point_decorator = __find_decorator(raw_element, "PointDecorator")
 	if (point_decorator):
 		var extra_scale = float(point_decorator['ExtraScale'])
 		if (extra_scale > 1.9):
-			puzzle.vertices[v].decorator = load('res://script/decorators/big_point_decorator.gd').new()
+			puzzle.vertices[v].decorator = preload('res://script/decorators/big_point_decorator.gd').new()
 		else:
-			puzzle.vertices[v].decorator = load('res://script/decorators/point_decorator.gd').new()
+			puzzle.vertices[v].decorator = preload('res://script/decorators/point_decorator.gd').new()
 		puzzle.vertices[v].decorator.color = color(point_decorator['Color'])
 	var self_intersection_decorator = __find_decorator(raw_element, "SelfIntersectionDecorator")
 	if (self_intersection_decorator):
-		puzzle.vertices[v].decorator = load('res://script/decorators/self_intersection_decorator.gd').new()
+		puzzle.vertices[v].decorator = preload('res://script/decorators/self_intersection_decorator.gd').new()
 		puzzle.vertices[v].decorator.color1 = color(self_intersection_decorator['Color1'])
 		puzzle.vertices[v].decorator.color2 = color(self_intersection_decorator['Color2'])
 
@@ -531,7 +531,7 @@ func __load_tetris(raw_decorator, is_hollow):
 	for shape in shapes:
 		for i in range(len(shape)):
 			shape[i] -= center
-	var decorator = load('res://script/decorators/tetris_decorator.gd').new()
+	var decorator = preload('res://script/decorators/tetris_decorator.gd').new()
 	decorator.shapes = shapes
 	decorator.is_hollow = is_hollow
 	if (is_hollow):
@@ -598,7 +598,7 @@ func add_element(puzzle, raw_element, element_type, id=-1):
 		__add_decorator(puzzle, raw_element, v_mid)
 
 		if (__find_decorator(raw_element, "BrokenDecorator")):
-			puzzle.vertices[v_mid].decorator = load('res://script/decorators/broken_decorator.gd').new()
+			puzzle.vertices[v_mid].decorator = preload('res://script/decorators/broken_decorator.gd').new()
 			puzzle.vertices[v_mid].decorator.direction = (p2 - p1) * (0.25 - puzzle.line_width / (2 * p2.distance_to(p1)))
 		puzzle.edge_detector_node[[v1, v2]] = v_mid
 		puzzle.edge_detector_node[[v2, v1]] = v_mid
