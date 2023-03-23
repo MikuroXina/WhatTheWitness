@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://luayeguxfojd"]
+[gd_scene load_steps=6 format=3 uid="uid://luayeguxfojd"]
 
 [ext_resource type="PackedScene" uid="uid://b712ycomg3lem" path="res://levels.tscn" id="1"]
 [ext_resource type="Script" path="res://script/level_map.gd" id="2"]
+[ext_resource type="Script" path="res://script/view_grab.gd" id="2_q4no0"]
 [ext_resource type="PackedScene" uid="uid://bkkfu678a08ls" path="res://main.tscn" id="3"]
 [ext_resource type="Texture2D" uid="uid://be504ccckxm1j" path="res://img/menu_bar.png" id="5"]
 
@@ -9,6 +10,7 @@
 script = ExtResource("2")
 
 [node name="Menu" type="Node2D" parent="."]
+script = ExtResource("2_q4no0")
 
 [node name="View" parent="Menu" instance=ExtResource("1")]
 

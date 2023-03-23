@@ -18,17 +18,12 @@ const PUZZLE_DIR = "res://puzzles"
 
 @onready var puzzle_placeholders = $Menu/View/PuzzlePlaceHolders
 @onready var extra_menu = $SideMenu/Extra
-@onready var clear_save_button = $SideMenu/Extra/ClearSaveButton
 @onready var view = $Menu/View
-@onready var drag_start = null
-@onready var level_area_limit = $Menu/View/LevelAreaLimit
+@onready var clear_save_button = $SideMenu/Extra/ClearSaveButton
 @onready var line_map = $Menu/View/LinesMap
 @onready var puzzle_counter_text = $SideMenu/PuzzleCounter
 @onready var menu_bar_button = $SideMenu/MenuBarButton
 @onready var loading_cover = $LoadingCover
-var window_size = Vector2(1024, 600)
-var view_origin = -window_size / 2
-var view_scale = 1.0
 
 const UNLOCK_ALL_PUZZLES = false
 const LOADING_BATCH_SIZE = 10
@@ -57,7 +52,6 @@ func _ready():
 	line_map.set_layer_name(LAYER.GADGET, "gadget")
 	
 	loading_cover.visible = true
-	drag_start = null
 	# puzzle_placeholders.hide()
 	SaveData.load_all()
 
@@ -213,44 +207,6 @@ func update_light(first_time=false):
 		loading_cover.visible = false
 		MenuData.can_drag_map = true
 		update_counter()
-func update_view():
-	view.position = window_size / 2 + (view_origin) * view_scale
-	view.scale = Vector2(view_scale, view_scale)
-	var limit_pos = level_area_limit.global_position
-	var limit_size = level_area_limit.size * view_scale
-	var dx = 0.0
-	var dy = 0.0
-	var extra_margin = 100
-	if (limit_pos.x > extra_margin):
-		dx += limit_pos.x - extra_margin
-	elif (limit_pos.x + limit_size.x < window_size.x - extra_margin):
-		dx += limit_pos.x + limit_size.x - window_size.x + extra_margin
-	if (limit_pos.y > extra_margin):
-		dy += limit_pos.y - extra_margin
-	elif (limit_pos.y + limit_size.y < window_size.y - extra_margin):
-		dy += limit_pos.y + limit_size.y - window_size.y + extra_margin
-	view_origin -= Vector2(dx, dy) / view_scale
-	view.position = window_size / 2 + (view_origin) * view_scale
-	view.scale = Vector2(view_scale, view_scale)
-
-func _input(event):
-	if (event is InputEventMouseButton and MenuData.can_drag_map):
-		if (event.button_index == MOUSE_BUTTON_WHEEL_DOWN):
-			view_scale = max(view_scale * 0.8, 0.2097152)
-		elif (event.button_index == MOUSE_BUTTON_WHEEL_UP):
-			view_scale = min(view_scale * 1.25, 3.0)
-		elif (event.pressed):
-			drag_start = event.position
-		else:
-			drag_start = null
-			return
-	elif (event is InputEventMouseMotion):
-		if (!MenuData.can_drag_map):
-			drag_start = null
-		if (drag_start != null):
-			view_origin += (event.position - drag_start) / view_scale
-			drag_start = event.position
-	update_view()
 
 func _on_clear_save_button_pressed():
 	if (clear_save_button.text == 'Are you sure?'):
