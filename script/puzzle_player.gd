@@ -2,14 +2,14 @@ extends Node2D
 
 var mouse_start_position = null
 var is_drawing_solution = false
-@onready var drawing_target = $MarginContainer/PuzzleRegion/Viewport
+@onready var drawing_target = $MarginContainer/PuzzleRegion/SubViewport
 var level_map = null
 @onready var left_arrow_button = $LeftArrowButton
 @onready var right_arrow_button = $RightArrowButton
 var menu_bar_button = null
 var puzzle_counter_text = null
 @onready var back_button = $BackButton
-@onready var viewport: PuzzleViewport = $MarginContainer/PuzzleRegion/Viewport
+@onready var viewport: PuzzleViewport = $MarginContainer/PuzzleRegion/SubViewport
 var loaded = false
 var solver = null
 

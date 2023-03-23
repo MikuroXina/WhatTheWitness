@@ -29,33 +29,25 @@ offset_bottom = 604.245
 layout_mode = 2
 color = Color(1, 1, 1, 0)
 
-[node name="Viewport" type="TextureRect" parent="MarginContainer/PuzzleRegion"]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = -4.99994
-offset_bottom = -2.0
+[node name="SubViewport" type="SubViewport" parent="MarginContainer/PuzzleRegion"]
+transparent_bg = true
 script = ExtResource("7")
 
-[node name="MixLayer" type="Control" parent="MarginContainer/PuzzleRegion/Viewport"]
+[node name="MixLayer" type="Control" parent="MarginContainer/PuzzleRegion/SubViewport"]
 custom_minimum_size = Vector2(1440, 1200)
 layout_mode = 3
 anchors_preset = 0
-offset_left = 2.24487
-offset_top = -2.24493
-offset_right = 1442.24
-offset_bottom = 1197.76
+offset_right = 1440.0
+offset_bottom = 1200.0
 script = ExtResource("8")
 
-[node name="AddLayer" type="Control" parent="MarginContainer/PuzzleRegion/Viewport"]
+[node name="AddLayer" type="Control" parent="MarginContainer/PuzzleRegion/SubViewport"]
 material = SubResource("2")
 custom_minimum_size = Vector2(1440, 1200)
 layout_mode = 3
 anchors_preset = 0
-offset_left = 2.24487
-offset_top = -2.24493
-offset_right = 1442.24
-offset_bottom = 1197.76
+offset_right = 1440.0
+offset_bottom = 1200.0
 script = ExtResource("2")
 
 [node name="RightArrowButton" type="TextureButton" parent="."]
