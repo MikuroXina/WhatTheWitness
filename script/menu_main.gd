@@ -13,9 +13,14 @@ func _ready():
 		Gameplay.loaded_from_command_line = true
 	if (!Gameplay.ALLOW_CUSTOM_LEVELS):
 		custom_level_button.visible = false
-	else:
+
+func _enter_tree():
+	if (Gameplay.ALLOW_CUSTOM_LEVELS):
 		get_viewport().files_dropped.connect(Gameplay.drag_custom_levels)
 
+func _exit_tree():
+	if (Gameplay.ALLOW_CUSTOM_LEVELS):
+		get_viewport().files_dropped.disconnect(Gameplay.drag_custom_levels)
 
 
 func _on_custom_level_button_pressed():
