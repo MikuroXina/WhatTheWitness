@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://b712ycomg3lem" path="res://levels.tscn" id="1"]
 [ext_resource type="Script" path="res://script/level_map.gd" id="2"]
-[ext_resource type="PackedScene" path="res://main.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://bkkfu678a08ls" path="res://main.tscn" id="3"]
 [ext_resource type="Texture2D" uid="uid://be504ccckxm1j" path="res://img/menu_bar.png" id="5"]
 
 [node name="LevelMap" type="Node2D"]
@@ -16,35 +16,56 @@ script = ExtResource("2")
 visible = false
 
 [node name="LoadingCover" type="ColorRect" parent="."]
-offset_right = 1031.0
-offset_bottom = 617.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="SideMenu" type="Node2D" parent="."]
+[node name="SideMenu" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="PuzzleCounter" type="RichTextLabel" parent="SideMenu"]
-offset_left = 426.0
-offset_top = 25.0
-offset_right = 1004.0
-offset_bottom = 71.0
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 538.068
+offset_right = 1116.07
+offset_bottom = 46.0
+grow_horizontal = 0
 bbcode_enabled = true
 text = "0 / 0 "
 scroll_active = false
 
 [node name="PuzzleCredits" type="RichTextLabel" parent="SideMenu"]
-offset_top = 549.0
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = 600.0
 offset_right = 1000.0
-offset_bottom = 578.0
+offset_bottom = 629.0
+grow_vertical = 0
+pivot_offset = Vector2(2.08165e-12, 2.08165e-12)
 bbcode_enabled = true
 text = "  
 "
 scroll_active = false
 
 [node name="MenuBarButton" type="TextureButton" parent="SideMenu"]
-offset_left = 22.0
-offset_top = 22.0
-offset_right = 62.0
-offset_bottom = 62.0
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 136.0
+offset_bottom = 136.0
+scale = Vector2(0.5, 0.5)
 texture_normal = ExtResource("5")
 
 [node name="Extra" type="Node2D" parent="SideMenu"]
