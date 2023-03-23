@@ -5,17 +5,17 @@ var angle: float = 0.0
 var additional_scale: float = 1.0
 
 
-func draw_foreground(canvas, owner, owner_type: int, puzzle: Graph.Puzzle):
+func draw_foreground(_canvas, _owner, _owner_type: int, _puzzle: Graph.Puzzle):
 	pass
 
-func draw_below_solution(canvas, owner, owner_type, puzzle, solution):
+func draw_below_solution(_canvas, _owner, _owner_type, _puzzle, _solution):
 	pass
 
-func draw_above_solution(canvas, owner, owner_type, puzzle, solution):
+func draw_above_solution(_canvas, _owner, _owner_type, _puzzle, _solution):
 	pass
 
-func draw_additive_layer(canvas, owner, owner_type, puzzle, solution):
+func draw_additive_layer(_canvas, _owner, _owner_type, _puzzle, _solution):
 	pass
 
-func post_load_state(puzzle, solution_state):
+func post_load_state(_puzzle, _solution_state):
 	pass

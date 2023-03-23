@@ -2,5 +2,5 @@ extends "../decorator.gd"
 
 var rule = 'none'
 
-func draw_foreground(canvas: Visualizer.PuzzleCanvas, owner, owner_type: int, puzzle: Graph.Puzzle):
+func draw_foreground(_canvas: Visualizer.PuzzleCanvas, _owner, _owner_type: int, _puzzle: Graph.Puzzle):
 	pass
