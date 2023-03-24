@@ -3,6 +3,9 @@ class_name SolutionLine
 
 const DiscreteSolutionState = preload("discrete_solution_state.gd")
 
+const Puzzle = Graph.Puzzle
+const Vertex = Graph.Vertex
+
 var started: bool
 var state_stack: Array
 var progress: float
@@ -15,7 +18,7 @@ const EPS = 1e-6
 func det(v1, v2):
 	return v1.x * v2.y - v2.x * v1.y
 
-func try_start_solution_at(puzzle, pos):
+func try_start_solution_at(puzzle: Puzzle, pos: Vector2) -> bool:
 	var state = DiscreteSolutionState.new()
 	if (state.initialize(puzzle, pos)):
 		validity = 0
@@ -26,7 +29,7 @@ func try_start_solution_at(puzzle, pos):
 		return true
 	return false
 
-func is_completed(puzzle):
+func is_completed(puzzle: Puzzle) -> bool:
 	if (!started):
 		return false
 	var crossroad_vertex = state_stack[-1].get_end_vertex(puzzle, Solution.MAIN_WAY)
@@ -34,7 +37,7 @@ func is_completed(puzzle):
 		return false
 	return crossroad_vertex.decorator != null and crossroad_vertex.is_puzzle_end and progress >= 0.8 # allow small gap
 
-func get_total_length(puzzle):
+func get_total_length(puzzle: Puzzle) -> float:
 	if (!started):
 		return 0.0
 	var result = 0.0
@@ -47,7 +50,7 @@ func get_total_length(puzzle):
 			result += (pos1 - pos2).length()
 	return result
 
-func get_current_way_position(puzzle, way):
+func get_current_way_position(puzzle: Puzzle, way: int):
 	if (!started):
 		return null
 	var way_vertices = state_stack[-1].vertices[way]
@@ -58,57 +61,50 @@ func get_current_way_position(puzzle, way):
 	return p1 * progress + p2 * (1 - progress)
 
 
-
-func try_continue_solution(puzzle, delta):
-	if (!started):
-		return
-	if (delta.length() < EPS):
-		return
-	delta = delta * Gameplay.mouse_speed
+func __finish_solution(puzzle: Puzzle, delta: Vector2):
 	var crossroad_vertex = state_stack[-1].get_end_vertex(puzzle, Solution.MAIN_WAY)
-	if (len(state_stack) == 1 or progress >= 1.0):
-		var chosen_edge = null
-		var best_aligned_score = 0.0
-		for edge in puzzle.edges:
-			var target_vertex
-			var edge_dir
-			if (edge.start == crossroad_vertex):
-				target_vertex = edge.end
-				edge_dir = (edge.end.pos - edge.start.pos).normalized()
-			elif (edge.end == crossroad_vertex):
-				target_vertex = edge.start
-				edge_dir = (edge.start.pos - edge.end.pos).normalized()
-			else:
-				continue
-			var aligned_score = edge_dir.dot(delta)
-			if (aligned_score > best_aligned_score):
-				chosen_edge = [edge, target_vertex, edge_dir]
-				best_aligned_score = aligned_score
-		if (chosen_edge == null):
-			return
-		var vertex_id = chosen_edge[1].index
-		if (state_stack[-1].is_retraction(puzzle, vertex_id)):
-			progress = 1.0 - EPS
+	var chosen_edge = null
+	var best_aligned_score = 0.0
+	for edge in puzzle.edges:
+		var target_vertex
+		var edge_dir
+		if (edge.start == crossroad_vertex):
+			target_vertex = edge.end
+			edge_dir = (edge.end.pos - edge.start.pos).normalized()
+		elif (edge.end == crossroad_vertex):
+			target_vertex = edge.start
+			edge_dir = (edge.start.pos - edge.end.pos).normalized()
 		else:
-			var new_state_with_limit = state_stack[-1].transist(puzzle, vertex_id)
-			var new_state = new_state_with_limit[0]
-			var new_limit = new_state_with_limit[1]
-			if (new_state != null):
-				state_stack.push_back(new_state)
-				limit = new_limit
-				progress = EPS
-			else:
-				progress = 1.0 - EPS
-
-	if (len(state_stack) <= 1):
+			continue
+		var aligned_score = edge_dir.dot(delta)
+		if (aligned_score > best_aligned_score):
+			chosen_edge = [edge, target_vertex, edge_dir]
+			best_aligned_score = aligned_score
+	if (chosen_edge == null):
 		return
+	var vertex_id = chosen_edge[1].index
+	if (state_stack[-1].is_retraction(puzzle, vertex_id)):
+		progress = 1.0 - EPS
+	else:
+		var new_state_with_limit = state_stack[-1].transist(puzzle, vertex_id)
+		var new_state = new_state_with_limit[0]
+		var new_limit = new_state_with_limit[1]
+		if (new_state != null):
+			state_stack.push_back(new_state)
+			limit = new_limit
+			progress = EPS
+		else:
+			progress = 1.0 - EPS
 
-	var v1 = state_stack[-1].get_end_vertex(puzzle, Solution.MAIN_WAY)
-	var v2 = state_stack[-2].get_end_vertex(puzzle, Solution.MAIN_WAY)
-	var edge_vec = v1.pos - v2.pos
+
+func __calculate_new_progress(
+	puzzle: Puzzle,
+	delta: Vector2,
+	edge_vec: Vector2,
+	v1: Vertex,
+	v2: Vertex,
+) -> float:
 	var edge_length = edge_vec.length()
-
-	# calculate new progress
 	var projected_length = edge_vec.normalized().dot(delta) / edge_length
 	var projected_det = det(edge_vec.normalized(), delta) / edge_length
 	var projected_progress = progress + projected_length
@@ -132,9 +128,27 @@ func try_continue_solution(puzzle, delta):
 		state_stack.pop_back()
 		limit = 1.0 + EPS
 		progress = 1.0 - EPS
+		return 0.0
+	return min(projected_progress, limit)
+
+
+func try_continue_solution(puzzle: Puzzle, mouse_delta: Vector2):
+	if (!started):
 		return
-	if (projected_progress >= limit):
-		projected_progress = limit
+	var delta = mouse_delta * Gameplay.mouse_speed
+	if (delta.length() < EPS):
+		return
+	if (len(state_stack) == 1 or progress >= 1.0):
+		__finish_solution(puzzle, delta)
+
+	if (len(state_stack) <= 1):
+		return
+
+	var v1 = state_stack[-1].get_end_vertex(puzzle, Solution.MAIN_WAY)
+	var v2 = state_stack[-2].get_end_vertex(puzzle, Solution.MAIN_WAY)
+	var edge_vec = v1.pos - v2.pos
+
+	var projected_progress = __calculate_new_progress(puzzle, delta, edge_vec, v1, v2)
 
 	var projected_position = v1.pos * projected_progress + v2.pos * (1 - projected_progress)
 	for decorator in puzzle.decorators:
@@ -144,7 +158,7 @@ func try_continue_solution(puzzle, delta):
 	progress = projected_progress
 
 
-func save_to_string(puzzle):
+func save_to_string(puzzle: Puzzle) -> String:
 	var state = state_stack[-1]
 	var line_result = []
 	for state_way in state.vertices:
@@ -159,7 +173,7 @@ func save_to_string(puzzle):
 	var event_string = '|'.join(PackedStringArray(event_property_result))
 	return '$'.join(PackedStringArray([line_string, event_string]))
 
-static func load_from_string(string, puzzle):
+static func load_from_string(string: String, puzzle: Puzzle) -> SolutionLine:
 	var state = DiscreteSolutionState.new()
 	var line_string_event_string = string.split('$')
 	var line_string = line_string_event_string[0]
