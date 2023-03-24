@@ -28,7 +28,6 @@ func show_puzzle(load_puzzle_name, unlocked=true):
 		cvitem.set_script(load("res://script/puzzle_renderer.gd"))
 		await RenderingServer.frame_post_draw
 		var vport_img = vport.get_texture().get_image()
-		vport_img.flip_y()
 		# vport_img.save_png("res://img/render/%s.png" % cvitem.name.replace('|', '.'))
 		remove_child(vport)
 		# will the texture be freed?

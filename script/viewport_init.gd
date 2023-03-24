@@ -5,7 +5,6 @@ var drawing_controls
 
 func _ready():
 	drawing_controls = get_children()
-	$"../".texture = self
 
 func update_all():
 	for child in drawing_controls:
@@ -20,7 +19,6 @@ func draw_background():
 	await RenderingServer.frame_post_draw
 
 	var vport_img = self.get_texture().get_image()
-	vport_img.flip_y()
 	var image_texture = ImageTexture.create_from_image(vport_img)
 	Gameplay.background_texture = image_texture
 	update_all()
