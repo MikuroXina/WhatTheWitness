@@ -51,7 +51,8 @@ layout_mode = 0
 offset_right = 500.0
 offset_bottom = 500.0
 texture = SubResource("ViewportTexture_tqtpl")
-expand_mode = 3
+expand_mode = 1
+stretch_mode = 5
 
 [node name="SubViewport" type="SubViewport" parent="PanelContainer/CenterContainer/MarginContainer/PuzzleRegion/PuzzleForeground"]
 transparent_bg = true
