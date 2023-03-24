@@ -5,11 +5,9 @@
 [ext_resource type="Texture2D" uid="uid://bgs0q54l6tbm0" path="res://img/right_arrow.png" id="4"]
 [ext_resource type="Texture2D" uid="uid://ca47y20hngu54" path="res://img/left_arrow.png" id="5"]
 [ext_resource type="Texture2D" uid="uid://8mamdlw062gp" path="res://img/cross.png" id="6"]
+[ext_resource type="Script" path="res://script/texture_init.gd" id="6_scaab"]
 [ext_resource type="Script" path="res://script/viewport_init.gd" id="7"]
 [ext_resource type="Script" path="res://script/puzzle_foreground_renderer.gd" id="8"]
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_tqtpl"]
-viewport_path = NodePath("PanelContainer/CenterContainer/MarginContainer/PuzzleRegion/PuzzleForeground/SubViewport")
 
 [sub_resource type="CanvasItemMaterial" id="2"]
 blend_mode = 1
@@ -46,20 +44,13 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 color = Color(1, 1, 1, 0)
 
-[node name="PuzzleForeground" type="TextureRect" parent="PanelContainer/CenterContainer/MarginContainer/PuzzleRegion"]
-layout_mode = 0
-offset_right = 500.0
-offset_bottom = 500.0
-texture = SubResource("ViewportTexture_tqtpl")
-expand_mode = 1
-stretch_mode = 5
-
-[node name="SubViewport" type="SubViewport" parent="PanelContainer/CenterContainer/MarginContainer/PuzzleRegion/PuzzleForeground"]
+[node name="SubViewport" type="SubViewport" parent="PanelContainer/CenterContainer/MarginContainer/PuzzleRegion"]
 transparent_bg = true
 size = Vector2i(1440, 1200)
+render_target_update_mode = 4
 script = ExtResource("7")
 
-[node name="MixLayer" type="Control" parent="PanelContainer/CenterContainer/MarginContainer/PuzzleRegion/PuzzleForeground/SubViewport"]
+[node name="MixLayer" type="Control" parent="PanelContainer/CenterContainer/MarginContainer/PuzzleRegion/SubViewport"]
 custom_minimum_size = Vector2(1440, 1200)
 layout_mode = 3
 anchors_preset = 0
@@ -67,7 +58,7 @@ offset_right = 1440.0
 offset_bottom = 1200.0
 script = ExtResource("8")
 
-[node name="AddLayer" type="Control" parent="PanelContainer/CenterContainer/MarginContainer/PuzzleRegion/PuzzleForeground/SubViewport"]
+[node name="AddLayer" type="Control" parent="PanelContainer/CenterContainer/MarginContainer/PuzzleRegion/SubViewport"]
 material = SubResource("2")
 custom_minimum_size = Vector2(1440, 1200)
 layout_mode = 3
@@ -75,6 +66,14 @@ anchors_preset = 0
 offset_right = 1440.0
 offset_bottom = 1200.0
 script = ExtResource("2")
+
+[node name="PuzzleForeground" type="TextureRect" parent="PanelContainer/CenterContainer/MarginContainer/PuzzleRegion"]
+layout_mode = 0
+offset_right = 500.0
+offset_bottom = 500.0
+expand_mode = 1
+stretch_mode = 5
+script = ExtResource("6_scaab")
 
 [node name="RightArrowButton" type="TextureButton" parent="PanelContainer/CenterContainer/MarginContainer"]
 layout_mode = 2
