@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bkkfu678a08ls"]
+[gd_scene load_steps=10 format=3 uid="uid://bkkfu678a08ls"]
 
 [ext_resource type="Script" path="res://script/puzzle_player.gd" id="1"]
 [ext_resource type="Script" path="res://script/puzzle_additive_layer_renderer.gd" id="2"]
@@ -7,6 +7,9 @@
 [ext_resource type="Texture2D" uid="uid://8mamdlw062gp" path="res://img/cross.png" id="6"]
 [ext_resource type="Script" path="res://script/viewport_init.gd" id="7"]
 [ext_resource type="Script" path="res://script/puzzle_foreground_renderer.gd" id="8"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_tqtpl"]
+viewport_path = NodePath("PanelContainer/CenterContainer/MarginContainer/PuzzleRegion/PuzzleForeground/SubViewport")
 
 [sub_resource type="CanvasItemMaterial" id="2"]
 blend_mode = 1
@@ -47,7 +50,8 @@ color = Color(1, 1, 1, 0)
 layout_mode = 0
 offset_right = 500.0
 offset_bottom = 500.0
-expand_mode = 1
+texture = SubResource("ViewportTexture_tqtpl")
+expand_mode = 3
 
 [node name="SubViewport" type="SubViewport" parent="PanelContainer/CenterContainer/MarginContainer/PuzzleRegion/PuzzleForeground"]
 transparent_bg = true
