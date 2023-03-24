@@ -15,7 +15,7 @@ var vertices_occupied: Array
 
 const EPS = 1e-6
 
-func det(v1, v2):
+func det(v1: Vector2, v2: Vector2) -> float:
 	return v1.x * v2.y - v2.x * v1.y
 
 func try_start_solution_at(puzzle: Puzzle, pos: Vector2) -> bool:
