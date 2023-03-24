@@ -50,7 +50,7 @@ func _ready():
 	line_map.set_layer_name(LAYER.LIGHT, "light")
 	line_map.add_layer(LAYER.GADGET)
 	line_map.set_layer_name(LAYER.GADGET, "gadget")
-	
+
 	loading_cover.visible = true
 	# puzzle_placeholders.hide()
 	SaveData.load_all()
@@ -169,7 +169,7 @@ func update_light(first_time=false):
 		for dir in range(4):
 			var delta = Vector2i(DIR_X[dir], DIR_Y[dir])
 			var new_pos = pos + delta
-			if (line_map.get_cellv(new_pos) == -1):
+			if (line_map.get_cell_source_id(LAYER.LINE, new_pos) == -1):
 				continue
 			deltas.append(delta)
 			if (line_map.get_cell_source_id(LAYER.GADGET, new_pos) == SOURCE.OR_GATE):
@@ -178,7 +178,7 @@ func update_light(first_time=false):
 				var non_activated_neighbor = 0
 				for dir2 in range(4):
 					var new_pos2 = new_pos + Vector2i(DIR_X[dir2], DIR_Y[dir2])
-					if (line_map.get_cellv(new_pos2) != -1 and !get_light_state(new_pos2)):
+					if (line_map.get_cell_source_id(LAYER.LINE, new_pos2) != -1 and !get_light_state(new_pos2)):
 						non_activated_neighbor += 1
 				if (non_activated_neighbor == 1):
 					deltas.append(delta + get_gadget_direction(line_map, new_pos))
