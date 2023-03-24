@@ -46,8 +46,8 @@ func load_puzzle(puzzle_path):
 	var back_color = Gameplay.puzzle.background_color
 	var front_color = Gameplay.puzzle.line_color
 	$ColorRect.color = back_color
-	left_arrow_button.modulate = Color(front_color.r, front_color.g, front_color.b, left_arrow_button.modulate.a)
-	right_arrow_button.modulate = Color(front_color.r, front_color.g, front_color.b, right_arrow_button.modulate.a)
+	left_arrow_button.modulate = Color(front_color, left_arrow_button.modulate.a)
+	right_arrow_button.modulate = Color(front_color, right_arrow_button.modulate.a)
 	viewport.draw_background()
 	loaded = true
 	back_button.modulate = front_color
