@@ -7,23 +7,20 @@
 [node name="MenuMain2" type="Node2D"]
 script = ExtResource("2")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
-offset_right = 1024.0
-offset_bottom = 600.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset = Vector2(2.08165e-12, 2.08165e-12)
+[node name="CenterContainer" type="CenterContainer" parent="."]
+offset_right = 1152.0
+offset_bottom = 648.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer"]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/MarginContainer"]
+custom_minimum_size = Vector2(1000, 600)
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CenterContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_fonts/normal_font = ExtResource("2_d4bap")
@@ -31,7 +28,7 @@ theme_override_font_sizes/normal_font_size = 80
 bbcode_enabled = true
 text = "[center]What The Witness?[/center]"
 
-[node name="RichTextLabel2" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
+[node name="RichTextLabel2" type="RichTextLabel" parent="CenterContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_fonts/normal_font = ExtResource("3_ukewc")
@@ -40,23 +37,23 @@ bbcode_enabled = true
 text = "A fan game of The Witness by Alith
 v1.05"
 
-[node name="StartButton" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="StartButton" type="Button" parent="CenterContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Start / Continue"
 
-[node name="SettingButton" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="SettingButton" type="Button" parent="CenterContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Options"
 
-[node name="CustomLevelButton" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="CustomLevelButton" type="Button" parent="CenterContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Custom Levels"
 
-[node name="CreditsButton" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="CreditsButton" type="Button" parent="CenterContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Credits"
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/SettingButton" to="." method="_on_SettingButton_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/CustomLevelButton" to="." method="_on_custom_level_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/CreditsButton" to="." method="_on_CreditsButton_pressed"]
+[connection signal="pressed" from="CenterContainer/MarginContainer/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="CenterContainer/MarginContainer/VBoxContainer/SettingButton" to="." method="_on_SettingButton_pressed"]
+[connection signal="pressed" from="CenterContainer/MarginContainer/VBoxContainer/CustomLevelButton" to="." method="_on_custom_level_button_pressed"]
+[connection signal="pressed" from="CenterContainer/MarginContainer/VBoxContainer/CreditsButton" to="." method="_on_CreditsButton_pressed"]

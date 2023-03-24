@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var custom_level_button = $MarginContainer/VBoxContainer/CustomLevelButton
+@onready var custom_level_button = $CenterContainer/MarginContainer/VBoxContainer/CustomLevelButton
 
 func _on_start_button_pressed():
 	get_tree().change_scene_to_file("res://warning_scene.tscn")
