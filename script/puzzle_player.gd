@@ -81,6 +81,7 @@ func resizable_wrap_mouse_position(pos):
 func _input(event):
 	if (not loaded):
 		return
+
 	if (event is InputEventMouseButton and event.is_pressed()):
 		var panel_start_pos = drawing_target.get_global_rect().position
 		var screen_position = event.position - panel_start_pos
@@ -112,21 +113,21 @@ func _input(event):
 			mouse_start_position = screen_position
 			is_drawing_solution = true
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	if (event is InputEventMouseMotion):
-		if (is_drawing_solution):
-			var split = 5
-			for i in range(split):
-				Gameplay.solution.try_continue_solution(Gameplay.puzzle,
-				event.relative * Visualizer.UPSAMPLING_FACTOR / Gameplay.canvas.view_scale / split)
-	if (event is InputEventKey):
-		if (not event.pressed):
-			return
-		if (event.keycode == KEY_ESCAPE):
-			back_to_menu()
-		elif (event.keycode == KEY_LEFT and left_arrow_button.visible):
-			_on_left_arrow_button_pressed()
-		elif (event.keycode == KEY_RIGHT and right_arrow_button.visible):
-			_on_right_arrow_button_pressed()
+	if (event is InputEventMouseMotion and is_drawing_solution):
+		const split = 5
+		for i in range(split):
+			Gameplay.solution.try_continue_solution(
+				Gameplay.puzzle,
+				event.relative * Visualizer.UPSAMPLING_FACTOR / Gameplay.canvas.view_scale / split,
+			)
+	if (event is InputEventKey and event.pressed):
+		match event.keycode:
+			KEY_ESCAPE:
+				back_to_menu()
+			KEY_LEFT:
+				_on_left_arrow_button_pressed()
+			KEY_RIGHT:
+				_on_right_arrow_button_pressed()
 
 
 func back_to_menu():
@@ -173,10 +174,12 @@ func _on_left_arrow_button_mouse_exited():
 	left_arrow_button.modulate = Color(left_arrow_button.modulate.r, left_arrow_button.modulate.g, left_arrow_button.modulate.b, 1.0)
 
 func _on_right_arrow_button_pressed():
-	switch_puzzle(Vector2i(1, 0))
+	if right_arrow_button.visible:
+		switch_puzzle(Vector2i(1, 0))
 
 func _on_left_arrow_button_pressed():
-	switch_puzzle(Vector2i(-1, 0))
+	if left_arrow_button.visible:
+		switch_puzzle(Vector2i(-1, 0))
 
 func hide_right_arrow_button():
 	_on_right_arrow_button_mouse_exited()
