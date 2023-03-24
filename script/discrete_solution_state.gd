@@ -1,6 +1,9 @@
 extends Node
 class_name DiscreteSolutionState
 
+const Puzzle = Graph.Puzzle
+const Vertex = Graph.Vertex
+
 var vertices: Array
 var event_properties: Array
 var solution_stage: Array
@@ -12,7 +15,7 @@ func _init():
 	event_properties = []
 	solution_stage = []
 
-func copy():
+func copy() -> DiscreteSolutionState:
 	var result = DiscreteSolutionState.new()
 	result.vertices = vertices.duplicate(true)
 	result.event_properties = event_properties.duplicate(true)
@@ -20,21 +23,21 @@ func copy():
 	result.start_way = start_way
 	return result
 
-func get_vertex_position(puzzle, way, id):
+func get_vertex_position(puzzle: Puzzle, way: int, id: int) -> Vector2:
 	return puzzle.vertices[vertices[way][id]].pos
 
-func get_end_position(puzzle, way):
+func get_end_position(puzzle: Puzzle, way: int) -> Vector2:
 	return puzzle.vertices[vertices[way][-1]].pos
 
-func get_end_vertex(puzzle, way):
+func get_end_vertex(puzzle: Puzzle, way: int) -> Vertex:
 	return puzzle.vertices[vertices[way][-1]]
 
-func is_retraction(_puzzle, main_way_vertex_id):
+func is_retraction(_puzzle, main_way_vertex_id: int) -> bool:
 	if (len(vertices[Solution.MAIN_WAY]) >= 2):
 		return main_way_vertex_id == vertices[Solution.MAIN_WAY][-2]
 	return false
 
-func transist(puzzle, main_way_vertex_id):
+func transist(puzzle: Puzzle, main_way_vertex_id: int) -> Array:
 	var limit = 1.0 + 1e-6
 	var main_way_pos = puzzle.vertices[main_way_vertex_id].pos
 	var blocked_by_boxes = false
@@ -174,7 +177,7 @@ func transist(puzzle, main_way_vertex_id):
 
 	return [new_state, limit]
 
-func __perform_push(puzzle, state, box_id, dir, occupied_vertices):
+func __perform_push(puzzle: Puzzle, state: DiscreteSolutionState, box_id: int, dir: Vector2, occupied_vertices: Array) -> bool:
 	var old_vertex_id = state.event_properties[box_id]
 	var old_box_position = puzzle.vertices[old_vertex_id].pos
 	var new_box_position = old_box_position + dir
@@ -182,39 +185,39 @@ func __perform_push(puzzle, state, box_id, dir, occupied_vertices):
 	if (new_vertex == null):
 		return false # out of bounds
 	if (new_vertex.index in occupied_vertices):
-		if (occupied_vertices[new_vertex.index] == 3): # recursive box-box pushing
-			for i in range(len(puzzle.decorators)):
-				if (puzzle.decorators[i].rule == 'box'):
-					var box_v = state.event_properties[i]
-					if (box_v == new_vertex.index):
-						if (!__perform_push(puzzle, state, i, dir, occupied_vertices)):
-							return false
-		else:
+		if (occupied_vertices[new_vertex.index] != 3):
 			return false
+		# recursive box-box pushing
+		for i in range(len(puzzle.decorators)):
+			if (puzzle.decorators[i].rule == 'box'):
+				var box_v = state.event_properties[i]
+				if (box_v == new_vertex.index):
+					if (!__perform_push(puzzle, state, i, dir, occupied_vertices)):
+						return false
 	# todo: update occupied vertices in case multiple pushes
 	state.event_properties[box_id] = new_vertex.index
 	return true
 
-func get_symmetry_point(puzzle, way, pos):
+func get_symmetry_point(puzzle: Puzzle, way: int, pos: Vector2) -> Vector2:
 	if (way == 0 or len(puzzle.symmetry_transforms) == 0):
 		return pos
 	return puzzle.symmetry_transforms[(way + start_way) % puzzle.n_ways].xform(
 		puzzle.symmetry_transforms[start_way].xform_inv(pos)
 	)
 
-func get_symmetry_vector(puzzle, way, vec):
+func get_symmetry_vector(puzzle: Puzzle, way: int, vec: Vector2) -> Vector2:
 	if (way == 0 or len(puzzle.symmetry_transforms) == 0):
 		return vec
 	return puzzle.symmetry_transforms[(way + start_way) % puzzle.n_ways].basis_xform(
 		puzzle.symmetry_transforms[start_way].basis_xform_inv(vec))
 
-func pos_to_vertex_id(puzzle, pos, eps=1e-3):
+func pos_to_vertex_id(puzzle: Puzzle, pos: Vector2, eps=1e-3) ->int:
 	for vertex in puzzle.vertices:
 		if (vertex.pos.distance_to(pos) < eps):
 			return vertex.index
 	return -1
 
-func get_nearest_start(puzzle, pos):
+func get_nearest_start(puzzle: Puzzle, pos: Vector2):
 	var best_dist = puzzle.start_size
 	var result = null
 	for vertex in puzzle.vertices:
@@ -225,7 +228,7 @@ func get_nearest_start(puzzle, pos):
 				best_dist = dist
 	return result
 
-func initialize(puzzle, pos):
+func initialize(puzzle: Puzzle, pos: Vector2) -> bool:
 	start_way = 0
 	while (start_way < puzzle.n_ways):
 		vertices.clear()
