@@ -76,7 +76,7 @@ func resizable_wrap_mouse_position(pos):
 	var additional_scale = current_window_size / Visualizer.initial_viewport_size
 	additional_scale = min(additional_scale.x, additional_scale.y)
 	var margin = (current_window_size - Visualizer.initial_viewport_size * additional_scale) / 2
-	Input.warp_mouse(pos * additional_scale + margin)
+	Input.warp_mouse(pos * additional_scale + Vector2(margin))
 
 func _input(event):
 	if (not loaded):
