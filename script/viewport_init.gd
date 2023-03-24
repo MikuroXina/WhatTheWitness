@@ -5,6 +5,7 @@ var drawing_controls
 
 func _ready():
 	drawing_controls = get_children()
+	$"../".texture = self
 
 func update_all():
 	for child in drawing_controls:
