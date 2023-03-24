@@ -44,13 +44,6 @@ func list_files(path):
 		files[file] = true
 
 func _ready():
-	line_map.add_layer(LAYER.LINE)
-	line_map.set_layer_name(LAYER.LINE, "line")
-	line_map.add_layer(LAYER.LIGHT)
-	line_map.set_layer_name(LAYER.LIGHT, "light")
-	line_map.add_layer(LAYER.GADGET)
-	line_map.set_layer_name(LAYER.GADGET, "gadget")
-
 	loading_cover.visible = true
 	# puzzle_placeholders.hide()
 	SaveData.load_all()
