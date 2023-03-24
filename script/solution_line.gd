@@ -10,6 +10,8 @@ var limit: float
 var validity = 0
 var vertices_occupied: Array
 
+const EPS = 1e-6
+
 func det(v1, v2):
 	return v1.x * v2.y - v2.x * v1.y
 
@@ -22,8 +24,7 @@ func try_start_solution_at(puzzle, pos):
 		state_stack.clear()
 		state_stack.push_back(state)
 		return true
-	else:
-		return false
+	return false
 
 func is_completed(puzzle):
 	if (!started):
@@ -61,7 +62,7 @@ func get_current_way_position(puzzle, way):
 func try_continue_solution(puzzle, delta):
 	if (!started):
 		return
-	if (delta.length() < 1e-6):
+	if (delta.length() < EPS):
 		return
 	delta = delta * Gameplay.mouse_speed
 	var crossroad_vertex = state_stack[-1].get_end_vertex(puzzle, Solution.MAIN_WAY)
@@ -83,64 +84,64 @@ func try_continue_solution(puzzle, delta):
 			if (aligned_score > best_aligned_score):
 				chosen_edge = [edge, target_vertex, edge_dir]
 				best_aligned_score = aligned_score
-		if (chosen_edge != null):
-			var vertex_id = chosen_edge[1].index
-			if (state_stack[-1].is_retraction(puzzle, vertex_id)):
-				progress = 1.0 - 1e-6
-			else:
-				var new_state_with_limit = state_stack[-1].transist(puzzle, vertex_id)
-				var new_state = new_state_with_limit[0]
-				var new_limit = new_state_with_limit[1]
-				if (new_state != null):
-					state_stack.push_back(new_state)
-					limit = new_limit
-					progress = 1e-6
-				else:
-					progress = 1.0 - 1e-6
+		if (chosen_edge == null):
+			return
+		var vertex_id = chosen_edge[1].index
+		if (state_stack[-1].is_retraction(puzzle, vertex_id)):
+			progress = 1.0 - EPS
 		else:
-			return
-	if (len(state_stack) > 1):
-		var v1 = state_stack[-1].get_end_vertex(puzzle, Solution.MAIN_WAY)
-		var v2 = state_stack[-2].get_end_vertex(puzzle, Solution.MAIN_WAY)
-		var edge_vec = v1.pos - v2.pos
-		var edge_length = edge_vec.length()
-
-		# calculate new progress
-		var projected_length = edge_vec.normalized().dot(delta) / edge_length
-		var projected_det = det(edge_vec.normalized(), delta) / edge_length
-		var projected_progress = progress + projected_length
-		var encourage_extension = false
-		if (v1.is_attractor):
-			if (v2.is_attractor):
-				encourage_extension = progress > 0.5
+			var new_state_with_limit = state_stack[-1].transist(puzzle, vertex_id)
+			var new_state = new_state_with_limit[0]
+			var new_limit = new_state_with_limit[1]
+			if (new_state != null):
+				state_stack.push_back(new_state)
+				limit = new_limit
+				progress = EPS
 			else:
-				encourage_extension = true
-		if (encourage_extension):
-			if ([v2, v1] in puzzle.edge_turning_angles):
-				var angle = puzzle.edge_turning_angles[[v2, v1]][1 if projected_det < 0 else 0]
-				# print('encourage ', angle, ' to add ', projected_det / tan(angle / 2))
-				projected_progress -= projected_det / tan(angle / 2 - 1e-6) * 0.5
-		else: # discourage extension
-			if ([v1, v2] in puzzle.edge_turning_angles):
-				var angle = puzzle.edge_turning_angles[[v1, v2]][1 if projected_det > 0 else 0]
-				# print('discourage ', angle, ' to minus ', projected_det / tan(angle / 2))
-				projected_progress -= projected_det / tan(angle / 2 - 1e-6) * 0.5
-		if (projected_progress <= 0.0):
-			state_stack.pop_back()
-			limit = 1.0 + 1e-6
-			progress = 1.0 - 1e-6
-			return
-		if (projected_progress >= limit):
-			projected_progress = limit
+				progress = 1.0 - EPS
 
-		var projected_position = v1.pos * projected_progress + v2.pos * (1 - projected_progress)
-		var ok = true
-		for decorator in puzzle.decorators:
-			if (decorator.rule == 'filament-start'):
-				var filament_percentage = decorator.filament_solution.try_continue_solution(decorator.nails, projected_position - decorator.filament_solution.end_pos)
-				projected_progress = (projected_progress - progress) * filament_percentage + progress
-		if (ok):
-			progress = projected_progress
+	if (len(state_stack) <= 1):
+		return
+
+	var v1 = state_stack[-1].get_end_vertex(puzzle, Solution.MAIN_WAY)
+	var v2 = state_stack[-2].get_end_vertex(puzzle, Solution.MAIN_WAY)
+	var edge_vec = v1.pos - v2.pos
+	var edge_length = edge_vec.length()
+
+	# calculate new progress
+	var projected_length = edge_vec.normalized().dot(delta) / edge_length
+	var projected_det = det(edge_vec.normalized(), delta) / edge_length
+	var projected_progress = progress + projected_length
+	var encourage_extension = false
+	if (v1.is_attractor):
+		if (v2.is_attractor):
+			encourage_extension = progress > 0.5
+		else:
+			encourage_extension = true
+	if (encourage_extension):
+		if ([v2, v1] in puzzle.edge_turning_angles):
+			var angle = puzzle.edge_turning_angles[[v2, v1]][1 if projected_det < 0 else 0]
+			# print('encourage ', angle, ' to add ', projected_det / tan(angle / 2))
+			projected_progress -= projected_det / tan(angle / 2 - EPS) * 0.5
+	else: # discourage extension
+		if ([v1, v2] in puzzle.edge_turning_angles):
+			var angle = puzzle.edge_turning_angles[[v1, v2]][1 if projected_det > 0 else 0]
+			# print('discourage ', angle, ' to minus ', projected_det / tan(angle / 2))
+			projected_progress -= projected_det / tan(angle / 2 - EPS) * 0.5
+	if (projected_progress <= 0.0):
+		state_stack.pop_back()
+		limit = 1.0 + EPS
+		progress = 1.0 - EPS
+		return
+	if (projected_progress >= limit):
+		projected_progress = limit
+
+	var projected_position = v1.pos * projected_progress + v2.pos * (1 - projected_progress)
+	for decorator in puzzle.decorators:
+		if (decorator.rule == 'filament-start'):
+			var filament_percentage = decorator.filament_solution.try_continue_solution(decorator.nails, projected_position - decorator.filament_solution.end_pos)
+			projected_progress = (projected_progress - progress) * filament_percentage + progress
+	progress = projected_progress
 
 
 func save_to_string(puzzle):
