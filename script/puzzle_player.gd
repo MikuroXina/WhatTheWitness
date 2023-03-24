@@ -2,14 +2,15 @@ extends Node2D
 
 var mouse_start_position = null
 var is_drawing_solution = false
-@onready var drawing_target: TextureRect = $MarginContainer/PuzzleRegion/PuzzleForeground
+@onready var drawing_target: TextureRect = $PanelContainer/CenterContainer/MarginContainer/PuzzleRegion/PuzzleForeground
 var level_map = null
-@onready var left_arrow_button = $LeftArrowButton
-@onready var right_arrow_button = $RightArrowButton
+@onready var left_arrow_button = $PanelContainer/CenterContainer/MarginContainer/LeftArrowButton
+@onready var right_arrow_button = $PanelContainer/CenterContainer/MarginContainer/RightArrowButton
 var menu_bar_button = null
 var puzzle_counter_text = null
 @onready var back_button = $BackButton
-@onready var viewport: PuzzleViewport = $MarginContainer/PuzzleRegion/PuzzleForeground/SubViewport
+@onready var viewport: PuzzleViewport = $PanelContainer/CenterContainer/MarginContainer/PuzzleRegion/PuzzleForeground/SubViewport
+@onready var back_rect = $PanelContainer/ColorRect
 var loaded = false
 var solver = null
 
@@ -45,7 +46,7 @@ func load_puzzle(puzzle_path):
 	Gameplay.canvas.normalize_view(viewport.size, 0.95, 0.8)
 	var back_color = Gameplay.puzzle.background_color
 	var front_color = Gameplay.puzzle.line_color
-	$ColorRect.color = back_color
+	back_rect.color = back_color
 	left_arrow_button.modulate = Color(front_color, left_arrow_button.modulate.a)
 	right_arrow_button.modulate = Color(front_color, right_arrow_button.modulate.a)
 	viewport.draw_background()
