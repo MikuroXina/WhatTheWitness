@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bkkfu678a08ls"]
+[gd_scene load_steps=10 format=3 uid="uid://bkkfu678a08ls"]
 
 [ext_resource type="Script" path="res://script/puzzle_player.gd" id="1"]
 [ext_resource type="Script" path="res://script/puzzle_additive_layer_renderer.gd" id="2"]
@@ -7,6 +7,9 @@
 [ext_resource type="Texture2D" uid="uid://8mamdlw062gp" path="res://img/cross.png" id="6"]
 [ext_resource type="Script" path="res://script/viewport_init.gd" id="7"]
 [ext_resource type="Script" path="res://script/puzzle_foreground_renderer.gd" id="8"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_n3fwb"]
+viewport_path = NodePath("MarginContainer/PuzzleRegion/PuzzleForeground/SubViewport")
 
 [sub_resource type="CanvasItemMaterial" id="2"]
 blend_mode = 1
@@ -20,19 +23,23 @@ offset_bottom = 600.0
 color = Color(0, 0, 0, 1)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
-offset_left = -2.24487
-offset_top = 2.24493
-offset_right = 1022.76
-offset_bottom = 604.245
+offset_right = 1025.0
+offset_bottom = 602.0
 
 [node name="PuzzleRegion" type="ColorRect" parent="MarginContainer"]
 layout_mode = 2
 color = Color(1, 1, 1, 0)
 
 [node name="PuzzleForeground" type="TextureRect" parent="MarginContainer/PuzzleRegion"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("ViewportTexture_n3fwb")
+expand_mode = 1
+stretch_mode = 2
 
 [node name="SubViewport" type="SubViewport" parent="MarginContainer/PuzzleRegion/PuzzleForeground"]
 transparent_bg = true
