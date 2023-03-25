@@ -65,8 +65,8 @@ class PuzzleCanvas:
 		var rect = Rect2(origin - screen_size / 2, screen_size)
 		drawing_target.draw_texture_rect(texture, rect, false, color if override_color == null else override_color)
 
-	func add_polygon(pos_list: Array, color: Color):
-		var result_list = []
+	func add_polygon(pos_list: PackedVector2Array, color: Color):
+		var result_list = PackedVector2Array()
 		for pos in pos_list:
 			result_list.push_back(pos * view_scale)
 		# drawing_target.draw_polygon(result_list, PackedColorArray([color if override_color == null else override_color]), [], null, null, true)

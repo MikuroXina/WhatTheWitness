@@ -201,8 +201,8 @@ func __perform_push(puzzle: Puzzle, state: DiscreteSolutionState, box_id: int, d
 func get_symmetry_point(puzzle: Puzzle, way: int, pos: Vector2) -> Vector2:
 	if (way == 0 or len(puzzle.symmetry_transforms) == 0):
 		return pos
-	return puzzle.symmetry_transforms[(way + start_way) % puzzle.n_ways].xform(
-		puzzle.symmetry_transforms[start_way].xform_inv(pos)
+	return puzzle.symmetry_transforms[(way + start_way) % puzzle.n_ways].basis_xform(
+		puzzle.symmetry_transforms[start_way].basis_xform_inv(pos)
 	)
 
 func get_symmetry_vector(puzzle: Puzzle, way: int, vec: Vector2) -> Vector2:
