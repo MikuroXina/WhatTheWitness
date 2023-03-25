@@ -51,6 +51,7 @@ limits/debugger/max_chars_per_second=20480
 
 [rendering]
 
+textures/vram_compression/import_s3tc_bptc=true
 textures/vram_compression/import_etc2_astc=false
 environment/defaults/default_clear_color=Color(0.0823529, 0.0823529, 0.0823529, 1)
 environment/defaults/default_environment="res://default_env.tres"
