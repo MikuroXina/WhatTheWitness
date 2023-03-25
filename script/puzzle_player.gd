@@ -84,9 +84,8 @@ func _input(event):
 
 	if (event is InputEventMouseButton and event.is_pressed()):
 		var panel_start_pos = drawing_target.get_global_rect().position
-		var screen_position = event.position - panel_start_pos
+		var screen_position = event.global_position - panel_start_pos
 		var puzzle_world_mouse = Gameplay.canvas.screen_to_world(screen_position)
-		print("Clicked:", puzzle_world_mouse)
 		if (is_drawing_solution):
 			if (Gameplay.solution.is_completed(Gameplay.puzzle)):
 				Gameplay.solution.progress = 1.0

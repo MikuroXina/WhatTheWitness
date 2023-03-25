@@ -1,6 +1,6 @@
 extends Node
 
-const UPSAMPLING_FACTOR = 2
+const UPSAMPLING_FACTOR = 1
 const Puzzle = Graph.Puzzle
 const Validator = preload("validation.gd").Validator
 
