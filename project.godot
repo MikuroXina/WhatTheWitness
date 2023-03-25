@@ -28,7 +28,6 @@ Solver="*res://script/solver.gd"
 Gameplay="*res://script/gameplay.gd"
 Graph="*res://script/graph.gd"
 LaserJudger="*res://script/judgers/laser_judger.gd"
-CSPSolver="*res://script/judgers/CSPSolver.cs"
 Validation="*res://script/validation.gd"
 BasicJudgers="*res://script/judgers/basic_judgers.gd"
 

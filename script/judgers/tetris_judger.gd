@@ -1,5 +1,7 @@
 extends Node
 
+const CSPSolver = preload("CSPSolver.cs")
+
 
 func det(v1, v2):
 	return v1.x * v2.y - v2.x * v1.y
@@ -107,7 +109,7 @@ func judge_csp(validator, region: Validation.Region, fill: bool, weak: bool):
 					n_id += 1
 			clauses.append(shape_clause)
 
-	var solver = CSPSolver
+	var solver = CSPSolver.new()
 	solver.Clear()
 	for clause in clauses:
 		# print('Add clause:', clause)
@@ -118,14 +120,14 @@ func judge_csp(validator, region: Validation.Region, fill: bool, weak: bool):
 	return result
 
 func solver_test():
-	var solver = CSPSolver
+	var solver = CSPSolver.new()
 	solver.Clear()
 	solver.AddClause({0: 1, 1: 1, 2: -1}, 2)
 	print(solver.Satisfiable())
 	solver.PrintSolution()
 	# solution: [1, 1, 0]
 
-	solver = CSPSolver
+	solver = CSPSolver.new()
 	solver.Clear()
 	solver.AddClause({2: 1, 4: 1}, 1)
 	solver.AddClause({3: 1, 5: 1}, 1)
