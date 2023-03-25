@@ -2,14 +2,14 @@ extends Node
 
 const UPSAMPLING_FACTOR = 2
 const Puzzle = Graph.Puzzle
+const Validator = preload("validation.gd").Validator
 
 @onready var initial_viewport_size = get_viewport().size
 @onready var initial_window_size = get_window().size
 
 
 class PuzzleCanvas:
-
-	var drawing_target
+	var drawing_target: Control
 	var view_scale = 100.0
 	var view_origin = Vector2(200, 300)
 
@@ -17,7 +17,7 @@ class PuzzleCanvas:
 	var override_color = null
 	var canvas_size = null
 
-	func normalize_view(new_canvas_size):
+	func normalize_view(new_canvas_size: Vector2):
 		const CANVAS_MARGIN = 0.9
 		const PUZZLE_BORDER = 0.8
 
@@ -39,16 +39,16 @@ class PuzzleCanvas:
 		)
 		view_origin = Vector2(canvas_size) / 2 - Vector2(max_x + min_x, max_y + min_y) * view_scale / 2
 
-	func add_circle(pos, radius, color):
+	func add_circle(pos: Vector2, radius: float, color: Color):
 		# drawing_target.draw_circle(pos * view_scale, radius * view_scale - 0.5, color if override_color == null else override_color)
 		# drawing_target.draw_arc(pos * view_scale, radius / 2 * view_scale, 0.0, 2 * PI, 64, color if override_color == null else override_color, radius / 2 * view_scale, true)
 		drawing_target.draw_circle(pos * view_scale, radius * view_scale, color if override_color == null else override_color)
 
-	func add_line(pos1, pos2, width, color):
+	func add_line(pos1: Vector2, pos2: Vector2, width: float, color: Color):
 		# drawing_target.draw_line(pos1 * view_scale,pos2 * view_scale,color if override_color == null else override_color,width * view_scale)
 		drawing_target.draw_line(pos1 * view_scale, pos2 * view_scale, color if override_color == null else override_color, width * view_scale)
 
-	func add_gradient_lines(pos_list, width, colors):
+	func add_gradient_lines(pos_list: Array, width: float, colors: PackedColorArray):
 		var result_list = []
 		for pos in pos_list:
 			result_list.push_back(pos * view_scale)
@@ -56,26 +56,26 @@ class PuzzleCanvas:
 			colors if override_color == null else PackedColorArray([override_color]),
 			width * view_scale)
 
-	func add_rect(pos1, pos2, color):
+	func add_rect(pos1: Vector2, pos2: Vector2, color: Color):
 		drawing_target.draw_line(Vector2((pos1.x + pos2.x) / 2, pos1.y) * view_scale, Vector2((pos1.x + pos2.x) / 2, pos2.y) * view_scale, color if override_color == null else override_color, (pos2.x - pos1.x) * view_scale)
 
-	func add_texture(center, size, texture, color):
+	func add_texture(center: Vector2, size: Vector2, texture: Texture, color: Color):
 		var origin = center * view_scale
 		var screen_size = size * view_scale
 		var rect = Rect2(origin - screen_size / 2, screen_size)
 		drawing_target.draw_texture_rect(texture, rect, false, color if override_color == null else override_color)
 
-	func add_polygon(pos_list, color):
+	func add_polygon(pos_list: Array, color: Color):
 		var result_list = []
 		for pos in pos_list:
 			result_list.push_back(pos * view_scale)
 		# drawing_target.draw_polygon(result_list, PackedColorArray([color if override_color == null else override_color]), [], null, null, true)
 		drawing_target.draw_polygon(result_list, PackedColorArray([color if override_color == null else override_color]))
 
-	func screen_to_world(position):
+	func screen_to_world(position: Vector2) -> Vector2:
 		return (position * UPSAMPLING_FACTOR - view_origin) / view_scale
 
-	func draw_puzzle(target):
+	func draw_puzzle(target: Control):
 		if (canvas_size == null):
 			return
 		drawing_target = target
@@ -97,7 +97,7 @@ class PuzzleCanvas:
 		for decorator in current_puzzle.decorators:
 			decorator.draw_foreground(self, null, -1, current_puzzle)
 
-	func draw_validation(target, puzzle, validator, time):
+	func draw_validation(target: Control, puzzle: Puzzle, validator: Validator, time: float):
 		if (validator == null): # unknown
 			return
 		var error_transparency = (sin(time * 6 + PI / 4) + 1) / 2
@@ -136,13 +136,13 @@ class PuzzleCanvas:
 
 		override_color = null
 
-	func draw_additive_layer(target, solution):
+	func draw_additive_layer(target: Control, solution: SolutionLine):
 		drawing_target = target
 		drawing_target.draw_set_transform(view_origin, 0.0, Vector2(1.0, 1.0))
 		for i in range(len(current_puzzle.decorators)):
 			current_puzzle.decorators[i].draw_additive_layer(self, i, -1, current_puzzle, solution)
 
-	func draw_solution(target, solution, validator, time):
+	func draw_solution(target: Control, solution: SolutionLine, validator: Validator, time: float):
 		drawing_target = target
 		drawing_target.draw_set_transform(view_origin, 0.0, Vector2(1.0, 1.0))
 		for i in range(len(current_puzzle.decorators)):
