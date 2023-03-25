@@ -149,6 +149,8 @@ func try_continue_solution(puzzle: Puzzle, mouse_delta: Vector2):
 	var edge_vec = v1.pos - v2.pos
 
 	var projected_progress = __calculate_new_progress(puzzle, delta, edge_vec, v1, v2)
+	if (projected_progress <= 0.0):
+		return
 
 	var projected_position = v1.pos * projected_progress + v2.pos * (1 - projected_progress)
 	for decorator in puzzle.decorators:
