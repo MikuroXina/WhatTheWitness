@@ -17,7 +17,10 @@ class PuzzleCanvas:
 	var override_color = null
 	var canvas_size = null
 
-	func normalize_view(new_canvas_size, canvas_margin = 0.9, puzzle_border = 0.8):
+	func normalize_view(new_canvas_size):
+		const CANVAS_MARGIN = 0.9
+		const PUZZLE_BORDER = 0.8
+
 		if (len(current_puzzle.vertices) == 0):
 			return
 		var min_x = current_puzzle.vertices[0].pos.x
@@ -31,10 +34,10 @@ class PuzzleCanvas:
 			min_y = min(min_y, vertex.pos.y)
 		canvas_size = new_canvas_size
 		view_scale = min(
-			canvas_size.x * canvas_margin / (max_x - min_x + puzzle_border),
-			canvas_size.y * canvas_margin / (max_y - min_y + puzzle_border)
+			canvas_size.x * CANVAS_MARGIN / (max_x - min_x + PUZZLE_BORDER),
+			canvas_size.y * CANVAS_MARGIN / (max_y - min_y + PUZZLE_BORDER),
 		)
-		view_origin = Vector2(canvas_size) / 2 - Vector2((max_x + min_x) / 2, (max_y + min_y) / 2) * view_scale
+		view_origin = Vector2(canvas_size) / 2 - Vector2(max_x + min_x, max_y + min_y) * view_scale / 2
 
 	func add_circle(pos, radius, color):
 		# drawing_target.draw_circle(pos * view_scale, radius * view_scale - 0.5, color if override_color == null else override_color)

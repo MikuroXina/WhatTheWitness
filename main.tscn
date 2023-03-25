@@ -46,12 +46,12 @@ color = Color(1, 1, 1, 0)
 
 [node name="SubViewport" type="SubViewport" parent="PanelContainer/CenterContainer/MarginContainer/PuzzleRegion"]
 transparent_bg = true
-size = Vector2i(1440, 1200)
+size = Vector2i(500, 500)
 render_target_update_mode = 4
 script = ExtResource("7")
 
 [node name="MixLayer" type="Control" parent="PanelContainer/CenterContainer/MarginContainer/PuzzleRegion/SubViewport"]
-custom_minimum_size = Vector2(1440, 1200)
+custom_minimum_size = Vector2(500, 500)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1440.0
@@ -60,7 +60,7 @@ script = ExtResource("8")
 
 [node name="AddLayer" type="Control" parent="PanelContainer/CenterContainer/MarginContainer/PuzzleRegion/SubViewport"]
 material = SubResource("2")
-custom_minimum_size = Vector2(1440, 1200)
+custom_minimum_size = Vector2(500, 500)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 1440.0
@@ -71,7 +71,6 @@ script = ExtResource("2")
 layout_mode = 0
 offset_right = 500.0
 offset_bottom = 500.0
-expand_mode = 1
 stretch_mode = 5
 script = ExtResource("6_scaab")
 
