@@ -1,3 +1,4 @@
+class_name TetrisDecorator
 extends "../decorator.gd"
 
 var rule = 'tetris'
