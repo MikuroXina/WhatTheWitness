@@ -134,7 +134,7 @@ class Puzzle:
 					vertice_region_neighbors[v_det].append(v_facet)
 
 
-func push_vertex_vec(puzzle, pos, hidden=false):
+func push_vertex_vec(puzzle: Puzzle, pos: Vector2, hidden=false):
 	var result = len(puzzle.vertices)
 	var vertex = Vertex.new(pos.x, pos.y)
 	vertex.hidden = hidden
@@ -142,14 +142,14 @@ func push_vertex_vec(puzzle, pos, hidden=false):
 	puzzle.vertices.push_back(vertex)
 	return result
 
-func push_edge_idx(puzzle, idx1, idx2):
+func push_edge_idx(puzzle: Puzzle, idx1: int, idx2: int) -> Edge:
 	var edge = Edge.new(puzzle.vertices[idx1], puzzle.vertices[idx2])
 	edge.start_index = idx1
 	edge.end_index = idx2
 	puzzle.edges.push_back(edge)
 	return edge
 
-func __get_raw_element_center(puzzle, raw_element, element_type, id):
+func __get_raw_element_center(puzzle: Puzzle, raw_element: Dictionary, element_type: Element, id: int) -> Vector2:
 	match element_type:
 		Element.EDGE:
 			var v1 = int(raw_element['Start'])
@@ -164,26 +164,27 @@ func __get_raw_element_center(puzzle, raw_element, element_type, id):
 			for raw_face_node in raw_element['Nodes']['_arr']:
 				center += puzzle.vertices[int(raw_face_node)].pos
 			return center / len(raw_element['Nodes']['_arr'])
+	return Vector2()
 
 
-func __match_decorator(raw_decorator, xsi_type) -> Dictionary:
+func __match_decorator(raw_decorator: Dictionary, xsi_type: String) -> Array:
 	if (raw_decorator['xsi:type'] == xsi_type):
 		raw_decorator['__consumed'] = true
-		return raw_decorator
+		return [true, raw_decorator]
 	if (raw_decorator['xsi:type'] == 'CombinedDecorator'):
 		var first = __match_decorator(raw_decorator['First'], xsi_type)
-		if (first != null):
+		if (first[0]):
 			return first
 		return __match_decorator(raw_decorator['Second'], xsi_type)
-	return Dictionary()
+	return [false]
 
-func __find_decorator(raw_element, xsi_type) -> Dictionary:
+func __find_decorator(raw_element: Dictionary, xsi_type: String) -> Array:
 	if ('Decorator' in raw_element):
 		var raw_decorator = raw_element['Decorator']
 		return __match_decorator(raw_decorator, xsi_type)
-	return Dictionary()
+	return [false]
 
-func __check_decorator_consumed(raw_decorator, element_type):
+func __check_decorator_consumed(raw_decorator: Dictionary, element_type: Element):
 	if (raw_decorator['xsi:type'] == 'CombinedDecorator'):
 		__check_decorator_consumed(raw_decorator['First'], element_type)
 		__check_decorator_consumed(raw_decorator['Second'], element_type)
@@ -200,26 +201,27 @@ const MYOPIA_TEXTS = {'\u4E0A': Vector2(0, -1), '\u4E0B': Vector2(0, 1), '\u5DE6
 	'8': Vector2(0, -1), '2': Vector2(0, 1), '4': Vector2(-1, 0), '6': Vector2(1, 0),
 	'7': Vector2(-1, -1), '9': Vector2(1, -1), '1': Vector2(-1, 1), '3': Vector2(1, 1),}
 
-func __add_decorator(puzzle, raw_element, v):
+func __add_decorator(puzzle: Puzzle, raw_element: Dictionary, v: int):
 	var has_plus_text = false
 	var has_circle_text = false
 	var boxed_decorator = false
 	var end_decorator = __find_decorator(raw_element, "EndDecorator")
-	if (end_decorator.size() != 0):
-		var end_length = float(end_decorator['Length'])
-		var end_angle = deg_to_rad(float(end_decorator['Angle']))
+	if (end_decorator[0]):
+		var end_length = float(end_decorator[1]['Length'])
+		var end_angle = deg_to_rad(float(end_decorator[1]['Angle']))
 		var p_end = puzzle.vertices[v].pos + Vector2(cos(end_angle), sin(end_angle)) * end_length
 		var v_end = push_vertex_vec(puzzle, p_end)
 		push_edge_idx(puzzle, v, v_end)
 		puzzle.vertices[v_end].is_attractor = true
 		puzzle.vertices[v].is_attractor = true
 		puzzle.vertices[v_end].is_puzzle_end = true
-	if (__find_decorator(raw_element, "BoxDecorator")):
+	if (__find_decorator(raw_element, "BoxDecorator")[0]):
 		boxed_decorator = true
-	if (__find_decorator(raw_element, "StartDecorator")):
+	if (__find_decorator(raw_element, "StartDecorator")[0]):
 		puzzle.vertices[v].is_puzzle_start = true
 	var text_decorator = __find_decorator(raw_element, "TextDecorator")
-	if (text_decorator.size() != 0):
+	if (text_decorator[0]):
+		text_decorator = text_decorator[1]
 		if (text_decorator['Text'] == 'Obs'):
 			var decorator = preload('res://script/decorators/obstacle_decorator.gd').new()
 			decorator.center = puzzle.vertices[v].pos
@@ -435,57 +437,57 @@ func __add_decorator(puzzle, raw_element, v):
 		else:
 			print('Unknown text decorator %s' % text_decorator['Text'])
 	var triangle_decorator = __find_decorator(raw_element, "TriangleDecorator")
-	if (triangle_decorator.size() != 0):
+	if (triangle_decorator[0]):
 		var decorator = preload('res://script/decorators/triangle_decorator.gd').new()
-		decorator.color = color(triangle_decorator['Color'])
-		decorator.count = int(triangle_decorator['Count'])
+		decorator.color = color(triangle_decorator[1]['Color'])
+		decorator.count = int(triangle_decorator[1]['Count'])
 		puzzle.vertices[v].decorator = decorator
 	var arrow_decorator = __find_decorator(raw_element, "ArrowDecorator")
-	if (arrow_decorator.size() != 0):
+	if (arrow_decorator[0]):
 		var decorator = preload('res://script/decorators/arrow_decorator.gd').new()
-		decorator.color = color(arrow_decorator['Color'])
-		decorator.count = int(arrow_decorator['Count'])
-		decorator.angle = deg_to_rad(float(arrow_decorator['Angle']))
+		decorator.color = color(arrow_decorator[1]['Color'])
+		decorator.count = int(arrow_decorator[1]['Count'])
+		decorator.angle = deg_to_rad(float(arrow_decorator[1]['Angle']))
 		puzzle.vertices[v].decorator = decorator
 	var star_decorator = __find_decorator(raw_element, "StarDecorator")
-	if (star_decorator.size() != 0):
+	if (star_decorator[0]):
 		var decorator = preload('res://script/decorators/star_decorator.gd').new()
-		decorator.color = color(star_decorator['Color'])
+		decorator.color = color(star_decorator[1]['Color'])
 		puzzle.vertices[v].decorator = decorator
 	var square_decorator = __find_decorator(raw_element, "SquareDecorator")
-	if (square_decorator.size() != 0):
+	if (square_decorator[0]):
 		var decorator = preload('res://script/decorators/square_decorator.gd').new()
-		decorator.color = color(square_decorator['Color'])
+		decorator.color = color(square_decorator[1]['Color'])
 		puzzle.vertices[v].decorator = decorator
 	var circle_decorator = __find_decorator(raw_element, "CircleDecorator")
-	if (circle_decorator.size() != 0):
+	if (circle_decorator[0]):
 		var decorator = preload('res://script/decorators/circle_decorator.gd').new()
-		decorator.color = color(circle_decorator['Color'])
+		decorator.color = color(circle_decorator[1]['Color'])
 		puzzle.vertices[v].decorator = decorator
 	var ring_decorator = __find_decorator(raw_element, "RingDecorator")
-	if (ring_decorator.size() != 0):
+	if (ring_decorator[0]):
 		var decorator = preload('res://script/decorators/ring_decorator.gd').new()
-		decorator.color = color(ring_decorator['Color'])
+		decorator.color = color(ring_decorator[1]['Color'])
 		puzzle.vertices[v].decorator = decorator
 	var eliminator_decorator = __find_decorator(raw_element, "EliminatorDecorator")
-	if (eliminator_decorator.size() != 0):
+	if (eliminator_decorator[0]):
 		if (puzzle.vertices[v].is_puzzle_start):
 			var decorator = preload('res://script/decorators/all_error_decorator.gd').new()
 			decorator.color = color(text_decorator['Color'])
 			puzzle.vertices[v].decorator = decorator
 		else:
 			var decorator = preload('res://script/decorators/eliminator_decorator.gd').new()
-			decorator.color = color(eliminator_decorator['Color'])
+			decorator.color = color(eliminator_decorator[1]['Color'])
 			puzzle.vertices[v].decorator = decorator
 	var tetris_decorator = __find_decorator(raw_element, "TetrisDecorator")
-	if (tetris_decorator.size() != 0):
-		var decorator = __load_tetris(tetris_decorator, false)
+	if (tetris_decorator[0]):
+		var decorator = __load_tetris(tetris_decorator[1], false)
 		decorator.is_multi = has_plus_text
 		decorator.is_weak = has_circle_text
 		puzzle.vertices[v].decorator = decorator
 	var hollow_tetris_decorator = __find_decorator(raw_element, "HollowTetrisDecorator")
-	if (hollow_tetris_decorator.size() != 0):
-		var decorator = __load_tetris(hollow_tetris_decorator, true)
+	if (hollow_tetris_decorator[0]):
+		var decorator = __load_tetris(hollow_tetris_decorator[1], true)
 		decorator.is_multi = has_plus_text
 		decorator.is_weak = has_circle_text
 		puzzle.vertices[v].decorator = decorator
@@ -500,21 +502,21 @@ func __add_decorator(puzzle, raw_element, v):
 		puzzle.decorators.append(decorator)
 		puzzle.vertices[v].decorator = preload("res://script/decorators/no_decorator.gd").new()
 	var point_decorator = __find_decorator(raw_element, "PointDecorator")
-	if (point_decorator.size() != 0):
-		var extra_scale = float(point_decorator['ExtraScale'])
+	if (point_decorator[0]):
+		var extra_scale = float(point_decorator[1]['ExtraScale'])
 		if (extra_scale > 1.9):
 			puzzle.vertices[v].decorator = preload('res://script/decorators/big_point_decorator.gd').new()
 		else:
 			puzzle.vertices[v].decorator = preload('res://script/decorators/point_decorator.gd').new()
-		puzzle.vertices[v].decorator.color = color(point_decorator['Color'])
+		puzzle.vertices[v].decorator.color = color(point_decorator[1]['Color'])
 	var self_intersection_decorator = __find_decorator(raw_element, "SelfIntersectionDecorator")
-	if (self_intersection_decorator.size() != 0):
+	if (self_intersection_decorator[0]):
 		puzzle.vertices[v].decorator = preload('res://script/decorators/self_intersection_decorator.gd').new()
-		puzzle.vertices[v].decorator.color1 = color(self_intersection_decorator['Color1'])
-		puzzle.vertices[v].decorator.color2 = color(self_intersection_decorator['Color2'])
+		puzzle.vertices[v].decorator.color1 = color(self_intersection_decorator[1]['Color1'])
+		puzzle.vertices[v].decorator.color2 = color(self_intersection_decorator[1]['Color2'])
 
 
-func __load_tetris(raw_decorator, is_hollow):
+func __load_tetris(raw_decorator: Dictionary, is_hollow: bool) -> TetrisDecorator:
 	var shapes = []
 	var min_x = INF
 	var max_x = -INF
@@ -544,21 +546,23 @@ func __load_tetris(raw_decorator, is_hollow):
 	decorator.angle = deg_to_rad(float(raw_decorator['Angle']))
 	return decorator
 
-func add_element(puzzle, raw_element, element_type: Element, id=-1):
-	var symmetry_decorator = __find_decorator(raw_element, "ThreeWayPuzzleDecorator")
-	if (symmetry_decorator):
+func add_element(puzzle: Puzzle, raw_element: Dictionary, element_type: Element, id=-1):
+	var three_way_decorator = __find_decorator(raw_element, "ThreeWayPuzzleDecorator")
+	if (three_way_decorator[0]):
+		three_way_decorator = three_way_decorator[1]
 		puzzle.n_ways = 3
 		var symmetry_center = __get_raw_element_center(puzzle, raw_element, element_type, id)
-		symmetry_center += Vector2(float(symmetry_decorator['DeltaX']), float(symmetry_decorator['DeltaY']))
+		symmetry_center += Vector2(float(three_way_decorator['DeltaX']), float(three_way_decorator['DeltaY']))
 		puzzle.symmetry_transforms = [
 			Transform2D.IDENTITY,
 				Transform2D(0, symmetry_center) * Transform2D(2 * PI / 3, Vector2.ZERO) * Transform2D(0, -symmetry_center),
 				Transform2D(0, symmetry_center) * Transform2D(4 * PI / 3, Vector2.ZERO) * Transform2D(0, -symmetry_center),
 		]
-		puzzle.solution_colors.push_back(color(symmetry_decorator['SecondLineColor']))
-		puzzle.solution_colors.push_back(color(symmetry_decorator['ThirdLineColor']))
-	symmetry_decorator = __find_decorator(raw_element, "SymmetryPuzzleDecorator")
-	if (symmetry_decorator):
+		puzzle.solution_colors.push_back(color(three_way_decorator['SecondLineColor']))
+		puzzle.solution_colors.push_back(color(three_way_decorator['ThirdLineColor']))
+	var symmetry_decorator = __find_decorator(raw_element, "SymmetryPuzzleDecorator")
+	if (symmetry_decorator[0]):
+		symmetry_decorator = symmetry_decorator[1]
 		var is_rotational = symmetry_decorator['IsRotational']
 		assert(is_rotational in ['true', 'false'])
 		puzzle.n_ways = 2
@@ -578,14 +582,15 @@ func add_element(puzzle, raw_element, element_type: Element, id=-1):
 			]
 		# puzzle.symmetry_normal = Vector2(-sin(symmetry_angle), cos(symmetry_angle))
 		puzzle.solution_colors.push_back(color(symmetry_decorator['SecondLineColor']))
-	symmetry_decorator = __find_decorator(raw_element, "ParallelPuzzleDecorator")
-	if (symmetry_decorator):
+	var parallel_decorator = __find_decorator(raw_element, "ParallelPuzzleDecorator")
+	if (parallel_decorator[0]):
+		parallel_decorator = parallel_decorator[1]
 		puzzle.n_ways = 2
 		puzzle.symmetry_transforms = [
 			Transform2D.IDENTITY,
-			Transform2D(0, Vector2(float(symmetry_decorator['TranslationX']), float(symmetry_decorator['TranslationY'])))
+			Transform2D(0, Vector2(float(parallel_decorator['TranslationX']), float(parallel_decorator['TranslationY'])))
 		]
-		puzzle.solution_colors.push_back(color(symmetry_decorator['SecondLineColor']))
+		puzzle.solution_colors.push_back(color(parallel_decorator['SecondLineColor']))
 	match element_type:
 		Element.EDGE:
 			var v1 = int(raw_element['Start'])
@@ -639,7 +644,7 @@ func add_element(puzzle, raw_element, element_type: Element, id=-1):
 		var raw_decorator = raw_element['Decorator']
 		__check_decorator_consumed(raw_decorator, element_type)
 
-func load_from_xml(file, preview_only=false) -> Puzzle:
+func load_from_xml(file: String, preview_only=false) -> Puzzle:
 	if ('<' in file and '>' in file):
 		var pos1 = file.find('<')
 		var pos2 = file.find('>')
