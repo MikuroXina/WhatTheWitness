@@ -606,7 +606,7 @@ func add_element(puzzle: Puzzle, raw_element: Dictionary, element_type: Element,
 			push_edge_idx(puzzle, v2, v_mid)
 			__add_decorator(puzzle, raw_element, v_mid)
 
-			if (__find_decorator(raw_element, "BrokenDecorator")):
+			if (__find_decorator(raw_element, "BrokenDecorator")[0]):
 				puzzle.vertices[v_mid].decorator = preload('res://script/decorators/broken_decorator.gd').new()
 				puzzle.vertices[v_mid].decorator.direction = (p2 - p1) * (0.25 - puzzle.line_width / (2 * p2.distance_to(p1)))
 			puzzle.edge_detector_node[[v1, v2]] = v_mid
