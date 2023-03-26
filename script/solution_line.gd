@@ -193,9 +193,10 @@ static func load_from_string(string: String, puzzle: Puzzle) -> SolutionLine:
 	state.event_properties = []
 	var event_result = event_string.split('|')
 	for i in range(len(puzzle.decorators)):
-		state.event_properties.append(puzzle.decorators[i].string_to_property(event_result[i]))
-	for i in range(len(puzzle.decorators)):
-		puzzle.decorators[i].post_load_state(puzzle, state)
+		if i < event_result.size():
+			state.event_properties.append(puzzle.decorators[i].string_to_property(event_result[i]))
+	for decorator in puzzle.decorators:
+		decorator.post_load_state(puzzle, state)
 
 	var solution = SolutionLine.new()
 	solution.started = true
