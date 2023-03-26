@@ -177,7 +177,7 @@ func transist(puzzle: Puzzle, main_way_vertex_id: int) -> Array:
 
 	return [new_state, limit]
 
-func __perform_push(puzzle: Puzzle, state: DiscreteSolutionState, box_id: int, dir: Vector2, occupied_vertices: Array) -> bool:
+func __perform_push(puzzle: Puzzle, state: DiscreteSolutionState, box_id: int, dir: Vector2, occupied_vertices: Dictionary) -> bool:
 	var old_vertex_id = state.event_properties[box_id]
 	var old_box_position = puzzle.vertices[old_vertex_id].pos
 	var new_box_position = old_box_position + dir
