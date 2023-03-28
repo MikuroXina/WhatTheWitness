@@ -17,7 +17,7 @@ const FULL_AUTHORS = {
 func get_full_credit(puzzle_name: String) -> String:
 	if puzzle_name.ends_with('.wit'):
 		puzzle_name = puzzle_name.substr(0, len(puzzle_name) - 4)
-	if !('-' in puzzle_name):
+	if not ('-' in puzzle_name):
 		return puzzle_name
 
 	var pos = puzzle_name.find('-')

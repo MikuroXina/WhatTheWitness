@@ -34,7 +34,7 @@ const DIR_Y = [0, -1, 0, 1]
 func list_files(path: String) -> Dictionary:
 	var files = {}
 	var dir = DirAccess.open(path)
-	if !dir:
+	if not dir:
 		print("failed to access to %s" % path)
 		return files
 	dir.list_dir_begin()
@@ -84,7 +84,7 @@ func _ready():
 	var total_placeholder_count = 0
 	for placeholder in placeholders:
 		var puzzle_file = placeholder.text + '.wit'
-		if !placeholder.text.begins_with('$') and puzzle_file in files:
+		if not placeholder.text.begins_with('$') and puzzle_file in files:
 			total_placeholder_count += 1
 	for placeholder in placeholders:
 		var puzzle_file = placeholder.text + '.wit'
@@ -156,7 +156,7 @@ func update_light(first_time=false):
 			var atlas = line_map.get_cell_atlas_coords(LAYER.LINE, pos)
 			line_map.set_cell(LAYER.LIGHT, pos, SOURCE.LIGHT, atlas)
 
-	while !stack.is_empty():
+	while not stack.is_empty():
 		var pos = stack.pop_back()
 		# print('Visiting ', pos)
 		var deltas = []
@@ -172,7 +172,7 @@ func update_light(first_time=false):
 				var non_activated_neighbor = 0
 				for dir2 in range(4):
 					var new_pos2 = new_pos + Vector2i(DIR_X[dir2], DIR_Y[dir2])
-					if (line_map.get_cell_source_id(LAYER.LINE, new_pos2) != -1 and !get_light_state(new_pos2)):
+					if (line_map.get_cell_source_id(LAYER.LINE, new_pos2) != -1 and not get_light_state(new_pos2)):
 						non_activated_neighbor += 1
 				if non_activated_neighbor == 1:
 					deltas.append(delta + get_gadget_direction(line_map, new_pos))
@@ -190,7 +190,7 @@ func update_light(first_time=false):
 	var puzzles_to_unlock = []
 	for puzzle_file in MenuData.puzzle_grid_pos:
 		var pos = MenuData.puzzle_grid_pos[puzzle_file]
-		if (UNLOCK_ALL_PUZZLES or get_light_state(pos)) and !MenuData.puzzle_preview_panels[puzzle_file].puzzle_unlocked:
+		if (UNLOCK_ALL_PUZZLES or get_light_state(pos)) and not MenuData.puzzle_preview_panels[puzzle_file].puzzle_unlocked:
 			puzzles_to_unlock.append(puzzle_file)
 	var processed_rendering_count = 0
 	for puzzle_file in puzzles_to_unlock:

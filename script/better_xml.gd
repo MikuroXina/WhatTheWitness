@@ -24,7 +24,7 @@ func read_node(parser: XMLParser, node_name: String):
 	var result = {'_arr': []}
 	for i in range(parser.get_attribute_count()):
 		result[parser.get_attribute_name(i)] = parser.get_attribute_value(i)
-	if !parser.is_empty():
+	if not parser.is_empty():
 		while true:
 			var error = parser.read()
 			if (error):
@@ -44,7 +44,7 @@ func read_node(parser: XMLParser, node_name: String):
 					result['_arr'].append(element)
 				XMLParser.NODE_TEXT:
 					var text = parser.get_node_data().strip_edges(true, true)
-					if (text != ''):
+					if not text.is_empty():
 						result['_text'] = text
 				var sub_node_type:
 					assert(sub_node_type == XMLParser.NODE_COMMENT, "unexpected xml node found: %d" % sub_node_type)

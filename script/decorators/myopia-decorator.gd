@@ -15,7 +15,7 @@ func draw_foreground(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type: int, 
 	var arrow_head_length = 0.09 * (1 - puzzle.line_width)
 	var arrow_width = 0.02 * (1 - puzzle.line_width)
 	for direction in directions:
-		if !direction.is_nearest:
+		if not direction.is_nearest:
 			continue
 		var length_vec = direction.vector
 		var width_vec = Vector2(-length_vec.y, length_vec.x)

@@ -7,11 +7,11 @@ func _on_start_button_pressed():
 
 
 func _ready():
-	if !Gameplay.loaded_from_command_line:
+	if not Gameplay.loaded_from_command_line:
 		var args = OS.get_cmdline_args()
 		Gameplay.drag_custom_levels(args)
 		Gameplay.loaded_from_command_line = true
-	if !Gameplay.ALLOW_CUSTOM_LEVELS:
+	if not Gameplay.ALLOW_CUSTOM_LEVELS:
 		custom_level_button.visible = false
 
 func _enter_tree():

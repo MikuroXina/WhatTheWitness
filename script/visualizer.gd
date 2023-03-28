@@ -97,7 +97,7 @@ class PuzzleCanvas:
 		drawing_target.draw_line(Vector2(0, canvas_size.y / 2), Vector2(canvas_size.x, canvas_size.y / 2), current_puzzle.background_color, canvas_size.y)
 		drawing_target.draw_set_transform(view_origin, 0.0, Vector2(1.0, 1.0))
 		for vertex in current_puzzle.vertices:
-			if !vertex.hidden:
+			if not vertex.hidden:
 				add_circle(vertex.pos, current_puzzle.line_width * 0.5, current_puzzle.line_color)
 				if vertex.is_puzzle_start:
 					add_circle(vertex.pos, current_puzzle.start_size, current_puzzle.line_color)
@@ -140,7 +140,7 @@ class PuzzleCanvas:
 				decorator_response.decorator.draw_foreground(self, puzzle.vertices[decorator_response.vertex_index], 0, puzzle)
 			if (
 				draw_error and
-				(!draw_cloned or time > 0.5) and
+				(not draw_cloned or time > 0.5) and
 				decorator_response.color != null
 			):
 				override_color = Color(error_transparency + (1 - error_transparency) * decorator_response.color.r,
@@ -194,7 +194,7 @@ class PuzzleCanvas:
 					len(state.solution_stage) > way and
 					state.solution_stage[way] == Solution.SOLUTION_STAGE_SNAKE
 				):
-					if len(vertices_way) > 1 and !current_puzzle.vertices[vertices_way[-1]].is_puzzle_end:
+					if len(vertices_way) > 1 and not current_puzzle.vertices[vertices_way[-1]].is_puzzle_end:
 						last_pos = last_pos * (1 - solution.progress) + current_puzzle.vertices[vertices_way[1]].pos * solution.progress
 				add_circle(last_pos, current_puzzle.start_size, color)
 				for i in range(1, len(vertices_way)):

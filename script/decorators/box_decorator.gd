@@ -48,7 +48,7 @@ func get_location(puzzle, solution, id):
 	var v
 	if (
 		solution == null or
-		!solution.started or
+		not solution.started or
 		len(solution.state_stack[-1].event_properties) <= id or
 		puzzle.vertices.size() <= solution.state_stack[-1].event_properties[id]
 	):

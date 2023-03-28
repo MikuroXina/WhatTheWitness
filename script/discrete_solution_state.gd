@@ -145,7 +145,7 @@ func transit(puzzle: Puzzle, main_way_vertex_id: int) -> Array:
 	for i in range(len(puzzle.decorators)):
 		if (puzzle.decorators[i].rule == 'box'):
 			var box_v = new_state.event_properties[i]
-			if (!(box_v in occupied_vertices)):
+			if not (box_v in occupied_vertices):
 				occupied_vertices[box_v] = 3 # box - box collision
 	for i in range(len(puzzle.decorators)):
 		if (puzzle.decorators[i].rule == 'box'):
@@ -164,7 +164,7 @@ func transit(puzzle: Puzzle, main_way_vertex_id: int) -> Array:
 					var way_secondary_end_v = new_state.vertices[colliding_way][-2]
 					var old_box_position = puzzle.vertices[way_end_v].pos
 					var way_edge_dir = (old_box_position - puzzle.vertices[way_secondary_end_v].pos).normalized()
-					if (!self.__perform_push(puzzle, new_state, i, way_edge_dir, occupied_vertices)):
+					if not self.__perform_push(puzzle, new_state, i, way_edge_dir, occupied_vertices):
 						blocked_by_boxes = true
 				else:
 					blocked_by_boxes = true
@@ -193,7 +193,7 @@ func __perform_push(puzzle: Puzzle, state: DiscreteSolutionState, box_id: int, d
 			if (
 				puzzle.decorators[i].rule == 'box' and
 				state.event_properties[i] == new_vertex.index and
-				!__perform_push(puzzle, state, i, dir, occupied_vertices)
+				not __perform_push(puzzle, state, i, dir, occupied_vertices)
 			):
 				return false
 	# todo: update occupied vertices in case multiple pushes

@@ -49,11 +49,11 @@ class Validator:
 
 	func alter_rule(decorator_index: int, region: Region, new_rule: String):
 		var old_rule = decorator_responses[decorator_index].rule
-		if !old_rule.begins_with('!'):
+		if not old_rule.begins_with('!'):
 			region.decorator_dict[old_rule].erase(decorator_index)
 		decorator_responses[decorator_index].rule = new_rule
-		if !new_rule.begins_with('!'):
-			if !(new_rule in region.decorator_dict):
+		if not new_rule.begins_with('!'):
+			if not (new_rule in region.decorator_dict):
 				region.decorator_dict[new_rule] = []
 			region.decorator_dict[new_rule].append(decorator_index)
 
@@ -142,7 +142,7 @@ class Validator:
 				new_region.index = len(regions)
 				regions.append(new_region)
 				vertex_region[v1] = new_region.index
-				while !stack.is_empty():
+				while not stack.is_empty():
 					var v2 = stack.pop_back()
 					if ghost_manager != null:
 						# ghost lines have different region cutting method
@@ -168,7 +168,7 @@ class Validator:
 					for response in decorator_responses_of_vertex[i]:
 						regions[vertex_region[i]].decorator_indices.append(response.index)
 						var rule = response.rule
-						if !(rule in regions[vertex_region[i]].decorator_dict):
+						if not (rule in regions[vertex_region[i]].decorator_dict):
 							regions[vertex_region[i]].decorator_dict[rule] = []
 						regions[vertex_region[i]].decorator_dict[rule].append(response.index)
 				regions[vertex_region[i]].vertices_indices.append(i)

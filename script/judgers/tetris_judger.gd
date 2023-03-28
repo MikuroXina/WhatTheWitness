@@ -67,14 +67,14 @@ func judge_region_tetris_implementation(validator, region: Validation.Region, re
 				ok = judge_csp(validator, region, true, false)
 			else:
 				ok = false
-		if !ok:
-			if !require_errors:
+		if not ok:
+			if not require_errors:
 				return false
 			for decorator_id in region.decorator_dict['tetris']:
 				var response = validator.decorator_responses[decorator_id]
-				if !response.decorator.is_weak:
+				if not response.decorator.is_weak:
 					response.state = Validation.DecoratorResponse.ERROR
-	if has_weak and !judge_csp(validator, region, true, true):
+	if has_weak and not judge_csp(validator, region, true, true):
 		if (require_errors):
 			for decorator_id in region.decorator_dict['tetris']:
 				var response = validator.decorator_responses[decorator_id]

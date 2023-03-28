@@ -21,7 +21,7 @@ func draw_additive_layer(canvas: Visualizer.PuzzleCanvas, id, _owner_type, puzzl
 		init_lasers
 		if (
 			solution == null or
-			!solution.started or
+			not solution.started or
 			len(solution.state_stack[-1].event_properties) <= id
 		)
 		else solution.state_stack[-1].event_properties[id]

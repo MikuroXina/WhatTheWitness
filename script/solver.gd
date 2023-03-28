@@ -42,7 +42,7 @@ var is_direction: Array
 var rules: Dictionary
 
 func add_to_color_mapping(color):
-	if !(color in color_mapping):
+	if not (color in color_mapping):
 		color_mapping[color] = len(color_mapping)
 
 func solve(input_puzzle: Graph.Puzzle, max_solution_count: int) -> bool:
@@ -60,7 +60,7 @@ func solve(input_puzzle: Graph.Puzzle, max_solution_count: int) -> bool:
 		if puzzle.vertices[v].is_puzzle_end:
 			n_max_regions += 1 # isolated ends
 		var rule = puzzle.vertices[v].decorator.rule
-		if !(rule in rules):
+		if not (rule in rules):
 			rules[rule] = []
 		rules[rule].append(v)
 	for edge in puzzle.edges:
@@ -103,7 +103,7 @@ func solve(input_puzzle: Graph.Puzzle, max_solution_count: int) -> bool:
 	if 'circle-arrow' in rules:
 		ensure_circle_arrow()
 	solutions = s.solve(max_solution_count)
-	return !solutions.is_empty()
+	return not solutions.is_empty()
 
 func get_solution_count() -> int:
 	return len(solutions)
@@ -123,7 +123,7 @@ func to_solution_line():
 				while ok:
 					ok = false
 					for v2 in vertice_neighbors[v]:
-						if sugar_solution[is_solution[v2]] == way and !(v2 in visited_vertices):
+						if sugar_solution[is_solution[v2]] == way and not (v2 in visited_vertices):
 							visited_vertices[v2] = true
 							way_vertices.append(v2)
 							v = v2
@@ -143,13 +143,13 @@ func ensure_segment():
 	is_region_enabled = s.new_int_array(n_vertices, -1, n_max_regions - 1)
 	is_tetris_covered = s.new_bool_array(n_vertices)
 	for v in range(n_vertices):
-		if !puzzle.vertices[v].is_puzzle_start:
+		if not puzzle.vertices[v].is_puzzle_start:
 			s.ensure(s.eq(is_start[v], -1))
-		if !puzzle.vertices[v].is_puzzle_end:
+		if not puzzle.vertices[v].is_puzzle_end:
 			s.ensure(s.eq(is_end[v], -1))
 		if puzzle.vertices[v].decorator.rule == 'broken':
 			s.ensure(s.eq(is_solution[v], -1))
-		if !(puzzle.vertices[v].decorator.rule in ['point', 'square', 'tetris', 'triangle', 'star', 'circle-arrow', 'minesweeper']):
+		if not (puzzle.vertices[v].decorator.rule in ['point', 'square', 'tetris', 'triangle', 'star', 'circle-arrow', 'minesweeper']):
 			s.ensure(s.eq(is_decorator[v], -1))
 		s.ensure(s.xor(s.eq(is_solution[v], -1), s.eq(is_region_enabled[v], -1)))
 	for way in range(puzzle.n_ways):
@@ -176,7 +176,7 @@ func ensure_segment():
 					s.ensure(s.iff(s.eq(is_solution[v], Solution.MAIN_WAY),
 						s.eq(is_solution[vertex_way.index], way)))
 			for v in range(n_vertices):
-				if (!is_way_v_possible[v]):
+				if not is_way_v_possible[v]:
 					s.ensure(s.neq(is_solution[v], way))
 
 		s.ensure(s.eq(s.count_true(s.eq(is_start, way)), '1'))
@@ -398,6 +398,6 @@ func ensure_circle_arrow():
 					puzzle.vertices[v2].pos - center,
 					puzzle.vertices[v1].pos - center,
 				)
-				if (cross > 0 and is_clockwise) or (cross < 0 and !is_clockwise):
+				if (cross > 0 and is_clockwise) or (cross < 0 and not is_clockwise):
 					s.ensure(s.or_(s.eq(is_solution[v1], -1), edges_direction[[v1, v2]]))
 		s.ensure(s.fold_or(count))

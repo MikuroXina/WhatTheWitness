@@ -35,7 +35,7 @@ func draw_indicators(
 func draw_below_solution(canvas, id, _owner_type, puzzle: Puzzle, solution):
 	if (
 		solution == null or
-		!solution.started or
+		not solution.started or
 		len(solution.state_stack[-1].event_properties) <= id
 	):
 		return

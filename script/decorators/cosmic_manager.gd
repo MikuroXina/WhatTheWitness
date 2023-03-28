@@ -19,7 +19,7 @@ func add_house(v):
 func draw_above_solution(canvas, id, _owner_type, puzzle, solution):
 	if (
 		solution == null or
-		!solution.started or
+		not solution.started or
 		len(solution.state_stack[-1].event_properties) <= id
 	):
 		return

@@ -56,11 +56,11 @@ func calculate_covering(puzzle: Graph.Puzzle):
 						alignment.append(j)
 						found_alignment = true
 						break
-				if !found_alignment:
+				if not found_alignment:
 					ok = false
 					break
 			# todo: check if all vertices are aligned
-			if !ok:
+			if not ok:
 				continue
 			alignment.sort()
 			if alignment in covering_dict:
@@ -91,10 +91,10 @@ func draw_foreground(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type: int, 
 	if is_hollow:
 		for shape in shapes:
 			var hollow_shape = __shrink_shape(shape, margin_size, scale)
-			if !hollow_shape.is_empty():
+			if not hollow_shape.is_empty():
 				hollow_shape.append(hollow_shape[0])
 			var inner_shape = __shrink_shape(shape, border_size, scale)
-			if !inner_shape.is_empty():
+			if not inner_shape.is_empty():
 				inner_shape.append(inner_shape[0])
 			inner_shape.reverse()
 			canvas.add_polygon(hollow_shape + inner_shape, color)

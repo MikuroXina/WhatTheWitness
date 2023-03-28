@@ -32,7 +32,7 @@ class FilamentSolution:
 
 
 	func try_continue_single_step(fixed_nails, delta) -> float:
-		if (!started):
+		if not started:
 			return 0.0
 		var original_step = delta.length()
 
@@ -48,7 +48,7 @@ class FilamentSolution:
 		for i in range(len(path_points) - 1):
 			var col = Geometry2D.segment_intersects_segment (path_points[i][0],
 				path_points[i + 1][0], end_pos, end_pos + delta)
-			if (col != null):
+			if col != null:
 				min_delta_step = min(min_delta_step, (end_pos - col).length())
 				delta = delta / delta.length() * (min_delta_step - 1e-6)
 		var last_nail_pos = path_points[-1][0]
@@ -68,7 +68,7 @@ class FilamentSolution:
 			var nail_dir = nail_vector.normalized()
 			var filament_vector = end_pos - bend_pos
 			var new_filament_vector = filament_vector + delta
-			if !Geometry2D.point_is_inside_triangle(target_nail_pos, bend_pos, end_pos, end_pos + delta):
+			if not Geometry2D.point_is_inside_triangle(target_nail_pos, bend_pos, end_pos, end_pos + delta):
 				continue # out-of-bound test
 
 			var old_cross = det(filament_vector, nail_dir)

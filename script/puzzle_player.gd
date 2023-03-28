@@ -19,14 +19,14 @@ func _ready():
 		load_puzzle(Gameplay.puzzle_path)
 
 func load_puzzle(puzzle_path):
-	if !Gameplay.playing_custom_puzzle:
+	if not Gameplay.playing_custom_puzzle:
 		level_map = $"/root/LevelMap"
 		menu_bar_button = $"/root/LevelMap/SideMenu/MenuBarButton"
 		puzzle_counter_text = $"/root/LevelMap/SideMenu/PuzzleCounter"
 	Gameplay.background_texture = null
 	Gameplay.puzzle_path = puzzle_path
 	Gameplay.puzzle = Graph.load_from_xml(Gameplay.puzzle_path)
-	if !Gameplay.playing_custom_puzzle and Gameplay.puzzle_name in SaveData.saved_solutions:
+	if not Gameplay.playing_custom_puzzle and Gameplay.puzzle_name in SaveData.saved_solutions:
 		Gameplay.solution = SolutionLine.load_from_string(SaveData.saved_solutions[Gameplay.puzzle_name], Gameplay.puzzle)
 		Gameplay.validator = Validation.Validator.new()
 		if Gameplay.validator.validate(Gameplay.puzzle, Gameplay.solution):
@@ -66,7 +66,7 @@ func load_puzzle(puzzle_path):
 		right_arrow_button.show()
 
 func _process(delta):
-	if !loaded:
+	if not loaded:
 		return
 	if Gameplay.validator != null:
 		Gameplay.validation_elasped_time += delta
@@ -80,7 +80,7 @@ func resizable_wrap_mouse_position(pos):
 	Input.warp_mouse(pos * additional_scale + Vector2(margin))
 
 func _input(event):
-	if !loaded:
+	if not loaded:
 		return
 
 	if event is InputEventMouseButton and event.is_pressed():
@@ -93,7 +93,7 @@ func _input(event):
 				Gameplay.validator = Validation.Validator.new()
 				if Gameplay.validator.validate(Gameplay.puzzle, Gameplay.solution):
 					Gameplay.solution.validity = 1
-					if !Gameplay.playing_custom_puzzle:
+					if not Gameplay.playing_custom_puzzle:
 						SaveData.update(Gameplay.puzzle_name, Gameplay.solution.save_to_string(Gameplay.puzzle))
 						if Gameplay.puzzle_name in MenuData.puzzle_preview_panels:
 							MenuData.puzzle_preview_panels[Gameplay.puzzle_name].update_puzzle()

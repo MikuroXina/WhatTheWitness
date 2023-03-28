@@ -20,7 +20,7 @@ func det(v1: Vector2, v2: Vector2) -> float:
 
 func try_start_solution_at(puzzle: Puzzle, pos: Vector2) -> bool:
 	var state = DiscreteSolutionState.new()
-	if !state.initialize(puzzle, pos):
+	if not state.initialize(puzzle, pos):
 		return false
 	validity = 0
 	started = true
@@ -30,7 +30,7 @@ func try_start_solution_at(puzzle: Puzzle, pos: Vector2) -> bool:
 	return true
 
 func is_completed(puzzle: Puzzle) -> bool:
-	if !started:
+	if not started:
 		return false
 	var crossroad_vertex = state_stack[-1].get_end_vertex(puzzle, Solution.MAIN_WAY)
 	if crossroad_vertex == null:
@@ -38,7 +38,7 @@ func is_completed(puzzle: Puzzle) -> bool:
 	return crossroad_vertex.decorator != null and crossroad_vertex.is_puzzle_end and progress >= 0.8 # allow small gap
 
 func get_total_length(puzzle: Puzzle) -> float:
-	if !started:
+	if not started:
 		return 0.0
 	var result = 0.0
 	for i in range(len(state_stack[-1].vertices) - 1):
@@ -51,7 +51,7 @@ func get_total_length(puzzle: Puzzle) -> float:
 	return result
 
 func get_current_way_position(puzzle: Puzzle, way: int):
-	if !started:
+	if not started:
 		return null
 
 	var way_vertices = state_stack[-1].vertices[way]
@@ -137,7 +137,7 @@ func __calculate_new_progress(
 
 
 func try_continue_solution(puzzle: Puzzle, mouse_delta: Vector2):
-	if !started:
+	if not started:
 		return
 	var delta = mouse_delta * Gameplay.mouse_speed
 	if delta.length() < EPS:
@@ -184,7 +184,7 @@ static func load_from_string(string: String, puzzle: Puzzle) -> SolutionLine:
 	var line_string_event_string = string.split('$')
 	var line_string = line_string_event_string[0]
 	var event_string = ''
-	if !line_string_event_string.is_empty():
+	if not line_string_event_string.is_empty():
 		event_string = line_string_event_string[1]
 	state.vertices = []
 	var line_result = line_string.split('|')

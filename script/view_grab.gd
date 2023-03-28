@@ -23,7 +23,7 @@ func update_view():
 	view.scale = Vector2(view_scale, view_scale)
 
 func _input(event):
-	if !MenuData.can_drag_map:
+	if not MenuData.can_drag_map:
 		return
 
 	if event is InputEventMouseButton:

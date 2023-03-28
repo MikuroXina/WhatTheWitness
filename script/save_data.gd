@@ -10,7 +10,7 @@ func puzzle_solved(puzzle_name: String) -> bool:
 
 func update(puzzle_name: String, solution_string: String):
 	saved_solutions[puzzle_name] = solution_string
-	if !(('$' + puzzle_name) in saved_solutions):
+	if not (('$' + puzzle_name) in saved_solutions):
 		var time = Time.get_datetime_dict_from_system()
 		saved_solutions['$' + puzzle_name] = '%04d%02d%02d.%02d:%02d:%02d' % [
 			time.year, time.month, time.day, time.hour, time.minute, time.second]
@@ -32,20 +32,20 @@ func load_all():
 	else:
 		var save_file = FileAccess.open(SAVE_PATH, FileAccess.READ)
 		var line = save_file.get_line()
-		if !line.is_empty():
+		if not line.is_empty():
 			var test_json_conv = JSON.new()
 			test_json_conv.parse(line)
 			saved_solutions = test_json_conv.get_data()
 		save_file = null
 	# load legacy save
 	var appdata = OS.get_environment('appdata')
-	if !appdata.is_empty():
+	if not appdata.is_empty():
 		var old_save_path = appdata.replace('\\', '/') + LEGACY_SAVE_PATH
 		var old_save_file = FileAccess.open(old_save_path, FileAccess.READ)
 		if old_save_file == null:
 			return
 		var line = old_save_file.get_line()
-		if !line.is_empty():
+		if not line.is_empty():
 			var test_json_conv = JSON.new()
 			test_json_conv.parse(line)
 			var saved_solutions2 = test_json_conv.get_data()
