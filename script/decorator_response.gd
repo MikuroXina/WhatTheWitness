@@ -1,3 +1,4 @@
+class_name DecoratorResponse
 extends Object
 
 const Decorator = preload("decorator.gd")
