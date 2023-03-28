@@ -7,4 +7,4 @@ func _on_RichTextLabel2_meta_clicked(meta):
 
 
 func _on_CreditsButton_pressed():
-	get_tree().change_scene_to_file("res://menu_main.tscn")
+	get_tree().change_scene_to_packed(load("res://menu_main.tscn"))

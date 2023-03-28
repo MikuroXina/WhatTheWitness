@@ -2,6 +2,7 @@ extends "../decorator.gd"
 
 var rule = 'cosmic-house'
 var satisfied = false
+
 const HOUSE_POINTS = [
 	Vector2(0, -1),
 	Vector2(1, 0),
@@ -28,9 +29,10 @@ const OCCUPIED_HOUSE_POINTS = [
 	Vector2(-0.8, 0),
 	Vector2(-1, 0),
 ]
+
 func draw_house(canvas, puzzle, pos, poly_color, occupied):
 	var length = 0.35 * (1 - puzzle.line_width)
-	var points = []
+	var points = PackedVector2Array()
 	var original_points = OCCUPIED_HOUSE_POINTS if occupied else HOUSE_POINTS
 	for point in original_points:
 		points.append(point * length + pos)

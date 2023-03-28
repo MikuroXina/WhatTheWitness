@@ -1,15 +1,17 @@
 extends Node2D
+
 @onready var save_text = $TextEdit
+
 func _ready():
-	var save_game = File.new()
-	if not save_game.file_exists(SaveData.SAVE_PATH):
+	if not FileAccess.file_exists(SaveData.SAVE_PATH):
 		save_text.text = '(no save found!)'
-	else:
-		save_game.open(SaveData.SAVE_PATH, File.READ)
-		var line = save_game.get_line()
-		save_text.text = line
-		save_game.close()
+		return
+
+	var save_game = FileAccess.open(SaveData.SAVE_PATH, FileAccess.READ)
+	var line = save_game.get_line()
+	save_text.text = line
+	save_game.close()
 
 
 func _on_back_button_pressed():
-	get_tree().change_scene_to_file("res://setting_scene.tscn")
+	get_tree().change_scene_to_packed(preload("res://setting_scene.tscn"))

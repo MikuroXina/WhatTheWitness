@@ -46,7 +46,8 @@ func string_to_property(string):
 
 func get_location(puzzle, solution, id):
 	var v
-	if (solution == null or
+	if (
+		solution == null or
 		!solution.started or
 		len(solution.state_stack[-1].event_properties) <= id or
 		puzzle.vertices.size() <= solution.state_stack[-1].event_properties[id]

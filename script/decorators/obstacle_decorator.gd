@@ -5,9 +5,10 @@ var rule = 'obstacle'
 var center : Vector2
 var radius : int
 var size : float
-const texture = preload("res://img/obstacle.png")
 var render_angle: float
 var target_angle: float
+
+const TEXTURE = preload("res://img/obstacle.png")
 
 func collide_test(target_pos, solution_length):
 	var obstacle_position = get_position(solution_length)
@@ -21,5 +22,5 @@ func draw_above_solution(canvas, _owner, _owner_type, _puzzle, solution):
 	var length = round(solution.get_total_length())
 	target_angle = length * PI / 2
 	render_angle = render_angle * 0.9 + target_angle * 0.1
-	var current_position = center + Vector2(cos(render_angle), sin(render_angle)) * radius
-	canvas.add_texture(current_position, Vector2(size, size), texture)
+	var current_position = center + Vector2.from_angle(render_angle) * radius
+	canvas.add_texture(current_position, Vector2(size, size), TEXTURE)

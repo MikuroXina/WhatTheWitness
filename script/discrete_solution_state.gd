@@ -37,7 +37,7 @@ func is_retraction(_puzzle, main_way_vertex_id: int) -> bool:
 		return main_way_vertex_id == vertices[Solution.MAIN_WAY][-2]
 	return false
 
-func transist(puzzle: Puzzle, main_way_vertex_id: int) -> Array:
+func transit(puzzle: Puzzle, main_way_vertex_id: int) -> Array:
 	var limit = 1.0 + 1e-6
 	var main_way_pos = puzzle.vertices[main_way_vertex_id].pos
 	var blocked_by_boxes = false
@@ -51,16 +51,17 @@ func transist(puzzle: Puzzle, main_way_vertex_id: int) -> Array:
 	var new_ghost_properties = null
 	var ghost_manager = null
 
-	# preprocess
+	# pre-process
 	for i in range(len(puzzle.decorators)):
-		if (puzzle.decorators[i].rule == 'snake-manager'):
-			new_snake_points = new_state.event_properties[i]
-		elif (puzzle.decorators[i].rule == 'ghost-manager'):
-			ghost_manager = puzzle.decorators[i]
-			ghost_properties = event_properties[i]
-			new_ghost_properties = new_state.event_properties[i]
-		elif (puzzle.decorators[i].rule == 'cosmic-manager'):
-			new_state.event_properties[i] = puzzle.decorators[i].transist(puzzle, vertices, event_properties[i])
+		match puzzle.decorators[i].rule:
+			'snake-manager':
+				new_snake_points = new_state.event_properties[i]
+			'ghost-manager':
+				ghost_manager = puzzle.decorators[i]
+				ghost_properties = event_properties[i]
+				new_ghost_properties = new_state.event_properties[i]
+			'cosmic-manager':
+				new_state.event_properties[i] = puzzle.decorators[i].transit(puzzle, vertices, event_properties[i])
 
 	# introduce new vertices
 	for way in range(puzzle.n_ways):
@@ -170,7 +171,7 @@ func transist(puzzle: Puzzle, main_way_vertex_id: int) -> Array:
 	if (blocked_by_boxes):
 		limit = min(limit, 0.22)
 
-	# postprocess
+	# post-process
 	for i in range(len(puzzle.decorators)):
 		if (puzzle.decorators[i].rule == 'laser-manager'):
 			puzzle.decorators[i].update_lasers(new_state.event_properties[i], puzzle, new_state)
@@ -182,38 +183,39 @@ func __perform_push(puzzle: Puzzle, state: DiscreteSolutionState, box_id: int, d
 	var old_box_position = puzzle.vertices[old_vertex_id].pos
 	var new_box_position = old_box_position + dir
 	var new_vertex = puzzle.get_vertex_at(new_box_position)
-	if (new_vertex == null):
+	if new_vertex == null:
 		return false # out of bounds
-	if (new_vertex.index in occupied_vertices):
-		if (occupied_vertices[new_vertex.index] != 3):
+	if new_vertex.index in occupied_vertices:
+		if occupied_vertices[new_vertex.index] != 3:
 			return false
 		# recursive box-box pushing
 		for i in range(len(puzzle.decorators)):
-			if (puzzle.decorators[i].rule == 'box'):
-				var box_v = state.event_properties[i]
-				if (box_v == new_vertex.index):
-					if (!__perform_push(puzzle, state, i, dir, occupied_vertices)):
-						return false
+			if (
+				puzzle.decorators[i].rule == 'box' and
+				state.event_properties[i] == new_vertex.index and
+				!__perform_push(puzzle, state, i, dir, occupied_vertices)
+			):
+				return false
 	# todo: update occupied vertices in case multiple pushes
 	state.event_properties[box_id] = new_vertex.index
 	return true
 
 func get_symmetry_point(puzzle: Puzzle, way: int, pos: Vector2) -> Vector2:
-	if (way == 0 or len(puzzle.symmetry_transforms) == 0):
+	if way == 0 or len(puzzle.symmetry_transforms) == 0:
 		return pos
 	return puzzle.symmetry_transforms[(way + start_way) % puzzle.n_ways].basis_xform(
 		puzzle.symmetry_transforms[start_way].basis_xform_inv(pos)
 	)
 
 func get_symmetry_vector(puzzle: Puzzle, way: int, vec: Vector2) -> Vector2:
-	if (way == 0 or len(puzzle.symmetry_transforms) == 0):
+	if way == 0 or len(puzzle.symmetry_transforms) == 0:
 		return vec
 	return puzzle.symmetry_transforms[(way + start_way) % puzzle.n_ways].basis_xform(
 		puzzle.symmetry_transforms[start_way].basis_xform_inv(vec))
 
 func pos_to_vertex_id(puzzle: Puzzle, pos: Vector2, eps=1e-3) ->int:
 	for vertex in puzzle.vertices:
-		if (vertex.pos.distance_to(pos) < eps):
+		if vertex.pos.distance_to(pos) < eps:
 			return vertex.index
 	return -1
 
@@ -221,9 +223,9 @@ func get_nearest_start(puzzle: Puzzle, pos: Vector2):
 	var best_dist = puzzle.start_size
 	var result = null
 	for vertex in puzzle.vertices:
-		if (vertex.is_puzzle_start):
+		if vertex.is_puzzle_start:
 			var dist = (pos - vertex.pos).length()
-			if (dist < best_dist):
+			if dist < best_dist:
 				result = vertex
 				best_dist = dist
 	return result
@@ -233,19 +235,19 @@ func initialize(puzzle: Puzzle, pos: Vector2) -> bool:
 	while (start_way < puzzle.n_ways):
 		vertices.clear()
 		var est_start_vertex = get_nearest_start(puzzle, pos)
-		if (est_start_vertex == null):
+		if est_start_vertex == null:
 			start_way += 1
 			continue
 		var ok = true
 		for way in range(puzzle.n_ways):
 			var est_way_start_pos = get_symmetry_point(puzzle, way, est_start_vertex.pos)
 			var way_start_vertex = get_nearest_start(puzzle, est_way_start_pos)
-			if (way_start_vertex == null):
+			if way_start_vertex == null:
 				ok = false
 				break
 			vertices.push_back([way_start_vertex.index])
 			solution_stage.push_back(Solution.SOLUTION_STAGE_EXTENSION)
-		if (ok):
+		if ok:
 			event_properties.clear()
 			for decorator in puzzle.decorators:
 				event_properties.append(decorator.init_property(puzzle, self, est_start_vertex))

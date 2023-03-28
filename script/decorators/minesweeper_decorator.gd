@@ -2,9 +2,9 @@ extends "../decorator.gd"
 
 var rule = 'minesweeper'
 
-var count
+var count: int = 0
 
-const textures = [
+const TEXTURES = [
 	preload("res://img/minesweeper/0.png"),
 	preload("res://img/minesweeper/1.png"),
 	preload("res://img/minesweeper/2.png"),
@@ -16,5 +16,5 @@ const textures = [
 ]
 
 func draw_foreground(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type: int, _puzzle: Graph.Puzzle):
-	var circleRadius = 0.35
-	canvas.add_texture(Vector2.ZERO, Vector2(circleRadius * 2, circleRadius * 2), textures[count], color)
+	const CIRCLE_RADIUS = 0.35
+	canvas.add_texture(Vector2.ZERO, Vector2(CIRCLE_RADIUS * 2, CIRCLE_RADIUS * 2), TEXTURES[count], color)

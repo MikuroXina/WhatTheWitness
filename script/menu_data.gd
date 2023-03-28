@@ -11,13 +11,12 @@ var puzzle_points = {}
 
 func get_puzzle_on_cell(pos: Vector2i):
 	var int_pos = [pos.x, pos.y]
-	if (int_pos in grid_pos_puzzle):
+	if int_pos in grid_pos_puzzle:
 		return grid_pos_puzzle[int_pos]
 	return null
 
 func get_unlocked_puzzle_on_cell(pos: Vector2i):
 	var int_pos = [pos.x, pos.y]
-	if (int_pos in grid_pos_puzzle):
-		if (puzzle_preview_panels[grid_pos_puzzle[int_pos]].puzzle_unlocked):
-			return grid_pos_puzzle[int_pos]
+	if int_pos in grid_pos_puzzle and puzzle_preview_panels[grid_pos_puzzle[int_pos]].puzzle_unlocked:
+		return grid_pos_puzzle[int_pos]
 	return null

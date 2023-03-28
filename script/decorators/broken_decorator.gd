@@ -2,7 +2,7 @@ extends "../decorator.gd"
 
 var rule = 'broken'
 
-var direction : Vector2
+var direction: Vector2
 
 func draw_foreground(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
 	canvas.add_line(

@@ -12,10 +12,10 @@ var enabled = false
 @export var puzzle_unlocked: bool = false
 @export var points: int = 0
 
-func show_puzzle(load_puzzle_name, unlocked=true):
+func show_puzzle(load_puzzle_name: String, unlocked=true):
 	puzzle_name = load_puzzle_name
 	puzzle_unlocked = unlocked
-	if (unlocked):
+	if unlocked:
 		var vport = SubViewport.new()
 		vport.size = Vector2(256, 256)
 		vport.render_target_update_mode = SubViewport.UPDATE_ALWAYS
@@ -37,7 +37,7 @@ func show_puzzle(load_puzzle_name, unlocked=true):
 	points_label.text = '[center]%s[/center]' % (
 		'' if points == 0 else '1 pt' if points == 1 else '%d pts' % points
 	)
-	if (SaveData.puzzle_solved(puzzle_name) and points != 0):
+	if SaveData.puzzle_solved(puzzle_name) and points != 0:
 		points_label.modulate = Color(1.0, 1.0, 1.0, 0.5)
 		delete_bar.visible = true
 	else:
@@ -48,7 +48,7 @@ func update_puzzle(unlocked=true):
 	show_puzzle(puzzle_name, unlocked)
 
 func _on_Button_pressed():
-	if (not puzzle_unlocked):
+	if not puzzle_unlocked:
 		return
 	_on_Button_mouse_exited()
 	Gameplay.puzzle_name = puzzle_name
@@ -60,7 +60,7 @@ func _on_Button_pressed():
 	puzzle_credit_text.text = ''
 
 func _on_Button_mouse_entered():
-	if (not puzzle_unlocked):
+	if not puzzle_unlocked:
 		return
 	parent.move_child(self, parent.get_child_count() - 1)
 	frame.scale = Vector2(1.2, 1.2)

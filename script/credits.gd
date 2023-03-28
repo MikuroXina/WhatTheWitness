@@ -14,16 +14,15 @@ const FULL_AUTHORS = {
 	'rpg': 'from the Witness RPG Mod (by Sigma144)',
 }
 
-func get_full_credit(puzzle_name: String):
-	if (puzzle_name.ends_with('.wit')):
+func get_full_credit(puzzle_name: String) -> String:
+	if puzzle_name.ends_with('.wit'):
 		puzzle_name = puzzle_name.substr(0, len(puzzle_name) - 4)
-	if (!('-' in puzzle_name)):
+	if !('-' in puzzle_name):
 		return puzzle_name
-	else:
-		var pos = puzzle_name.find('-')
-		var author_abbr = puzzle_name.substr(0, pos)
-		var title = puzzle_name.substr(pos + 1)
-		if (author_abbr in FULL_AUTHORS):
-			return title + ' ' + FULL_AUTHORS[author_abbr]
-		return title + ' by ' + author_abbr
 
+	var pos = puzzle_name.find('-')
+	var author_abbr = puzzle_name.substr(0, pos)
+	var title = puzzle_name.substr(pos + 1)
+	if author_abbr in FULL_AUTHORS:
+		return title + ' ' + FULL_AUTHORS[author_abbr]
+	return title + ' by ' + author_abbr

@@ -10,8 +10,8 @@ class FilamentSolution:
 	var path_points: Array
 	var extra_nails: Array # around the start point
 
-	func try_start_solution_at(pos, circle_radius):
-		if (started):
+	func try_start_solution_at(pos: Vector2, circle_radius: float) -> bool:
+		if started:
 			started = false
 			return false
 		started = true
@@ -20,18 +20,18 @@ class FilamentSolution:
 		path_points = [[pos, -1]]
 		extra_nails.clear()
 		for i in range(8):
-			var angle = i * PI / 4
-			extra_nails.append(pos + Vector2(cos(angle), sin(angle)) * circle_radius)
+			var angle_point = i * PI / 4
+			extra_nails.append(pos + Vector2.from_angle(angle_point) * circle_radius)
 		return true
 
-	func det(v1, v2):
+	func det(v1: Vector2, v2: Vector2) -> float:
 		return v1.x * v2.y - v2.x * v1.y
 
-	func try_continue_solution(nails, delta):
+	func try_continue_solution(nails, delta) -> float:
 		return try_continue_single_step(nails, delta)
 
 
-	func try_continue_single_step(fixed_nails, delta):
+	func try_continue_single_step(fixed_nails, delta) -> float:
 		if (!started):
 			return 0.0
 		var original_step = delta.length()
@@ -39,10 +39,10 @@ class FilamentSolution:
 		# add nails
 		var nails = []
 		nails += fixed_nails
-		if (len(path_points) >= 2):
+		if len(path_points) >= 2:
 			nails += extra_nails
 		# print(original_step)
-		if (original_step < 1e-10):
+		if original_step < 1e-10:
 			return 1.0
 		var min_delta_step = delta.length()
 		for i in range(len(path_points) - 1):
@@ -68,14 +68,14 @@ class FilamentSolution:
 			var nail_dir = nail_vector.normalized()
 			var filament_vector = end_pos - bend_pos
 			var new_filament_vector = filament_vector + delta
-			if (!Geometry2D.point_is_inside_triangle(target_nail_pos, bend_pos, end_pos, end_pos + delta)):
+			if !Geometry2D.point_is_inside_triangle(target_nail_pos, bend_pos, end_pos, end_pos + delta):
 				continue # out-of-bound test
 
 			var old_cross = det(filament_vector, nail_dir)
 			var new_cross = det(new_filament_vector, nail_dir)
 			var ok = false
 			var old_dir
-			if (target_nail_pos == last_nail_pos):
+			if target_nail_pos == last_nail_pos:
 				old_dir = last_bend_direction
 				if ((old_dir == 0 and new_cross > 0) or
 					(old_dir == 1 and new_cross < 0)):
@@ -84,10 +84,12 @@ class FilamentSolution:
 				# print(target_nail_pos, '|', old_cross, '|', new_cross, '||', filament_vector, new_filament_vector, '||', nail_dir)
 
 				old_dir = 0 if old_cross < 0 else 1
-				if ((old_dir == 0 and new_cross >= -1e-6) or
-					(old_dir == 1 and new_cross <= 1e-6)):
+				if (
+					(old_dir == 0 and new_cross >= -1e-6) or
+					(old_dir == 1 and new_cross <= 1e-6)
+				):
 					ok = true
-			if (ok):
+			if ok:
 				var sin_a = abs(old_cross) / (filament_vector.length() + 1e-10)
 				var sin_b = abs(det(delta.normalized(), nail_dir))
 				var forward = filament_vector.length() / sin_b * sin_a
@@ -100,28 +102,18 @@ class FilamentSolution:
 					nearest_collision_forward = forward
 					nearest_collision_far = far
 					nearest_collision_nail = target_nail_pos
-		if (nearest_collision_nail != null):
-			if (nearest_collision_nail == last_nail_pos):
-				if (len(path_points) > 1):
-					# print('pop!')
-					path_points.pop_back()
+		if nearest_collision_nail != null:
+			if nearest_collision_nail == last_nail_pos and len(path_points) > 1:
+				# print('pop!')
+				path_points.pop_back()
 			else:
 				# print('push!')
 				path_points.push_back([nearest_collision_nail, nearest_collision_bend_direction])
-		if (delta.length() > nearest_collision_forward):
+		if delta.length() > nearest_collision_forward:
 			delta = delta / delta.length() * (nearest_collision_forward + 1e-6)
 		var moved_percentage = delta.length() / original_step
 		# print(moved_percentage, '!!')
-		if (moved_percentage > 1e-6):
+		if moved_percentage > 1e-6:
 			end_pos += delta
 			return moved_percentage
-		else:
-			return 0.0
-
-
-
-
-
-
-
-
+		return 0.0

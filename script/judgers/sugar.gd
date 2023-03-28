@@ -3,37 +3,38 @@ extends Node
 var n_bools: int
 var n_ints: int
 var constraints: Array
-const TRUE = 'true'
-const FALSE = 'false'
-const ZERO = '0'
-const ONE = '1'
 var keys: Array
 var int_lows: Array
 var int_highs: Array
 
-func new_bool(is_key=false):
+const TRUE = 'true'
+const FALSE = 'false'
+const ZERO = '0'
+const ONE = '1'
+
+func new_bool(is_key=false) -> String:
 	var result = "b" + str(n_bools)
-	if (is_key):
+	if is_key:
 		keys.append(result)
 	n_bools += 1
 	return result
 
-func new_int(low, high, is_key=false):
+func new_int(low: int, high: int, is_key=false) -> String:
 	var result = "i" + str(n_ints)
-	if (is_key):
+	if is_key:
 		keys.append(result)
 	int_lows.append(low)
 	int_highs.append(high)
 	n_ints += 1
 	return result
 
-func new_bool_array(size, is_key=false):
+func new_bool_array(size: int, is_key=false) -> Array:
 	var result = []
 	for i in range(size):
 		result.append(new_bool(is_key))
 	return result
 
-func new_int_array(size, low, high, is_key=false):
+func new_int_array(size: int, low: int, high: int, is_key=false) -> Array:
 	var result = []
 	for i in range(size):
 		result.append(new_int(low, high, is_key))
@@ -41,32 +42,30 @@ func new_int_array(size, low, high, is_key=false):
 
 
 func binary_operator(op, lhs, rhs):
-	if (lhs is Array and rhs is Array):
+	if lhs is Array and rhs is Array:
 		var result = []
 		for i in range(len(lhs)):
 			result.append(binary_operator(op, lhs[i], rhs[i]))
 		return result
-	elif (lhs is Array):
+	if lhs is Array:
 		var result = []
 		for i in range(len(lhs)):
 			result.append(binary_operator(op, lhs[i], rhs))
 		return result
-	elif (rhs is Array):
+	if rhs is Array:
 		var result = []
 		for i in range(len(rhs)):
 			result.append(binary_operator(op, lhs, rhs[i]))
 		return result
-	else:
-		return '(%s %s %s)' % [op, lhs, rhs]
+	return '(%s %s %s)' % [op, lhs, rhs]
 
 func unary_operator(op, rhs):
-	if (rhs is Array):
+	if rhs is Array:
 		var result = []
 		for i in range(len(rhs)):
 			result.append(unary_operator(op, rhs[i]))
 		return result
-	else:
-		return '(%s %s)' % [op, rhs]
+	return '(%s %s)' % [op, rhs]
 
 func add(lhs, rhs):
 	return binary_operator('+', lhs, rhs)
@@ -102,7 +101,7 @@ func and_(lhs, rhs):
 	return binary_operator('&&', lhs, rhs)
 
 func fold_and(args: Array):
-	if (len(args) == 0):
+	if args.is_empty():
 		return TRUE
 	return '(&& %s)' % ' '.join(PackedStringArray(args))
 
@@ -110,7 +109,7 @@ func or_(lhs, rhs):
 	return binary_operator('||', lhs, rhs)
 
 func fold_or(args: Array):
-	if (len(args) == 0):
+	if args.is_empty():
 		return FALSE
 	return '(|| %s)' % ' '.join(PackedStringArray(args))
 
@@ -130,7 +129,7 @@ func to_int(boolean):
 	return if_(boolean, ONE, ZERO)
 
 func count_true(args):
-	if (len(args) == 0):
+	if args.is_empty():
 		return ZERO
 	var results = []
 	for arg in args:
@@ -145,12 +144,13 @@ func graph_vertex_connected(vertices, edges):
 		edge_result.append(str(edge[0]))
 		edge_result.append(str(edge[1]))
 	return '(graph-active-vertices-connected %d %d %s %s)' % [
-		n_vertices, n_edges, ' '.join(PackedStringArray(vertices)),
-		' '.join(PackedStringArray(edge_result))
+		n_vertices, n_edges,
+		' '.join(PackedStringArray(vertices)),
+		' '.join(PackedStringArray(edge_result)),
 	]
 
 func ensure(expr):
-	if (expr is Array):
+	if expr is Array:
 		for item in expr:
 			ensure(item)
 	else:
@@ -174,22 +174,18 @@ func solve(n_solutions=-1):
 	var output = []
 	var solutions = []
 	OS.execute('D:/temp/csugar.exe', ['<', 'D:/temp/test.in'], output, true, true)
-	if (len(output) != 1):
-		print('Error: solver failed')
-	else:
-		output = output[0].replace('\r', '').split('\n')
-		if (output[0] == 'unsat'):
-			return solutions
+	assert(len(output) == 1, 'Error: solver failed')
+	output = output[0].replace('\r', '').split('\n')
+	if output[0] == 'unsat':
+		return solutions
+	var solution = {}
+	for line in output:
+		if line.begins_with('ans ') or line.is_empty():
+			continue
+		if line == '$':
+			solutions.append(solution)
+			solution = {}
 		else:
-			var solution = {}
-			for line in output:
-				if (line.begins_with('ans ') or line == ''):
-					continue
-				elif (line == '$'):
-					solutions.append(solution)
-					solution = {}
-				else:
-					var tokens = line.split(' ')
-					solution[tokens[0]] = int(tokens[1]) if tokens[0].begins_with('i') else (tokens[1] == 'true')
-			return solutions
-
+			var tokens = line.split(' ')
+			solution[tokens[0]] = int(tokens[1]) if tokens[0].begins_with('i') else (tokens[1] == 'true')
+	return solutions

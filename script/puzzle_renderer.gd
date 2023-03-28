@@ -8,9 +8,8 @@ func _draw():
 	canvas.current_puzzle = puzzle
 	canvas.normalize_view(self.get_rect().size)
 	canvas.draw_puzzle(self)
-	if (puzzle_name in SaveData.saved_solutions):
+	if puzzle_name in SaveData.saved_solutions:
 		var solution = SolutionLine.load_from_string(SaveData.saved_solutions[puzzle_name], puzzle)
 		canvas.draw_solution(self, solution, null, 10.0)
 	else:
 		canvas.draw_solution(self, null, null, 10.0)
-

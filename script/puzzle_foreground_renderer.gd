@@ -1,12 +1,12 @@
 extends Control
 
 func _draw():
-	if (Gameplay.background_texture == null):
+	if Gameplay.background_texture == null:
 		return
 
 	draw_texture(Gameplay.background_texture, Vector2(0, 0))
 
-	if (Gameplay.canvas == null):
+	if Gameplay.canvas == null:
 		return
 
 	Gameplay.canvas.draw_solution(self, Gameplay.solution, Gameplay.validator, Gameplay.validation_elasped_time)

@@ -26,4 +26,3 @@ func draw_foreground(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type: int, 
 
 func draw_above_solution(canvas, _owner, _owner_type, puzzle, _solution):
 	draw_shape(canvas, puzzle, color)
-
