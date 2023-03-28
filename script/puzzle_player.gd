@@ -41,9 +41,7 @@ func load_puzzle(puzzle_path):
 		Gameplay.solution = SolutionLine.new()
 		hide_left_arrow_button()
 		hide_right_arrow_button()
-	Gameplay.canvas = Visualizer.PuzzleCanvas.new()
-	Gameplay.canvas.current_puzzle = Gameplay.puzzle
-	Gameplay.canvas.normalize_view(viewport.size)
+	Gameplay.init_canvas(Visualizer.PuzzleCanvas.new(), viewport.size)
 	var back_color = Gameplay.puzzle.background_color
 	var front_color = Gameplay.puzzle.line_color
 	back_rect.color = back_color
@@ -86,7 +84,7 @@ func _input(event):
 	if event is InputEventMouseButton and event.is_pressed():
 		var panel_start_pos = drawing_target.get_global_rect().position
 		var screen_position = event.global_position - panel_start_pos
-		var puzzle_world_mouse = Gameplay.canvas.screen_to_world(screen_position)
+		var puzzle_world_mouse = Gameplay.screen_to_world(screen_position)
 		if is_drawing_solution:
 			if Gameplay.solution.is_completed(Gameplay.puzzle):
 				Gameplay.solution.progress = 1.0
@@ -116,10 +114,7 @@ func _input(event):
 			is_drawing_solution = true
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	if event is InputEventMouseMotion and is_drawing_solution:
-		Gameplay.solution.try_continue_solution(
-			Gameplay.puzzle,
-			event.relative * Visualizer.UPSAMPLING_FACTOR / Gameplay.canvas.view_scale,
-		)
+		Gameplay.try_continue_solution(event.relative * Visualizer.UPSAMPLING_FACTOR)
 	if event is InputEventKey and event.pressed:
 		match event.keycode:
 			KEY_ESCAPE:
