@@ -562,8 +562,7 @@ func judge_region_myopia(validator: Validation.Validator, region: Validation.Reg
 		var origin = validator.puzzle.vertices[response.vertex_index].pos
 		var dist_list = []
 		var global_min_dist = INF
-		for k in range(len(response.decorator.directions)):
-			var direction = response.decorator.directions[k][1]
+		for direction in response.decorator.directions:
 			var min_dist = INF
 			for i in range(len(validator.puzzle.vertices)):
 				if validator.vertex_region[i] >= -1:
@@ -571,16 +570,16 @@ func judge_region_myopia(validator: Validation.Validator, region: Validation.Reg
 				if i == response.vertex_index:
 					continue
 				var vertex_dir = validator.puzzle.vertices[i].pos - origin
-				if abs(vertex_dir.dot(direction) - vertex_dir.length()) < 1e-3:
+				if abs(vertex_dir.dot(direction.vector) - vertex_dir.length()) < 1e-3:
 					min_dist = min(min_dist, vertex_dir.length())
 			dist_list.append(min_dist)
-			if response.decorator.directions[k][2]:
+			if direction.is_nearest:
 				global_min_dist = min(global_min_dist, min_dist)
 		for k in range(len(response.decorator.directions)):
 			# We test the not condition to handle issues with infinite
 			if (
-				(response.decorator.directions[k][2] and not (global_min_dist + 1e-3 > dist_list[k])) or
-				(not response.decorator.directions[k][2] and not (global_min_dist + 1e-3 < dist_list[k]))
+				(response.decorator.directions[k].is_nearest and not (global_min_dist + 1e-3 > dist_list[k])) or
+				(not response.decorator.directions[k].is_nearest and not (global_min_dist + 1e-3 < dist_list[k]))
 			):
 				if not require_errors:
 					return false
