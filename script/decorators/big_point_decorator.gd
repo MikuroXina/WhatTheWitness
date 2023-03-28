@@ -2,7 +2,7 @@ extends "../decorator.gd"
 
 var rule = 'big-point'
 
-func draw_foreground(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
+func draw_foreground(canvas: PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
 	var radius = 0.85 * puzzle.line_width
 	var points = []
 	for i in range(6):

@@ -31,5 +31,5 @@ func draw_anger(canvas, puzzle, pos, poly_color):
 	)
 
 
-func draw_foreground(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
+func draw_foreground(canvas: PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
 	draw_alien(canvas, puzzle, Vector2.ZERO, color)

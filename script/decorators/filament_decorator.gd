@@ -7,7 +7,7 @@ var center: Vector2
 var filament_start_decorator
 var valid: bool = false
 
-func draw_foreground(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type: int, _puzzle: Graph.Puzzle):
+func draw_foreground(canvas: PuzzleCanvas, _owner, _owner_type: int, _puzzle: Graph.Puzzle):
 	canvas.add_circle(Vector2.ZERO, circle_radius, color)
 
 func calculate_validity():

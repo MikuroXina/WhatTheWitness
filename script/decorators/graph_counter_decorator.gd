@@ -28,7 +28,7 @@ func get_rotational_symbol(old_symbol: int):
 func dir_to_vec(dir: int) -> Vector2:
 	return -Vector2.from_angle(dir * 2 * PI / N_DIRS)
 
-func draw_symbol(canvas: Visualizer.PuzzleCanvas, puzzle: Graph.Puzzle, pos: Vector2, symbol: int):
+func draw_symbol(canvas: PuzzleCanvas, puzzle: Graph.Puzzle, pos: Vector2, symbol: int):
 	if symbol == 0:
 		return
 
@@ -46,7 +46,7 @@ func draw_symbol(canvas: Visualizer.PuzzleCanvas, puzzle: Graph.Puzzle, pos: Vec
 			canvas.add_line(pos, line_length * dir_to_vec(dir) + pos, width, color)
 	canvas.add_circle(pos, width / 2, color)
 
-func draw_foreground(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
+func draw_foreground(canvas: PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
 	for i in range(len(matrix)):
 		var pos_y = (i - (len(matrix) - 1) / 2.0) * step_y
 		for j in range(len(matrix[i])):

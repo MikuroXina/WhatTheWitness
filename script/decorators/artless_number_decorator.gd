@@ -4,7 +4,7 @@ var rule = 'artless-number'
 
 var count: int = 0
 
-func draw_foreground(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
+func draw_foreground(canvas: PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
 	var length = 0.175 * (1 - puzzle.line_width)
 	var distance = 0.04 * (1 - puzzle.line_width)
 	var height = 0.15 * (1 - puzzle.line_width)

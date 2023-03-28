@@ -1,7 +1,7 @@
 extends Control
 
 func _draw():
-	var canvas = Visualizer.PuzzleCanvas.new()
+	var canvas = PuzzleCanvas.new()
 	var puzzle_name = name.replace('|', '.')
 	var puzzle_path = 'res://puzzles/%s' % puzzle_name
 	var puzzle = Graph.load_from_xml(puzzle_path, true)

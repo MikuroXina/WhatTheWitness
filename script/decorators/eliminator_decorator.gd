@@ -20,7 +20,7 @@ const CURVE_POINTS_TEMPLATE = [
 	Vector2(-0.0575, -0.033),
 ]
 
-func draw_foreground(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
+func draw_foreground(canvas: PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
 	var curve_points = PackedVector2Array()
 	for v in CURVE_POINTS_TEMPLATE:
 		curve_points.append(v * (1 - puzzle.line_width))

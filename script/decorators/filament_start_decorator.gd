@@ -9,7 +9,7 @@ var circle_radius = 0.08
 
 const FilamentSolution = Filament.FilamentSolution
 
-func draw_above_solution(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type, puzzle, _solution):
+func draw_above_solution(canvas: PuzzleCanvas, _owner, _owner_type, puzzle, _solution):
 	if filament_solution == null:
 		return
 

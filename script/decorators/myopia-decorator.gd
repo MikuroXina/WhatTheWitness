@@ -9,7 +9,7 @@ class Direction:
 
 var directions = [] # array of Direction
 
-func draw_foreground(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
+func draw_foreground(canvas: PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
 	var arrow_length = 0.25 * (1 - puzzle.line_width)
 	var arrow_head_width = 0.05 * (1 - puzzle.line_width)
 	var arrow_head_length = 0.09 * (1 - puzzle.line_width)

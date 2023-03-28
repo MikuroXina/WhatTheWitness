@@ -3,7 +3,7 @@ extends "../decorator.gd"
 var rule = 'collapse'
 var passed = false
 
-func draw_foreground(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
+func draw_foreground(canvas: PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
 	var line_width = 0.05 * (1 - puzzle.line_width)
 	var circle_radius = 0.35 * (1 - puzzle.line_width)
 	var inner_radius = 0.3 * (1 - puzzle.line_width)

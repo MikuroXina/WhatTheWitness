@@ -21,7 +21,7 @@ func draw_shape(canvas, _puzzle, poly_color):
 	])
 	canvas.add_polygon(points_arc, poly_color)
 
-func draw_foreground(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
+func draw_foreground(canvas: PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
 	draw_shape(canvas, puzzle, color)
 
 func draw_above_solution(canvas, _owner, _owner_type, puzzle, _solution):

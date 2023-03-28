@@ -86,7 +86,7 @@ func __shrink_shape(shape: PackedVector2Array, depth: float, scale: float) -> Pa
 		result.append(__shrink_corner(p0, p1, p2, depth) * scale)
 	return result
 
-func draw_foreground(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
+func draw_foreground(canvas: PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
 	var scale = 0.2 * (1 - puzzle.line_width)
 	if is_hollow:
 		for shape in shapes:

@@ -41,7 +41,7 @@ func load_puzzle(puzzle_path):
 		Gameplay.solution = SolutionLine.new()
 		hide_left_arrow_button()
 		hide_right_arrow_button()
-	Gameplay.init_canvas(Visualizer.PuzzleCanvas.new(), viewport.size)
+	Gameplay.init_canvas(PuzzleCanvas.new(), viewport.size)
 	var back_color = Gameplay.puzzle.background_color
 	var front_color = Gameplay.puzzle.line_color
 	back_rect.color = back_color
@@ -114,7 +114,7 @@ func _input(event):
 			is_drawing_solution = true
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	if event is InputEventMouseMotion and is_drawing_solution:
-		Gameplay.try_continue_solution(event.relative * Visualizer.UPSAMPLING_FACTOR)
+		Gameplay.try_continue_solution(event.relative * PuzzleCanvas.UPSAMPLING_FACTOR)
 	if event is InputEventKey and event.pressed:
 		match event.keycode:
 			KEY_ESCAPE:

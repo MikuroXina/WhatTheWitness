@@ -16,7 +16,7 @@ var min_y = -INF
 var max_x = INF
 var max_y = INF
 
-func draw_additive_layer(canvas: Visualizer.PuzzleCanvas, id, _owner_type, puzzle, solution):
+func draw_additive_layer(canvas: PuzzleCanvas, id, _owner_type, puzzle, solution):
 	var lasers = (
 		init_lasers
 		if (

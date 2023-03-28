@@ -20,7 +20,7 @@ const CURVE_POINTS_TEMPLATE = [
 	Vector2(-0.046, -0.0264),
 ]
 
-func draw_foreground(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type: int, _puzzle: Graph.Puzzle):
+func draw_foreground(canvas: PuzzleCanvas, _owner, _owner_type: int, _puzzle: Graph.Puzzle):
 	canvas.add_polygon(CURVE_POINTS_TEMPLATE, color)
 
 func draw_above_solution(canvas, _owner, _owner_type, _puzzle, solution):

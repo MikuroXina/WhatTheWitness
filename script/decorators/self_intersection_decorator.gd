@@ -25,7 +25,7 @@ func draw_shape(canvas, puzzle, _color):
 		radius * dirs[1] - SPACE * dirs[2]
 	]), color2)
 
-func draw_foreground(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
+func draw_foreground(canvas: PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
 	draw_shape(canvas, puzzle, color)
 
 func draw_above_solution(canvas, _owner, _owner_type, puzzle, _solution):

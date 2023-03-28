@@ -4,7 +4,7 @@ var rule = 'arrow'
 
 var count: int = 0
 
-func draw_foreground(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
+func draw_foreground(canvas: PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
 	var width = 0.3 * (1 - puzzle.line_width)
 	var thickness = 0.08 * (1 - puzzle.line_width)
 	var delta_height = thickness * 1.414213562

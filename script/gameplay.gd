@@ -8,7 +8,7 @@ var playing_custom_puzzle: bool
 var puzzle_path: String
 var puzzle: Graph.Puzzle
 var solution: SolutionLine
-var __canvas: Visualizer.PuzzleCanvas
+var __canvas: PuzzleCanvas
 var validator: Validation.Validator
 var validation_elasped_time: float
 var background_texture: Texture2D = null
@@ -43,7 +43,7 @@ func update_mouse_speed():
 		mouse_speed = 1.0
 
 
-func init_canvas(canvas: Visualizer.PuzzleCanvas, viewport_size: Vector2):
+func init_canvas(canvas: PuzzleCanvas, viewport_size: Vector2):
 	__canvas = canvas
 	__canvas.current_puzzle = puzzle
 	__canvas.normalize_view(viewport_size)

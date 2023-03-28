@@ -2,7 +2,7 @@ extends "../decorator.gd"
 
 var rule = 'heart'
 
-func draw_foreground(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
+func draw_foreground(canvas: PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
 	var radius = 0.1 * (1 - puzzle.line_width)
 	const NB_POINTS = 32
 	var points_arc = PackedVector2Array()

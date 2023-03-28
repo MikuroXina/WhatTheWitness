@@ -15,6 +15,6 @@ const TEXTURES = [
 	preload("res://img/minesweeper/7.png"),
 ]
 
-func draw_foreground(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type: int, _puzzle: Graph.Puzzle):
+func draw_foreground(canvas: PuzzleCanvas, _owner, _owner_type: int, _puzzle: Graph.Puzzle):
 	const CIRCLE_RADIUS = 0.35
 	canvas.add_texture(Vector2.ZERO, Vector2(CIRCLE_RADIUS * 2, CIRCLE_RADIUS * 2), TEXTURES[count], color)

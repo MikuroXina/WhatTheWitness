@@ -38,6 +38,6 @@ func draw_house(canvas, puzzle, pos, poly_color, occupied):
 		points.append(point * length + pos)
 	canvas.add_polygon(points, poly_color)
 
-func draw_foreground(canvas: Visualizer.PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
+func draw_foreground(canvas: PuzzleCanvas, _owner, _owner_type: int, puzzle: Graph.Puzzle):
 	draw_house(canvas, puzzle, Vector2.ZERO, color, false)
 
