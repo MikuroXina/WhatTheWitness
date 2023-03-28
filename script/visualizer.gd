@@ -125,12 +125,16 @@ class PuzzleCanvas:
 			var draw_eliminated = 0.0
 			var draw_cloned = decorator_response.clone_source_decorator != null
 			if validator.elimination_happended and time < 1.0:
-				draw_error = decorator_response.state_before_elimination == Validation.DecoratorResponse.ERROR or \
-					(decorator_response.state_before_elimination == Validation.DecoratorResponse.NO_ELIMINATION_CHANGES and \
-					decorator_response.state == Validation.DecoratorResponse.ERROR)
+				draw_error = (
+					decorator_response.is_error_before_elimination() or
+					(
+						decorator_response.has_no_elimination_changes() and
+						decorator_response.is_error()
+					)
+				)
 			else:
-				draw_error = decorator_response.state == Validation.DecoratorResponse.ERROR
-				draw_eliminated = decorator_response.state == Validation.DecoratorResponse.ELIMINATED
+				draw_error = decorator_response.is_error()
+				draw_eliminated = decorator_response.is_eliminated()
 			if draw_cloned:
 				override_color = Color(puzzle.background_color.r, puzzle.background_color.g, puzzle.background_color.b, clone_fading * 0.8)
 				drawing_target.draw_set_transform(view_origin + decorator_response.pos * view_scale, decorator_response.decorator.angle, Vector2(1.0, 1.0))
