@@ -1,21 +1,6 @@
 extends Node
 
-class DecoratorResponse:
-	var decorator
-	var rule: String
-	var color = null
-	var pos: Vector2
-	var vertex_index: int
-	var state: int
-	var state_before_elimination: int
-	var clone_source_decorator
-	var index: int
-
-	const NORMAL = 0
-	const ERROR = 1
-	const ELIMINATED = 2
-	const CONVERTED = 3
-	const NO_ELIMINATION_CHANGES = -1
+const DecoratorResponse = preload("decorator_response.gd")
 
 class Region:
 	var facet_indices: Array
@@ -65,8 +50,8 @@ class Validator:
 			response.color = decorator.color
 		response.pos = pos
 		response.vertex_index = vertex_index
-		response.state = DecoratorResponse.NORMAL
-		response.state_before_elimination = DecoratorResponse.NO_ELIMINATION_CHANGES
+		response.state = DecoratorResponse.State.NORMAL
+		response.state_before_elimination = DecoratorResponse.State.NO_ELIMINATION_CHANGES
 		response.index = len(decorator_responses)
 		decorator_responses.append(response)
 		return response
@@ -151,7 +136,7 @@ class Validator:
 							puzzle.vertices[v2].linked_facet == null
 						):
 							continue
-					for v3 in puzzle.vertice_region_neighbors[v2]:
+					for v3 in puzzle.vertices_region_neighbors[v2]:
 						if vertex_region[v3] == -1:
 							vertex_region[v3] = new_region.index
 							stack.push_back(v3)
